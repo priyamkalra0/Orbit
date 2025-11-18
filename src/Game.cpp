@@ -4,16 +4,18 @@
 #include "Game.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
+#include "Graphics/Camera.hpp"
 
-Window_t Window{"Orbit", {1280, 720}, {1920, 1080}};
-World_t World{{1280, 720}, {1920, 1080}};
+Window_t Window {"Orbit", {1280, 720}, {1920, 1080}};
+World_t World {{1280, 720}, {1920, 1080}};
+Camera_t Camera;
 
 Game::Game()
-    : m_player {
+    : m_navigation { m_planets, m_player },
+      m_player {
         World.scale_position({0.0f, 220.0f}),
         World.scale_velocity({0.75f * m_navigation.tangential_target_velocity, 0.0f})
-    },
-    m_navigation { m_planets, m_player }
+    }
 {
     /* Planet Generation */
     constexpr uint32_t planet_count { 3 };
@@ -99,17 +101,22 @@ void Game::update()
 {
     m_navigation.apply_assistance();
 
-    Planet& active_planet = m_navigation.get_active_planet();
+    Planet& planet = m_navigation.get_active_planet();
+    Orbit const& orbit = planet.get_orbit();
 
-    Orbit const& orbit = active_planet.get_orbit();
-    orbit.apply_force(active_planet.get_info(), m_player);
-
+    orbit.apply_force(
+        planet.get_info(),
+        m_player
+    );
     m_player.update();
+
+    Camera.follow(planet.get_position());
 }
 
 void Game::render() const
 {
     Window.clear();
+    Camera.apply();
 
     for (auto const& planet : m_planets)
         planet.draw();
