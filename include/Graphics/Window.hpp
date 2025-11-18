@@ -113,6 +113,11 @@ public:
         m_render_window.close();
     }
 
+    sf::Vector2u const& get_internal_resolution() const { return m_internal_resolution; }
+    sf::View const& get_default_view() const { return m_view; }
+    sf::View const& get_current_view() const { return m_render_window.getView(); }
+
+private:
     sf::View m_view;
     sf::RenderWindow m_render_window;
     sf::Vector2u m_internal_resolution;
