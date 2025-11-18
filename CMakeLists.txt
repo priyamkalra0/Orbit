@@ -9,6 +9,7 @@ find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
 add_executable(
         main
         src/Entrypoint.cpp
+        src/Game.cpp
 )
 
 target_include_directories(main PUBLIC include)
