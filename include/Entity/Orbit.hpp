@@ -9,7 +9,7 @@
 class Orbit
 {
 public:
-    Orbit(sf::Vector2f const& position, float radius);
+    Orbit(sf::Vector2f const& position, float radius, sf::Color const& color = sf::Color{150, 150, 150});
 
     void draw() const;
 

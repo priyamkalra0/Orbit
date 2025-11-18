@@ -3,20 +3,21 @@
 #include "Entity/Orbit.hpp"
 #include "Entity/Player.hpp"
 
-Orbit::Orbit(sf::Vector2f const& position, float const radius)
+Orbit::Orbit(sf::Vector2f const& position, float const radius, sf::Color const& color)
     : m_state{true}, m_radius{radius}
 {
-    constexpr sf::Color ring_color{ 255, 255, 255, 50 }; // Semi-transparent white
-    constexpr int ring_count{ 15 };
+    sf::Color const outline_color { color.r, color.g, color.b, 50 };
+    sf::Color const fill_color { color.r, color.g, color.b, 20 };
 
+    constexpr int ring_count{ 8 };
     m_rings.resize(ring_count);
 
     int n { 1 };
     for (auto& ring : m_rings)
     {
         // Use a power function to bunch rings closer to the planet
-        float const ratio{ static_cast<float>(n) / static_cast<float>(ring_count) };
-        float current_radius{ m_radius * std::pow(ratio, 2.5f) };
+        float const ratio { static_cast<float>(n) / static_cast<float>(ring_count) };
+        float current_radius{ m_radius * std::pow(ratio, 1.1f) };
 
         // force the last orbit a little bit further out
         // NOTE: WHY?
@@ -32,8 +33,8 @@ Orbit::Orbit(sf::Vector2f const& position, float const radius)
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
         ring.setPosition(position);
-        ring.setFillColor(sf::Color::Transparent);
-        ring.setOutlineColor(ring_color);
+        ring.setFillColor(fill_color);
+        ring.setOutlineColor(outline_color);
         ring.setOutlineThickness(2.0f);
 
         ++n;
