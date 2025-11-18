@@ -1,7 +1,10 @@
 #include "Game.hpp"
+
 #include "Graphics/Window.hpp"
+#include "Graphics/World.hpp"
 
 Window_t Window{"Orbit", {1280, 720}, {1920, 1080}};
+World_t World{{1280, 720}, {1920, 1080}};
 
 Game::Game()
 = default;
@@ -38,8 +41,8 @@ void Game::render()
     Window.clear();
 
     sf::CircleShape circle;
-    circle.setPosition({500.0f, 500.0f});
-    circle.setRadius(100.0f);
+    circle.setPosition(World.scale_position({500.0f, 250.0f}));
+    circle.setRadius(World.scale_distance(100.0f));
     circle.setFillColor(sf::Color::White);
     Window.draw(circle);
 
