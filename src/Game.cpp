@@ -9,10 +9,11 @@ Window_t Window{"Orbit", {1280, 720}, {1920, 1080}};
 World_t World{{1280, 720}, {1920, 1080}};
 
 Game::Game()
-    : m_player{
+    : m_player {
         World.scale_position({250.0f, 300.0f}),
         World.scale_velocity({400.0f, 0.0f})
-    }
+    },
+    m_navigation { m_planets, m_player }
 {
     /* Planet Generation */
     static constexpr float G { 10.0f };
@@ -88,10 +89,17 @@ void Game::process_input(sf::Event::KeyPressed const& key)
     if (key.code == sf::Keyboard::Key::I)
         return m_player.set_velocity(-1.0f * m_player.get_velocity()); //debug: invert velocity
 
+    if (key.code == sf::Keyboard::Key::Space)
+    {
+        Planet& active_planet = m_navigation.get_active_planet();
+        for (auto& planet : m_planets) planet.get_orbit().turn_on(); // turn on everything else
+        return active_planet.get_orbit().toggle(); // turn off active planet's orbit
+    }
 }
+
 void Game::update()
 {
-    Planet& active_planet = m_planets.front();
+    Planet& active_planet = m_navigation.get_active_planet();
 
     Orbit const& orbit = active_planet.get_orbit();
     orbit.apply_force(active_planet.get_info(), m_player);

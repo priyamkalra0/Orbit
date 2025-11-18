@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+
+#include "Navigation.hpp"
 #include "Entity/Planet.hpp"
 #include "Entity/Player.hpp"
 
@@ -19,6 +21,7 @@ private:
 
     void reset_player();
 
+    Navigation m_navigation;
     std::vector<Planet> m_planets;
     Player m_player;
 };
