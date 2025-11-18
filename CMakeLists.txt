@@ -11,6 +11,7 @@ add_executable(
         src/Entrypoint.cpp
         src/Game.cpp
         src/Entity/Planet.cpp
+        src/Entity/Orbit.cpp
 )
 
 target_include_directories(main PUBLIC include)

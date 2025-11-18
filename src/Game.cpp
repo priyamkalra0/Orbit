@@ -1,3 +1,4 @@
+#include <optional>
 #include <vector>
 
 #include "Game.hpp"
@@ -17,21 +18,24 @@ Game::Game()
     m_planets.emplace_back(
         World.scale_position({250.0f, 500.0f}),
         1000.0f,
-        World.scale_distance(50.0f)
+        World.scale_distance(50.0f),
+        World.scale_distance(200.0f)
     );
 
     // Planet 2 (Mid-Right)
     m_planets.emplace_back(
         World.scale_position({650.0f, 200.0f}),
-        2000.0f,
-        World.scale_distance(70.0f)
+        500.0f,
+        World.scale_distance(70.0f),
+        World.scale_distance(250.0f)
     );
 
     // Planet 3 (Far Right)
     m_planets.emplace_back(
         World.scale_position({1100.0f, 400.0f}),
         500.0f,
-        World.scale_distance(30.0f)
+        World.scale_distance(30.0f),
+        World.scale_distance(150.0f)
     );
 }
 

@@ -1,15 +1,16 @@
 #include "Entity/Planet.hpp"
 #include "Graphics/Window.hpp"
 
-Planet::Planet(PlanetInfo const& info)
-    : m_info{info} {}
+Planet::Planet(PlanetInfo const& info, Orbit const& orbit)
+    : m_info{info}, m_orbit{orbit} {}
 
-Planet::Planet(sf::Vector2f const& position, float const mass, float const radius) :
-    m_info{mass, radius, position} {}
+Planet::Planet(sf::Vector2f const& position, float const mass, float const radius, float const orbit_radius) :
+    m_info{mass, radius, position}, m_orbit{position, orbit_radius} {}
 
 void Planet::draw() const
 {
     Window.draw(m_info.Shape);
+    m_orbit.draw();
 }
 
 sf::Vector2f const& Planet::get_position() const {return m_info.Position;}
