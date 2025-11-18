@@ -41,7 +41,7 @@ public:
     /* Addon: Tangential Correction:
      * Helps maintain target tangential velocity
      * while in a semi-stable or stable orbit */
-    float const tangential_target_velocity { World.scale_distance(400.0f) };
+    float const tangential_target_velocity { World.scale_distance(500.0f) };
     constexpr static float tangential_boosting_power { 0.005f };
     constexpr static float tangential_smoothing_power { 0.01f };
 
