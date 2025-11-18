@@ -27,7 +27,7 @@ Orbit::Orbit(sf::Vector2f const& position, float const radius)
         // fucking up their pathing.
         // but pushing this ring outwards will make
         // the player aim a little extra outwards to compensate.
-        if (n == ring_count) current_radius += World.scale_distance(10.0f);
+        if (n == ring_count) current_radius += World.scale_distance(7.0f);
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
