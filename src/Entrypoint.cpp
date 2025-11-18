@@ -1,4 +1,7 @@
+#include "Game.hpp"
+
 int main()
 {
-    return 0;
+    Game game;
+    game.run();
 }

@@ -12,6 +12,7 @@ add_executable(
         src/Game.cpp
         src/Entity/Planet.cpp
         src/Entity/Orbit.cpp
+        src/Entity/Player.cpp
 )
 
 target_include_directories(main PUBLIC include)
