@@ -4,12 +4,12 @@
 #include "Entity/Player.hpp"
 
 Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& color)
-    : m_owner{planet}, m_state{true}, m_radius{radius}
+    : m_state{true}, m_radius{radius}, m_owner{planet}
 {
     sf::Color const outline_color { color.r, color.g, color.b, 50 };
     sf::Color const fill_color { color.r, color.g, color.b, 20 };
 
-    constexpr int ring_count{ 8 };
+    constexpr int ring_count{ 6 };
     m_rings.resize(ring_count);
 
     int n { 1 };
@@ -17,7 +17,8 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
     {
         // Use a power function to bunch rings closer to the planet
         float const ratio { static_cast<float>(n) / static_cast<float>(ring_count) };
-        float current_radius{ m_radius * std::pow(ratio, 1.1f) };
+        float const ring_space = m_radius - m_owner.radius;
+        float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.1f) };
 
         // force the last orbit a little bit further out
         // NOTE: WHY?
