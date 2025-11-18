@@ -104,10 +104,7 @@ void Game::update()
     Planet& planet = m_navigation.get_active_planet();
     Orbit const& orbit = planet.get_orbit();
 
-    orbit.apply_force(
-        planet.get_info(),
-        m_player
-    );
+    orbit.apply_force(m_player);
     m_player.update();
 
     Camera.follow(planet.get_position());

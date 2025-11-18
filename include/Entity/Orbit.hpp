@@ -9,12 +9,12 @@
 class Orbit
 {
 public:
-    Orbit(sf::Vector2f const& position, float radius, sf::Color const& color = sf::Color{150, 150, 150});
+    Orbit(PlanetInfo const& planet, float radius, sf::Color const& color = sf::Color{150, 150, 150});
 
     void draw() const;
 
-    [[nodiscard]] sf::Vector2f calculate_force(PlanetInfo const& planet, Player const& player) const;
-    void apply_force(PlanetInfo const& planet, Player& player) const;
+    [[nodiscard]] sf::Vector2f calculate_force(Player const& player) const;
+    void apply_force(Player& player) const;
 
     [[nodiscard]] float get_radius() const { return m_radius; };
 
@@ -27,5 +27,6 @@ public:
 private:
     bool m_state;
     float m_radius;
+    PlanetInfo const& m_owner;
     std::vector<sf::CircleShape> m_rings;
 };

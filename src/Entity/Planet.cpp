@@ -5,7 +5,7 @@ Planet::Planet(PlanetInfo const& info, Orbit const& orbit)
     : m_info{info}, m_orbit{orbit} {}
 
 Planet::Planet(sf::Vector2f const& position, float const mass, float const radius, float const orbit_radius) :
-    m_info{mass, radius, position}, m_orbit{position, orbit_radius} {}
+    m_info{mass, radius, position}, m_orbit{m_info, orbit_radius} {}
 
 void Planet::draw() const
 {

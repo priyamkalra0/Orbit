@@ -3,8 +3,8 @@
 #include "Entity/Orbit.hpp"
 #include "Entity/Player.hpp"
 
-Orbit::Orbit(sf::Vector2f const& position, float const radius, sf::Color const& color)
-    : m_state{true}, m_radius{radius}
+Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& color)
+    : m_owner{planet}, m_state{true}, m_radius{radius}
 {
     sf::Color const outline_color { color.r, color.g, color.b, 50 };
     sf::Color const fill_color { color.r, color.g, color.b, 20 };
@@ -32,7 +32,7 @@ Orbit::Orbit(sf::Vector2f const& position, float const radius, sf::Color const& 
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
-        ring.setPosition(position);
+        ring.setPosition(m_owner.Position);
         ring.setFillColor(fill_color);
         ring.setOutlineColor(outline_color);
         ring.setOutlineThickness(2.0f);
@@ -41,26 +41,26 @@ Orbit::Orbit(sf::Vector2f const& position, float const radius, sf::Color const& 
     }
 }
 
-sf::Vector2f Orbit::calculate_force(PlanetInfo const& planet, Player const& player) const
+sf::Vector2f Orbit::calculate_force(Player const& player) const
 {
     if (!m_state) return {0.0f, 0.0f};
 
     static constexpr float G { 10.0f };
 
-    sf::Vector2f const distance_vec = player.get_distance_vec(planet);
+    sf::Vector2f const distance_vec = player.get_distance_vec(m_owner);
     float const distance = distance_vec.length();
 
     if (distance <= 1.0f) return {0.0f, 0.0f}; // Too close = massive force
 
     sf::Vector2f const direction { -distance_vec.normalized() };
-    float const force_magnitude { (G * planet.Mass) / (distance * distance) };
+    float const force_magnitude { (G * m_owner.Mass) / (distance * distance) };
 
     return direction * force_magnitude;
 }
 
-void Orbit::apply_force(PlanetInfo const& planet, Player& player) const
+void Orbit::apply_force(Player& player) const
 {
-    player.accelerate(calculate_force(planet, player));
+    player.accelerate(calculate_force(player));
 }
 
 void Orbit::draw() const
