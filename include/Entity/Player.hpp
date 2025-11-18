@@ -20,6 +20,9 @@ public:
     float get_distance(PlanetInfo const& planet) const;
     float get_distance_squared(PlanetInfo const& planet) const;
 
+    sf::Vector2f get_radial_velocity_vector(PlanetInfo const& planet) const;
+    sf::Vector2f get_tangential_velocity_vector(PlanetInfo const& planet) const;
+
     void set_velocity(sf::Vector2f const& new_velocity); /* NOTE: WILL NULL THE ACCELERATION */
     void set_position(sf::Vector2f const& position); /* NOTE: WILL NULL THE VELOCITY */
 

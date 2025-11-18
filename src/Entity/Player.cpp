@@ -1,5 +1,5 @@
-#include "Entity/Player.hpp"
 #include "Graphics/Window.hpp"
+#include "Entity/Player.hpp"
 
 Player::Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocity)
     : m_position{position},
@@ -77,6 +77,17 @@ void Player::set_velocity(sf::Vector2f const& new_velocity)
     float const dt = Window.get_delta_time();
     m_previous_position = m_position - new_velocity * dt;
     m_acceleration = {0.0f, 0.0f};
+}
+
+sf::Vector2f Player::get_radial_velocity_vector(PlanetInfo const& planet) const
+{
+    sf::Vector2f const radial_direction = get_distance_vec(planet).normalized();
+    return get_velocity().projectedOnto(radial_direction);
+}
+
+sf::Vector2f Player::get_tangential_velocity_vector(PlanetInfo const& planet) const
+{
+    return get_velocity() - get_radial_velocity_vector(planet);
 }
 
 void Player::set_position(sf::Vector2f const& position)
