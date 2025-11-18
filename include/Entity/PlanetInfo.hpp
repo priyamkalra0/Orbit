@@ -4,17 +4,17 @@
 
 struct PlanetInfo
 {
-    float Mass { 0 };
-    float Radius { 0 };
-    sf::Vector2f Position;
-    sf::CircleShape Shape;
+    float mass { 0 };
+    float radius { 0 };
+    sf::Vector2f position;
+    sf::CircleShape shape;
 
     PlanetInfo(float const mass, float const radius, sf::Vector2f const& position) :
-        Mass{mass}, Radius{radius}, Position{position}
+        mass{mass}, radius{radius}, position{position}
     {
-        Shape.setRadius(Radius);
-        Shape.setOrigin({Radius, Radius});
-        Shape.setPosition(Position);
-        Shape.setFillColor(sf::Color::White);
+        shape.setRadius(radius);
+        shape.setOrigin({radius, radius});
+        shape.setPosition(position);
+        shape.setFillColor(sf::Color::White);
     }
 };

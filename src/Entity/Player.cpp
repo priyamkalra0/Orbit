@@ -57,7 +57,7 @@ sf::Vector2f Player::get_velocity() const
 
 sf::Vector2f Player::get_distance_vec(PlanetInfo const& planet) const
 {
-    return get_position() - planet.Position;
+    return get_position() - planet.position;
 }
 
 float Player::get_distance(PlanetInfo const& planet) const

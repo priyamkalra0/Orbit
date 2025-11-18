@@ -32,7 +32,7 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
-        ring.setPosition(m_owner.Position);
+        ring.setPosition(m_owner.position);
         ring.setFillColor(fill_color);
         ring.setOutlineColor(outline_color);
         ring.setOutlineThickness(2.0f);
@@ -53,7 +53,7 @@ sf::Vector2f Orbit::calculate_force(Player const& player) const
     if (distance <= 1.0f) return {0.0f, 0.0f}; // Too close = massive force
 
     sf::Vector2f const direction { -distance_vec.normalized() };
-    float const force_magnitude { (G * m_owner.Mass) / (distance * distance) };
+    float const force_magnitude { (G * m_owner.mass) / (distance * distance) };
 
     return direction * force_magnitude;
 }

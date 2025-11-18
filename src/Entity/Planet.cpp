@@ -9,15 +9,15 @@ Planet::Planet(sf::Vector2f const& position, float const mass, float const radiu
 
 void Planet::draw() const
 {
-    Window.draw(m_info.Shape);
+    Window.draw(m_info.shape);
     m_orbit.draw();
 }
 
-sf::Vector2f const& Planet::get_position() const {return m_info.Position;}
+sf::Vector2f const& Planet::get_position() const {return m_info.position;}
 
-float Planet::get_mass() const {return m_info.Mass;}
+float Planet::get_mass() const {return m_info.mass;}
 
 void Planet::set_mass(float const new_mass)
 {
-    m_info.Mass = new_mass;
+    m_info.mass = new_mass;
 }
