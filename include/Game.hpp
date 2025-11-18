@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include "Entity/Planet.hpp"
+
 class Game
 {
 public:
@@ -9,5 +12,7 @@ public:
 private:
     bool process_events();
     void update();
-    void render();
+    void render() const;
+
+    std::vector<Planet> m_planets;
 };
