@@ -6,7 +6,7 @@
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
 
-Window_t Window {"Orbit", {1920, 1080}, {1920, 1080}};
+Window_t Window {"Orbit-basic", {1920, 1080}, {1920, 1080}};
 World_t World {{1920, 1080}, {1920, 1080}};
 Camera_t Camera;
 
