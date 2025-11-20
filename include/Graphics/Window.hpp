@@ -24,7 +24,6 @@ public:
             m_view.getSize().x / 2.0f,
             m_view.getSize().y / 2.0f
         });
-        set_view(m_view);
     }
 
     void handle_resize_event(sf::Event::Resized const& event)
@@ -60,12 +59,6 @@ public:
             {viewport_x, viewport_y},
             {viewport_width, viewport_height}
         });
-        set_view(m_view);
-    }
-
-    void set_view(sf::View const& view)
-    {
-        m_render_window.setView(view);
     }
 
     std::optional<sf::Event> poll_event()
@@ -90,6 +83,7 @@ public:
 
     void display()
     {
+        m_render_window.setView(m_view);
         m_render_window.display();
     }
 
@@ -114,8 +108,8 @@ public:
     }
 
     sf::Vector2u const& get_internal_resolution() const { return m_internal_resolution; }
-    sf::View const& get_default_view() const { return m_view; }
-    sf::View const& get_current_view() const { return m_render_window.getView(); }
+    sf::View const& get_view() const { return m_view; }
+    sf::View& get_view() { return m_view; }
 
 private:
     sf::View m_view;
