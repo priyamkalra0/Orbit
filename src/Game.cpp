@@ -8,6 +8,7 @@
 
 Window_t Window {"Orbit", {1920, 1080}, {2560, 1440}};
 World_t World {{1920, 1080}, {2560, 1440}};
+Camera_t Camera;
 Level_t Level;
 
 Game::Game()
@@ -70,7 +71,8 @@ void Game::update()
     orbit.apply_force(m_player);
     m_player.update();
 
-    Camera::follow(planet.get_position());
+    Camera.set_target(planet.get_position());
+    Camera.update();
 
 }
 
