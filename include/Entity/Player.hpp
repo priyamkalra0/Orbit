@@ -6,7 +6,7 @@
 class Player
 {
 public:
-    Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocity);
+    explicit Player(sf::Vector2f const& position = {0, 0}, sf::Vector2f const& initial_velocity = {0, 0});
 
     void update();
     void draw() const;
