@@ -6,7 +6,7 @@
 class Camera
 {
 public:
-    constexpr static float follow_smoothing_power { 0.99f };
+    constexpr static float follow_smoothing_power { 0.98f };
 
     Camera() = default;
 
