@@ -27,7 +27,7 @@ public:
     /* Planet Mass Boosting:
      * Makes the planet's pull stronger
      * while the player is outside the orbit */
-    constexpr static float planet_mass_boosting_power { 0.3f };
+    constexpr static float planet_mass_boosting_power { 0.5f };
 
     /* Radial Smoothing:
      * Helps player stabilize into orbit;
@@ -35,9 +35,9 @@ public:
      * at aiming for a tangent path to the orbit
      * that is; their radial velocity was
      * under the tolerable threshold */
-    float const radial_smoothing_threshold { World.scale_distance(300.0f) };
-    float const radial_smoothing_ring_size { World.scale_distance(76.0f) };
-    constexpr static float radial_smoothing_power { 0.02f };
+    float const radial_smoothing_threshold { World.scale_distance(400.0f) };
+    float const radial_smoothing_ring_size { World.scale_distance(100.0f) };
+    constexpr static float radial_smoothing_power { 0.025f };
 
     /* Addon: Tangential Correction:
      * Helps maintain target tangential velocity
