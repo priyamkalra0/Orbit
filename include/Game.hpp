@@ -19,6 +19,7 @@ private:
 
     void reset_player();
 
+    constexpr static bool m_debug_mode = true;
     Navigation m_navigation;
     Player m_player;
 };

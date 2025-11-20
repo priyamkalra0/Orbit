@@ -47,18 +47,21 @@ bool Game::process_events()
 
 void Game::process_input(sf::Event::KeyPressed const& key)
 {
-    if (key.code == sf::Keyboard::Key::R)
-        return reset_player();
-
-    if (key.code == sf::Keyboard::Key::I)
-        return m_player.set_velocity(-1.0f * m_player.get_velocity()); //debug: invert velocity
-
     if (key.code == sf::Keyboard::Key::Space) // toggle orbit
     {
         Planet& active_planet = m_navigation.get_active_planet();
         for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
         return active_planet.get_orbit().toggle(); // turn off active planet's orbit
     }
+
+    /* Debug Cheats */
+    if constexpr (!m_debug_mode) return;
+
+    if (key.code == sf::Keyboard::Key::R)
+        return reset_player();
+
+    if (key.code == sf::Keyboard::Key::I)
+        return m_player.set_velocity(-1.0f * m_player.get_velocity()); // invert velocity
 }
 
 void Game::update()
@@ -86,7 +89,7 @@ void Game::render() const
     for (auto const& planet : Level.get_planets())
         planet.draw();
 
-    m_navigation.draw();
+    if (m_debug_mode) m_navigation.draw();
     m_player.draw();
 
     Window.display();
