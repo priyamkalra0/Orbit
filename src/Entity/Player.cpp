@@ -28,6 +28,27 @@ void Player::accelerate(sf::Vector2f const& force)
     m_acceleration += force; // a = f/m = f (player has unit mass)
 }
 
+bool Player::is(PlayerState const& state) const
+{
+    float const signed_error = _ctx_Navigation_SignedError;
+
+    switch (state)
+    {
+    case PlayerState::FarOutsideOrbit: return (signed_error >= 100.0f);
+    case PlayerState::SomewhereOutsideOrbit: return (signed_error >= 0.0f);
+    case PlayerState::NearOutsideOrbit: return is(PlayerState::SomewhereOutsideOrbit)
+                                             & !is(PlayerState::FarOutsideOrbit);
+
+    //case PlayerState::SomewhereInsideNullOrbit: ; //TODO: not enough context
+    case PlayerState::SomewhereInsideOrbit: return (signed_error <= 0.0f);
+
+    case PlayerState::InsideSmoothingRing: return (std::abs(signed_error) < 0.75 * 76.0f / 2.0f); //FIXME: Hard coded smoothing ring radius
+    //case PlayerState::ExactlyInTargetOrbit: ; //TODO: not enough context
+
+    default: return false;
+    }
+}
+
 void Player::update()
 {
     float const dt = Window.get_delta_time();

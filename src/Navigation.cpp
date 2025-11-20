@@ -49,6 +49,7 @@ void Navigation::draw() const
 
 void Navigation::update()
 {
+    _inject_ctx_into_player();
     apply_assistance();
 }
 
@@ -66,7 +67,7 @@ void Navigation::apply_assistance()
     );
 
     float const distance = m_player.get_distance(planet.get_info());
-    float const signed_error = distance - target_radius;
+    // float const signed_error = distance - target_radius;
 
     sf::Vector2f v_radial = m_player.get_radial_velocity_vector(planet.get_info());
     if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
@@ -78,12 +79,12 @@ void Navigation::apply_assistance()
         << "Navigation::apply_assistance(): [current state] "
         << "v_radial: " << v_radial.length()
         << ", v_tangential: " << v_tangential.length()
-        << ", error: " << signed_error
+        << ", error: " << m_player._ctx_Navigation_SignedError
         << "\n";
 
 
     /* Planet Mass Boosting */
-    if (signed_error > 0.0f)
+    if (m_player.is(PlayerState::SomewhereOutsideOrbit))
     {
         std::cout
             << "Navigation::apply_assistance(): "
@@ -103,10 +104,11 @@ void Navigation::apply_assistance()
     /* Everything beyond this is only applied
      * if the player is in the smoothing ring
      * and the planet's orbit is turned on */
-    if (
-        !orbit.is_on()
-        || std::abs(signed_error) > (radial_smoothing_ring_size / 2.0f)
-    ) return;
+    // if (
+    //     !orbit.is_on()
+    //     || std::abs(signed_error) > (radial_smoothing_ring_size / 2.0f)
+    // ) return;
+    if (!m_player.is(PlayerState::InsideSmoothingRing)) return;
 
 
     // Show that the smoothing ring is active
@@ -162,6 +164,18 @@ void Navigation::apply_assistance()
     std::cout << v_tangential.length() << std::endl;
 
     m_player.set_velocity(v_radial + v_tangential);
+}
+
+void Navigation::_inject_ctx_into_player() const
+{
+    Planet const& planet = get_active_planet();
+    Orbit const& orbit = planet.get_orbit();
+
+    float const distance = m_player.get_distance(planet.get_info());
+    float const signed_error = distance - orbit.get_radius();
+
+    m_player._ctx_Navigation_SignedError = signed_error;
+
 }
 
 void Navigation::init_smoothing_ring_shape(sf::Vector2f const& position, float const inner_radius, float const outer_radius)

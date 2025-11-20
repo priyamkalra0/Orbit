@@ -3,6 +3,18 @@
 #include <SFML/Graphics.hpp>
 #include "PlanetInfo.hpp"
 
+enum class PlayerState
+{
+    FarOutsideOrbit,
+    NearOutsideOrbit,
+    SomewhereOutsideOrbit,
+
+    SomewhereInsideNullOrbit,
+    SomewhereInsideOrbit,
+    InsideSmoothingRing,
+    ExactlyInTargetOrbit,
+};
+
 class Player
 {
 public:
@@ -12,6 +24,7 @@ public:
     void draw() const;
 
     void accelerate(sf::Vector2f const& force);
+    bool is(PlayerState const& state) const;
 
     sf::Vector2f const& get_position() const { return m_position; }
     sf::Vector2f get_velocity() const;
@@ -25,6 +38,10 @@ public:
 
     void set_velocity(sf::Vector2f const& new_velocity); /* NOTE: WILL NULL THE ACCELERATION */
     void set_position(sf::Vector2f const& position); /* NOTE: WILL NULL THE VELOCITY */
+
+public:
+    /* Quick and very bad way to inject navigation context into player */
+    float _ctx_Navigation_SignedError { 0.0f };
 
 private:
     sf::Vector2f m_position;

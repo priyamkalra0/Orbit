@@ -52,6 +52,7 @@ public:
 
 private:
     void init_smoothing_ring_shape(sf::Vector2f const& position, float inner_radius, float outer_radius);
+    void _inject_ctx_into_player() const;
 
     Player& m_player;
 
