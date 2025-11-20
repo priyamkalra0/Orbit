@@ -29,7 +29,7 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
         // fucking up their pathing.
         // but pushing this ring outwards will make
         // the player aim a little extra outwards to compensate.
-        if (n == ring_count) current_radius += World.scale_distance(7.0f);
+        if (n == ring_count) current_radius += visual_outer_ring_offset;
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});

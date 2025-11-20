@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "PlanetInfo.hpp"
+#include "Graphics/World.hpp"
 #include "Player.hpp"
 
 class Orbit
@@ -13,6 +14,7 @@ public:
 
     /* Visual Configuration Parameters */
     constexpr static float visual_ring_spacing_factor { 0.50f };
+    float const visual_outer_ring_offset { World.scale_distance(35.0f) };
 
     void draw() const;
 
