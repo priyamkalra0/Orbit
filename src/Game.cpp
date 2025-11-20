@@ -6,8 +6,8 @@
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
 
-Window_t Window {"Orbit", {1920, 1080}, {1920, 1080}};
-World_t World {{1920, 1080}, {1920, 1080}};
+Window_t Window {"Orbit", {1920, 1080}, {2560, 1440}};
+World_t World {{1920, 1080}, {2560, 1440}};
 Level_t Level;
 
 Game::Game()
