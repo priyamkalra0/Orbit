@@ -18,7 +18,7 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
         // Use a power function to bunch rings closer to the planet
         float const ratio { static_cast<float>(n) / static_cast<float>(ring_count) };
         float const ring_space = m_radius - m_owner.radius;
-        float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.1f) };
+        float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.0f + visual_ring_spacing_factor) };
 
         // force the last orbit a little bit further out
         // NOTE: WHY?

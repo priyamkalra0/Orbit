@@ -11,6 +11,9 @@ class Orbit
 public:
     Orbit(PlanetInfo const& planet, float radius, sf::Color const& color = sf::Color{150, 150, 150});
 
+    /* Visual Configuration Parameters */
+    constexpr static float visual_ring_spacing_factor { 0.50f };
+
     void draw() const;
 
     [[nodiscard]] sf::Vector2f calculate_force(Player const& player) const;
