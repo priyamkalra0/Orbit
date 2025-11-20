@@ -175,6 +175,7 @@ void Navigation::_inject_ctx_into_player() const
     float const signed_error = distance - orbit.get_radius();
 
     m_player._ctx_Navigation_SignedError = signed_error;
+    m_player._ctx_Navigation_SmoothingRingSize = radial_smoothing_ring_size;
 
 }
 
