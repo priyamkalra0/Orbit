@@ -10,7 +10,7 @@
 class Navigation
 {
 public:
-    Navigation(std::vector<Planet>& planets, Player& player);
+    explicit Navigation(Player& player);
 
     /* Active Planet: Closest planet whose orbit is currently on */
     Planet& get_active_planet() const;
@@ -52,7 +52,6 @@ public:
 private:
     void init_smoothing_ring_shape(sf::Vector2f const& position, float inner_radius, float outer_radius);
 
-    std::vector<Planet>& m_planets;
     Player& m_player;
 
     sf::CircleShape m_smoothing_ring_inner;

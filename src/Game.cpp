@@ -12,7 +12,7 @@ Camera_t Camera;
 Level_t Level;
 
 Game::Game()
-    : m_navigation { Level.get_planets(), m_player }
+    : m_navigation { m_player }
 {
     Level.generate(m_player);
     reset_player(); // fix player to planet closest to origin

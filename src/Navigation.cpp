@@ -2,9 +2,10 @@
 
 #include "Graphics/Window.hpp"
 #include "Navigation.hpp"
+#include "Level.hpp"
 
-Navigation::Navigation(std::vector<Planet>& planets, Player& player)
-    : m_planets{planets}, m_player{player}
+Navigation::Navigation(Player& player)
+    : m_player{player}
 {
     std::cout
         << "Navigation::Navigation(): "
@@ -28,7 +29,7 @@ Planet& Navigation::get_active_planet() const
     Planet* active_planet {nullptr};
 
     float smallest_distance {-1};
-    for (auto& planet : m_planets)
+    for (auto& planet : Level.get_planets())
     {
         if (!planet.get_orbit().is_on()) continue;
         float const d = m_player.get_distance_squared(planet.get_info());
@@ -74,7 +75,7 @@ void Navigation::apply_assistance()
         << ", v_tangential: " << v_tangential.length()
         << ", error: " << signed_error
         << "\n";
-    
+
 
     /* Planet Mass Boosting */
     if (signed_error > 0.0f)
