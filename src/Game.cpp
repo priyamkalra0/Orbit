@@ -63,7 +63,7 @@ void Game::process_input(sf::Event::KeyPressed const& key)
 
 void Game::update()
 {
-    m_navigation.apply_assistance();
+    m_navigation.update();
 
     Planet& planet = m_navigation.get_active_planet();
     Orbit const& orbit = planet.get_orbit();

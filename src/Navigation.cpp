@@ -47,6 +47,11 @@ void Navigation::draw() const
     Window.draw(m_smoothing_ring_outer);
 }
 
+void Navigation::update()
+{
+    apply_assistance();
+}
+
 void Navigation::apply_assistance()
 {
     Planet& planet = get_active_planet();

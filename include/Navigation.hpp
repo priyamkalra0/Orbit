@@ -17,6 +17,7 @@ public:
     void apply_assistance();
 
     void draw() const;
+    void update();
 
     /* Navigation Assist Parameters;
      anything related to position/velocity should
