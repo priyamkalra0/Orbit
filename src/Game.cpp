@@ -1,7 +1,7 @@
 #include <optional>
-#include <vector>
 
 #include "Game.hpp"
+#include "Level.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
@@ -9,49 +9,13 @@
 Window_t Window {"Orbit", {1920, 1080}, {1920, 1080}};
 World_t World {{1920, 1080}, {1920, 1080}};
 Camera_t Camera;
+Level_t Level;
 
 Game::Game()
-    : m_navigation { m_planets, m_player },
-      m_player {
-        World.scale_position({0.0f, 220.0f}),
-        World.scale_velocity({0.75f * m_navigation.tangential_target_velocity, 0.0f})
-    }
+    : m_navigation { Level.get_planets(), m_player }
 {
-    /* Planet Generation */
-    constexpr uint32_t planet_count { 3 };
-    m_planets.reserve(planet_count);
-
-    float const v_target_sq = m_player.get_velocity().lengthSquared();
-
-    // Planet 1 (Far Left)
-    float const p1_orbit_r = World.scale_distance(170.0f);
-    float const p1_mass { (v_target_sq * p1_orbit_r) / Navigation::G };
-    m_planets.emplace_back(
-        World.scale_position({250.0f, 500.0f}),
-        p1_mass,
-        World.scale_distance(50.0f),
-        p1_orbit_r
-    );
-
-    // Planet 2 (Mid-Right)
-    float const p2_orbit_r = World.scale_distance(200.0f);
-    float const p2_mass { (v_target_sq * p2_orbit_r) / Navigation::G };
-    m_planets.emplace_back(
-        World.scale_position({650.0f, 200.0f}),
-        p2_mass,
-        World.scale_distance(70.0f),
-        p2_orbit_r
-    );
-
-    // Planet 3 (Far Right)
-    float const p3_orbit_r = World.scale_distance(150.0f);
-    float const p3_mass { (v_target_sq * p3_orbit_r) / Navigation::G };
-    m_planets.emplace_back(
-        World.scale_position({1100.0f, 400.0f}),
-        p3_mass,
-        World.scale_distance(30.0f),
-        p3_orbit_r
-    );
+    Level.generate(m_player);
+    reset_player(); // fix player to planet closest to origin
 }
 
 void Game::run()
@@ -89,10 +53,10 @@ void Game::process_input(sf::Event::KeyPressed const& key)
     if (key.code == sf::Keyboard::Key::I)
         return m_player.set_velocity(-1.0f * m_player.get_velocity()); //debug: invert velocity
 
-    if (key.code == sf::Keyboard::Key::Space)
+    if (key.code == sf::Keyboard::Key::Space) // toggle orbit
     {
         Planet& active_planet = m_navigation.get_active_planet();
-        for (auto& planet : m_planets) planet.get_orbit().turn_on(); // turn on everything else
+        for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
         return active_planet.get_orbit().toggle(); // turn off active planet's orbit
     }
 }
@@ -108,6 +72,7 @@ void Game::update()
     m_player.update();
 
     Camera.follow(planet.get_position());
+
 }
 
 void Game::render() const
@@ -115,7 +80,7 @@ void Game::render() const
     Window.clear();
     Camera.apply();
 
-    for (auto const& planet : m_planets)
+    for (auto const& planet : Level.get_planets())
         planet.draw();
 
     m_navigation.draw();

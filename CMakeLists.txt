@@ -14,6 +14,7 @@ add_executable(
         src/Entity/Orbit.cpp
         src/Entity/Player.cpp
         src/Navigation.cpp
+        src/Level.cpp
 )
 
 target_include_directories(main PUBLIC include)
