@@ -6,17 +6,14 @@
 Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& color)
     : m_state{true}, m_radius{radius}, m_owner{planet}
 {
-    sf::Color const outline_color { color.r, color.g, color.b, 50 };
-    sf::Color const fill_color { color.r, color.g, color.b, 20 };
-
-    constexpr int ring_count{ 6 };
-    m_rings.resize(ring_count);
+    sf::Color const outline_color { color.r, color.g, color.b, visual_ring_outline_alpha };
+    sf::Color const fill_color { color.r, color.g, color.b, visual_ring_fill_alpha };
 
     int n { 1 };
     for (auto& ring : m_rings)
     {
         // Use a power function to bunch rings closer to the planet
-        float const ratio { static_cast<float>(n) / static_cast<float>(ring_count) };
+        float const ratio { static_cast<float>(n) / static_cast<float>(visual_ring_count) };
         float const ring_space = m_radius - m_owner.radius;
         float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.0f + visual_ring_spacing_factor) };
 
@@ -29,7 +26,7 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
         // fucking up their pathing.
         // but pushing this ring outwards will make
         // the player aim a little extra outwards to compensate.
-        if (n == ring_count) current_radius += visual_outer_ring_offset;
+        if (n == visual_ring_count) current_radius += visual_outer_ring_offset;
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
