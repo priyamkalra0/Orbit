@@ -24,6 +24,7 @@ public:
             m_view.getSize().x / 2.0f,
             m_view.getSize().y / 2.0f
         });
+        handle_resize(initial_size);
     }
 
     void handle_resize(sf::Vector2u const& size)
