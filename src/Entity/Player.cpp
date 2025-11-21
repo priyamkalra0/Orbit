@@ -42,7 +42,10 @@ bool Player::is(PlayerState const& state) const
     //case PlayerState::SomewhereInsideNullOrbit: ; //TODO: not enough context
     case PlayerState::SomewhereInsideOrbit: return (signed_error <= 0.0f);
 
-    case PlayerState::InsideSmoothingRing: return (std::abs(signed_error) < _ctx_Navigation_SmoothingRingSize / 2.0f);
+    case PlayerState::InsideSmoothingRing: return (
+        signed_error > -_ctx_Navigation_SmoothingRingSizeInner
+        && signed_error < _ctx_Navigation_SmoothingRingSizeOuter
+    ); //return (std::abs(signed_error) < _ctx_Navigation_SmoothingRingSize / 2.0f);
     //case PlayerState::ExactlyInTargetOrbit: ; //TODO: not enough context
 
     default: return false;

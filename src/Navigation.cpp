@@ -62,8 +62,8 @@ void Navigation::apply_assistance()
 
     init_smoothing_ring_shape(
         planet.get_position(),
-        target_radius - radial_smoothing_ring_size / 2.0f,
-        target_radius + radial_smoothing_ring_size / 2.0f
+        target_radius - m_player._ctx_Navigation_SmoothingRingSizeInner,
+        target_radius + m_player._ctx_Navigation_SmoothingRingSizeOuter
     );
 
     float const distance = m_player.get_distance(planet.get_info());
@@ -175,7 +175,12 @@ void Navigation::_inject_ctx_into_player() const
     float const signed_error = distance - orbit.get_radius();
 
     m_player._ctx_Navigation_SignedError = signed_error;
-    m_player._ctx_Navigation_SmoothingRingSize = radial_smoothing_ring_size;
+    m_player._ctx_Navigation_SmoothingRingSizeInner =
+        radial_smoothing_ring_ratio[0] / (radial_smoothing_ring_ratio[0] + radial_smoothing_ring_ratio[1])
+        * radial_smoothing_ring_size;
+    m_player._ctx_Navigation_SmoothingRingSizeOuter =
+        radial_smoothing_ring_ratio[1] / (radial_smoothing_ring_ratio[0] + radial_smoothing_ring_ratio[1])
+        * radial_smoothing_ring_size;
 
 }
 

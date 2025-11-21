@@ -42,7 +42,8 @@ public:
 public:
     /* Quick and very bad way to inject navigation context into player */
     float _ctx_Navigation_SignedError { 0.0f };
-    float _ctx_Navigation_SmoothingRingSize { 0.0f };
+    float _ctx_Navigation_SmoothingRingSizeInner { 0.0f };
+    float _ctx_Navigation_SmoothingRingSizeOuter { 0.0f };
 
 private:
     sf::Vector2f m_position;
