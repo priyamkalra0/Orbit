@@ -28,7 +28,7 @@ public:
      * generate both the planet's & it's orbit's radii.
      */
     constexpr static sf::Vector2f planet_determinant_distribution {7.0f, 14.0f};
-    constexpr static float planet_radius_scaling_factor { 10.0f };
+    constexpr static float planet_radius_scaling_factor { 8.0f };
     constexpr static float orbit_radius_scaling_factor { 20.0f };
 
 
