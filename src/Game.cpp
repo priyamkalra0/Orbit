@@ -85,6 +85,7 @@ void Game::update()
 
     /* Follow player from the next frame
      * if it is far outside the orbit of any planet */
+    Camera.set_target(planet.get_position());
     if (m_player.is(PlayerState::FarOutsideOrbit))
         Camera.set_target(m_player.get_position());
 }
@@ -108,5 +109,4 @@ void Game::reset_player()
     float const r = planet.get_orbit().get_radius();
     m_player.set_position(planet.get_position() - sf::Vector2f{0, r});
     m_player.set_velocity({World.scale_x(m_navigation.tangential_target_velocity), 0});
-    Camera.set_target(planet.get_position());
 }
