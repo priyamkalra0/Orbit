@@ -59,7 +59,10 @@ void Game::process_input(sf::Event::KeyPressed const& key)
     }
 
     /* Debug Cheats */
-    if constexpr (!m_debug_mode) return;
+    if (key.code == sf::Keyboard::Key::D) // toggle debug
+        {m_debug_mode = !m_debug_mode; return;}
+
+    if (!m_debug_mode) return;
 
     if (key.code == sf::Keyboard::Key::R)
         return reset_player();
