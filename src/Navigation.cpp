@@ -76,7 +76,7 @@ void Navigation::apply_assistance()
     if (v_tangential.length() < 1.0f) v_tangential *= 0.0f;
 
     std::cout
-        << "Navigation::apply_assistance(): [current state] "
+        << "[core/navigation] [current state] "
         << "v_radial: " << v_radial.length()
         << ", v_tangential: " << v_tangential.length()
         << ", error: " << m_player._ctx_Navigation_SignedError
@@ -87,7 +87,7 @@ void Navigation::apply_assistance()
     if (m_player.is(PlayerState::SomewhereOutsideOrbit))
     {
         std::cout
-            << "Navigation::apply_assistance(): "
+            << "[core/navigation] "
             << "[planet mass boosted ("
             << planet_mass_boosting_power << ")] "
             << planet.get_mass() << " -> ";
@@ -118,7 +118,7 @@ void Navigation::apply_assistance()
     if (v_radial.length() > radial_smoothing_threshold)
     {
         std::cout
-            << "Navigation::apply_assistance(): "
+            << "[core/navigation] "
             << "[frame skipped!] incident radial velocity too high."
             << "\n";
 
@@ -127,7 +127,7 @@ void Navigation::apply_assistance()
 
     /* Radial Smoothing */
     std::cout
-        << "Navigation::apply_assistance(): "
+        << "[core/navigation] "
         << "[radial smoothing success ("
         << -radial_smoothing_power << ")] "
         << v_radial.length() << " -> ";
@@ -139,7 +139,7 @@ void Navigation::apply_assistance()
 
     /* Addon: Planet Mass Adjustment */
     std::cout
-        << "Navigation::apply_assistance(): "
+        << "[core/navigation] "
         << "[planet mass adjusted] "
         << planet.get_mass() << " -> ";
 
@@ -154,7 +154,7 @@ void Navigation::apply_assistance()
         : -tangential_smoothing_power;
 
     std::cout
-        << "Navigation::apply_assistance(): "
+        << "[core/navigation] "
         << "[tangential correction applied ("
         << correction_power << ")] "
         << v_tangential.length() << " -> ";
