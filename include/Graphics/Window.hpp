@@ -26,9 +26,9 @@ public:
         });
     }
 
-    void handle_resize_event(sf::Event::Resized const& event)
+    void handle_resize(sf::Vector2u const& size)
     {
-        sf::Vector2u const& size = event.size;
+
         auto const window_width = static_cast<float>(size.x);
         auto const window_height = static_cast<float>(size.y);
 

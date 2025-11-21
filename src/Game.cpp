@@ -37,7 +37,7 @@ bool Game::process_events()
         if (event->is<sf::Event::Closed>()) return true;
 
         if (auto const* resized {event->getIf<sf::Event::Resized>()})
-            Window.handle_resize_event(*resized);
+            Window.handle_resize(resized->size);
 
         if (auto const* key {event->getIf<sf::Event::KeyPressed>()})
             process_input(*key);
