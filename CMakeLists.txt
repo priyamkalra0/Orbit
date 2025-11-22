@@ -15,6 +15,7 @@ add_executable(
         src/Entity/Player.cpp
         src/Navigation.cpp
         src/Level.cpp
+        src/Math/Random.cpp
 )
 
 target_include_directories(main PUBLIC include)

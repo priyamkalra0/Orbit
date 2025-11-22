@@ -8,29 +8,34 @@ void Level::generate(Player const& player)
     /* Planet Generation */
     m_planets.reserve(planet_count);
 
-    float const v_target_sq = player.get_velocity().lengthSquared();
-
-    std::uniform_real_distribution x_dist {x_distribution.x, x_distribution.y};
-    std::uniform_real_distribution y_dist {y_distribution.x, y_distribution.y};
-    std::uniform_real_distribution dmt_dist{planet_determinant_distribution.x, planet_determinant_distribution.y};
+    float const v_target_sq { player.get_velocity().lengthSquared() };
 
     while (m_planets.size() < planet_count)
     {
-        sf::Vector2f const position {x_dist(m_rng), y_dist(m_rng)};
+        auto const position {
+            m_random.get<sf::Vector2f>(
+            planet_position_distribution[0],
+            planet_position_distribution[1]
+        )};
 
-        float const dmt = dmt_dist(m_rng);
-        float const radius = World.scale_distance(dmt * planet_radius_scaling_factor);
-        float const orbit_radius = World.scale_distance(dmt * orbit_radius_scaling_factor);
+        float const dmt {
+            m_random.get(
+            planet_determinant_distribution[0],
+            planet_determinant_distribution[1]
+        )};
+        float const radius { World.scale_distance(dmt * planet_radius_scaling_factor) };
+        float const orbit_radius { World.scale_distance(dmt * orbit_radius_scaling_factor) };
 
         /* Check for overlap with existing planets */
-        bool overlap = false;
+        bool overlap { false };
         for (Planet const& other : m_planets)
         {
-            float const min_distance =
+            float const min_distance {
                 planet_padding + orbit_radius
-                + other.get_orbit().get_radius();
+                + other.get_orbit().get_radius()
+            };
 
-            auto delta = position - other.get_position();
+            auto delta { position - other.get_position() };
             overlap = delta.length() < min_distance;
             if (overlap) break;
         }
