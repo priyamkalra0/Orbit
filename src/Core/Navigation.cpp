@@ -178,11 +178,13 @@ void Navigation::_inject_ctx_into_player() const
 
     m_player._ctx_Navigation_SignedError = signed_error;
     m_player._ctx_Navigation_SmoothingRingSizeInner =
-        radial_smoothing_ring_ratio[0] / (radial_smoothing_ring_ratio[0] + radial_smoothing_ring_ratio[1])
-        * radial_smoothing_ring_size;
+        radial_smoothing_ring_size
+        * radial_smoothing_ring_ratio.first
+        / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);
     m_player._ctx_Navigation_SmoothingRingSizeOuter =
-        radial_smoothing_ring_ratio[1] / (radial_smoothing_ring_ratio[0] + radial_smoothing_ring_ratio[1])
-        * radial_smoothing_ring_size;
+        radial_smoothing_ring_size
+        * radial_smoothing_ring_ratio.second
+        / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);
 
 }
 

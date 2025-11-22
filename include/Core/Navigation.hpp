@@ -33,7 +33,7 @@ public:
      * at aiming for a tangent path to the orbit
      * that is; their radial velocity was
      * under the tolerable threshold */
-    float const radial_smoothing_ring_ratio[2] {1, 3}; // inner : outer
+    std::pair<float, float> const radial_smoothing_ring_ratio { 1, 3 }; // inner : outer
     float const radial_smoothing_threshold { World.scale_distance(400.0f) };
     float const radial_smoothing_ring_size { World.scale_distance(125.0f) };
     constexpr static float radial_smoothing_power { 0.025f };
