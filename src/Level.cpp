@@ -42,13 +42,22 @@ void Level::generate(Player const& player)
         }
 
         if (overlap) continue;
+
+        auto const orbit_color {
+            Color::hwb(
+                m_random.get<float>(0, 359),
+                visual_orbit_color_whiteness,
+                visual_orbit_color_blackness
+            )
+        };
+
         m_planets.emplace_back(
             position,
             (v_target_sq * orbit_radius) / Navigation::G,
             radius,
-            sf::Color::White,
+            visual_planet_color,
             orbit_radius,
-            Color::hwb(280, 65, 0)
+            orbit_color
         );
     }
 }
