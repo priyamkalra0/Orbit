@@ -16,6 +16,7 @@ add_executable(
         src/Navigation.cpp
         src/Level.cpp
         src/Math/Random.cpp
+        src/Graphics/Color.cpp
 )
 
 target_include_directories(main PUBLIC include)
