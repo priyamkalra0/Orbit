@@ -5,8 +5,8 @@ sf::Color Color::normal_hwb(double const h, double const w, double const b, doub
 {
     /* https://en.wikipedia.org/wiki/HWB_color_model#Conversion */
 
-    double const v = 1.0 - b;
-    double const s = 1.0 - w / v;
+    double const v = 1 - b;
+    double const s = (v > 0) ? (1 - w / v) : 0;
 
     return normal_hsv(h, s, v, a);
 }
@@ -16,7 +16,7 @@ sf::Color Color::normal_hsl(double const h, double const s, double const l, doub
     /* https://en.wikipedia.org/wiki/HSL_and_HSV#Interconversion */
 
     double const v = l + s * std::min(l, 1 - l);
-    double const S = (v > 0.0) ? 2 * (1 - l / v) : 0;
+    double const S = (v > 0) ? 2 * (1 - l / v) : 0;
 
     return normal_hsv(h, S, v, a);
 }
@@ -34,7 +34,7 @@ sf::Color Color::normal_hsv(double const h, double const s, double const v, doub
     else if (1 <= H && H < 2) r = x, g = c, b = 0;
     else if (2 <= H && H < 3) r = 0, g = c, b = x;
     else if (3 <= H && H < 4) r = 0, g = x, b = c;
-    else if (4 <= H && h < 5) r = x, g = 0, b = c;
+    else if (4 <= H && H < 5) r = x, g = 0, b = c;
     else r = c, g = 0, b = x;
 
     double const m = v - c;
