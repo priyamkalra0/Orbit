@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Navigation.hpp"
-#include "Entity/Planet.hpp"
+#include <SFML/Window/Event.hpp>
 #include "Entity/Player.hpp"
+#include "Navigation.hpp"
 
 class Game
 {

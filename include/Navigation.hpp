@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <SFML/Graphics.hpp>
 
 #include "Entity/Planet.hpp"
