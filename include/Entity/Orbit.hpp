@@ -24,7 +24,8 @@ public:
     [[nodiscard]] sf::Vector2f calculate_force(Player const& player) const;
     void apply_force(Player& player) const;
 
-    [[nodiscard]] float get_radius() const { return m_radius; };
+    [[nodiscard]] float get_radius() const { return m_radius; }
+    sf::Vector2f const& get_origin() const { return m_owner.position; }
 
     void turn_on() { m_state = true;}
     void turn_off() { m_state = false;}

@@ -30,7 +30,7 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
-        ring.setPosition(m_owner.position);
+        ring.setPosition(get_origin());
         ring.setFillColor(fill_color);
         ring.setOutlineColor(outline_color);
         ring.setOutlineThickness(2.0f);
