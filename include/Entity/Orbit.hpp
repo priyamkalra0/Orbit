@@ -22,7 +22,6 @@ public:
     float const visual_outer_ring_offset { World.scale_distance(35.0f) };
 
     void draw() const;
-    void init_rings(float highlight_factor = 0.0f);
 
     [[nodiscard]] sf::Vector2f calculate_force(Player const& player);
     void apply_force(Player& player);
@@ -37,6 +36,8 @@ public:
     [[nodiscard]] bool is_on() const { return m_state; }
 
 private:
+    void init_rings(float highlight_factor = 0.0f);
+
     bool m_state;
     float m_radius;
     sf::Color m_color;
