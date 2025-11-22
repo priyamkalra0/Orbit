@@ -1,5 +1,6 @@
 #include "Entity/Planet.hpp"
 #include "Graphics/Window.hpp"
+#include "Math/Vector2.hpp"
 
 Planet::Planet(PlanetInfo const& info, Orbit const& orbit)
     : m_info{info}, m_orbit{orbit} {}

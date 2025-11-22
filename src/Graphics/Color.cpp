@@ -1,6 +1,5 @@
+#include <algorithm>
 #include "Graphics/Color.hpp"
-
-#include <random>
 
 sf::Color Color::normal_hwb(double const h, double const w, double const b, double const a)
 {

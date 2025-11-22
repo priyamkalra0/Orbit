@@ -2,10 +2,9 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-
-#include "PlanetInfo.hpp"
+#include "Entity/Player.hpp"
+#include "Entity/PlanetInfo.hpp"
 #include "Graphics/World.hpp"
-#include "Player.hpp"
 
 class Orbit
 {

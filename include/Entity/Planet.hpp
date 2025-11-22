@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
-#include "PlanetInfo.hpp"
-#include "Orbit.hpp"
+#include "Entity/PlanetInfo.hpp"
+#include "Entity/Orbit.hpp"
+#include "Graphics/Color.hpp"
+#include "Math/Vector2.hpp"
 
 class Planet
 {

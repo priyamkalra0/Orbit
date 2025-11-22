@@ -5,6 +5,7 @@
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
+#include "Math/Vector2.hpp"
 
 Window_t Window {
     "Orbit",

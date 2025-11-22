@@ -3,6 +3,7 @@
 #include "Entity/Player.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Color.hpp"
+#include "Math/Vector2.hpp"
 
 void Level::generate(Player const& player)
 {

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
 #include "Entity/Planet.hpp"
 #include "Entity/Player.hpp"
 #include "Graphics/World.hpp"

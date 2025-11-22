@@ -1,5 +1,6 @@
-#include "Graphics/Window.hpp"
 #include "Entity/Player.hpp"
+#include "Graphics/Window.hpp"
+#include "Math/Vector2.hpp"
 
 Player::Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocity)
     : m_position{position},

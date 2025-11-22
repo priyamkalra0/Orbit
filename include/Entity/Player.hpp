@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Entity/PlanetInfo.hpp"
 #include "Graphics/World.hpp"
-#include "PlanetInfo.hpp"
 
 enum class PlayerState
 {

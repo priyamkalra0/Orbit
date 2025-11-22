@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Window/Event.hpp>
+#include "Core/Navigation.hpp"
 #include "Entity/Player.hpp"
-#include "Navigation.hpp"
 
 class Game
 {
