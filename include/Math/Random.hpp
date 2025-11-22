@@ -29,6 +29,12 @@ public:
         return get(urd<T>{min, max});
     }
 
+    template <typename T>
+    T get(std::pair<T, T> const& bounds)
+    {
+        return get(bounds.first, bounds.second);
+    }
+
     template <>
     sf::Vector2f get(sf::Vector2f const& min, sf::Vector2f const& max)
     {
