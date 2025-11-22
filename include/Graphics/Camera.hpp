@@ -12,12 +12,13 @@ public:
 
     void update() const
     {
-        auto& view = Window.get_view();
-        sf::Vector2f const current_pos = view.getCenter();
-        sf::Vector2f const new_pos =
+        auto& view { Window.get_view() };
+        sf::Vector2f const current_pos { view.getCenter() };
+        sf::Vector2f const new_pos {
                 current_pos +
                 (m_target - current_pos)
-                * (1.0f - follow_smoothing_power);
+                * (1.0f - follow_smoothing_power)
+        };
 
         view.setCenter(new_pos);
     }

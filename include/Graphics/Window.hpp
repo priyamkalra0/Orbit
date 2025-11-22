@@ -29,19 +29,19 @@ public:
 
     void handle_resize(sf::Vector2u const& size)
     {
+        auto const window_width { static_cast<float>(size.x) };
+        auto const window_height { static_cast<float>(size.y) };
 
-        auto const window_width = static_cast<float>(size.x);
-        auto const window_height = static_cast<float>(size.y);
+        float const world_aspect_ratio {
+            static_cast<float>(m_internal_resolution.x)
+            / static_cast<float>(m_internal_resolution.y)
+        };
+        float const window_aspect_ratio { window_width / window_height };
 
-        float const world_aspect_ratio =
-                static_cast<float>(m_internal_resolution.x)
-                / static_cast<float>(m_internal_resolution.y);
-        float const window_aspect_ratio = window_width / window_height;
-
-        float viewport_width = 1.0f;
-        float viewport_height = 1.0f;
-        float viewport_x = 0.0f;
-        float viewport_y = 0.0f;
+        float viewport_width { 1.0f };
+        float viewport_height { 1.0f };
+        float viewport_x { 0.0f };
+        float viewport_y { 0.0f };
 
         if (window_aspect_ratio > world_aspect_ratio)
         {

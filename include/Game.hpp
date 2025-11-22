@@ -19,7 +19,7 @@ private:
 
     void reset_player();
 
-    bool m_debug_mode = false;
+    bool m_debug_mode { false };
     Navigation m_navigation;
     Player m_player;
 };

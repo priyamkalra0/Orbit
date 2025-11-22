@@ -26,8 +26,8 @@ void Game::run()
 {
     while (Window.is_open())
     {
-        bool const exit_event = process_events();
-        if (exit_event) break;
+        bool const exit_signal { process_events() };
+        if (exit_signal) break;
 
         update();
         render();
@@ -36,7 +36,7 @@ void Game::run()
 
 bool Game::process_events()
 {
-    while (const std::optional<sf::Event> event = Window.poll_event())
+    while (const std::optional event { Window.poll_event() })
     {
         if (event->is<sf::Event::Closed>()) return true;
 
@@ -53,7 +53,7 @@ void Game::process_input(sf::Event::KeyPressed const& key)
 {
     if (key.code == sf::Keyboard::Key::Space) // toggle orbit
     {
-        Planet& active_planet = m_navigation.get_active_planet();
+        Planet& active_planet { m_navigation.get_active_planet() };
         for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
         return active_planet.get_orbit().toggle(); // turn off active planet's orbit
     }
@@ -75,8 +75,8 @@ void Game::update()
 {
     m_navigation.update();
 
-    Planet& planet = m_navigation.get_active_planet();
-    Orbit const& orbit = planet.get_orbit();
+    Planet& planet { m_navigation.get_active_planet() };
+    Orbit const& orbit { planet.get_orbit() };
 
     orbit.apply_force(m_player);
     m_player.update();
@@ -105,8 +105,8 @@ void Game::render() const
 
 void Game::reset_player()
 {
-    auto const& planet = m_navigation.get_active_planet();
-    float const r = planet.get_orbit().get_radius();
+    auto const& planet { m_navigation.get_active_planet() };
+    float const r { planet.get_orbit().get_radius() };
     m_player.set_position(planet.get_position() - sf::Vector2f{0, r});
     m_player.set_velocity({World.scale_x(m_navigation.tangential_target_velocity), 0});
 }

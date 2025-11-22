@@ -6,7 +6,7 @@ Player::Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocit
       m_acceleration{0.0f, 0.0f}
 {
     // Verlet integration needs the previous position
-    float const dt = Window.get_delta_time();
+    float const dt { Window.get_delta_time() };
     m_previous_position = m_position - initial_velocity * dt;
 
     m_shape.setPointCount(3);
@@ -30,7 +30,7 @@ void Player::accelerate(sf::Vector2f const& force)
 
 bool Player::is(PlayerState const& state) const
 {
-    float const signed_error = _ctx_Navigation_SignedError;
+    float const signed_error { _ctx_Navigation_SignedError };
 
     switch (state)
     {
@@ -54,10 +54,10 @@ bool Player::is(PlayerState const& state) const
 
 void Player::update()
 {
-    float const dt = Window.get_delta_time();
+    float const dt { Window.get_delta_time() };
 
     // Clamp velocity
-    sf::Vector2f const current_velocity = get_velocity();
+    sf::Vector2f const current_velocity { get_velocity() };
     if (
         Player::is(PlayerState::SomewhereOutsideOrbit) /* Smoothing ring manages velocity inside orbit */
         && current_velocity.length() > param_max_velocity
@@ -74,14 +74,14 @@ void Player::update()
 
     // Calculate rotation based on velocity
     if (current_velocity.lengthSquared() < 0.0f) return;
-    float const angle_radians = std::atan2(current_velocity.y, current_velocity.x);
-    float const angle_degrees = angle_radians * 180.0f / M_PI;
+    float const angle_radians { std::atan2(current_velocity.y, current_velocity.x) };
+    float const angle_degrees { static_cast<float>(angle_radians * 180.0f / M_PI) };
     m_shape.setRotation(sf::degrees(angle_degrees + 90.0f));
 }
 
 sf::Vector2f Player::get_velocity() const
 {
-    float const dt = Window.get_delta_time();
+    float const dt { Window.get_delta_time() };
     return (m_position - m_previous_position) / dt;
 }
 
@@ -104,14 +104,14 @@ void Player::set_velocity(sf::Vector2f const& new_velocity)
 {
     // Since we are using Verlet Integration internally,
     // all we need to do is overwrite m_previous_position
-    float const dt = Window.get_delta_time();
+    float const dt { Window.get_delta_time() };
     m_previous_position = m_position - new_velocity * dt;
     m_acceleration = {0.0f, 0.0f};
 }
 
 sf::Vector2f Player::get_radial_velocity_vector(PlanetInfo const& planet) const
 {
-    sf::Vector2f const radial_direction = get_distance_vec(planet).normalized();
+    sf::Vector2f const radial_direction { get_distance_vec(planet).normalized() };
     return get_velocity().projectedOnto(radial_direction);
 }
 

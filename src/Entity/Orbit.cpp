@@ -14,7 +14,7 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
     {
         // Use a power function to bunch rings closer to the planet
         float const ratio { static_cast<float>(n) / static_cast<float>(visual_ring_count) };
-        float const ring_space = m_radius - m_owner.radius;
+        float const ring_space { m_radius - m_owner.radius };
         float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.0f + visual_ring_spacing_factor) };
 
         // force the last orbit a little bit further out
@@ -43,8 +43,8 @@ sf::Vector2f Orbit::calculate_force(Player const& player) const
 {
     if (!m_state) return {0.0f, 0.0f};
 
-    sf::Vector2f const distance_vec = player.get_distance_vec(m_owner);
-    float const distance = distance_vec.length();
+    sf::Vector2f const distance_vec { player.get_distance_vec(m_owner) };
+    float const distance { distance_vec.length() };
 
     if (distance <= 1.0f) return {0.0f, 0.0f}; // Too close = massive force
 

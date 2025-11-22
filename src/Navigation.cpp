@@ -32,7 +32,7 @@ Planet& Navigation::get_active_planet() const
     for (auto& planet : Level.get_planets())
     {
         if (!planet.get_orbit().is_on()) continue;
-        float const d = m_player.get_distance_squared(planet.get_info());
+        float const d { m_player.get_distance_squared(planet.get_info()) };
         if (smallest_distance > 0.0f && d > smallest_distance) continue;
         smallest_distance = d;
         active_planet = &planet;
@@ -55,10 +55,10 @@ void Navigation::update()
 
 void Navigation::apply_assistance()
 {
-    Planet& planet = get_active_planet();
-    Orbit const& orbit = planet.get_orbit();
+    Planet& planet { get_active_planet() };
+    Orbit const& orbit { planet.get_orbit() };
 
-    float const target_radius = orbit.get_radius();
+    float const target_radius { orbit.get_radius() };
 
     init_smoothing_ring_shape(
         planet.get_position(),
@@ -66,13 +66,13 @@ void Navigation::apply_assistance()
         target_radius + m_player._ctx_Navigation_SmoothingRingSizeOuter
     );
 
-    float const distance = m_player.get_distance(planet.get_info());
+    float const distance { m_player.get_distance(planet.get_info()) };
     // float const signed_error = distance - target_radius;
 
-    sf::Vector2f v_radial = m_player.get_radial_velocity_vector(planet.get_info());
+    sf::Vector2f v_radial { m_player.get_radial_velocity_vector(planet.get_info()) };
     if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
 
-    sf::Vector2f v_tangential = m_player.get_tangential_velocity_vector(planet.get_info());
+    sf::Vector2f v_tangential { m_player.get_tangential_velocity_vector(planet.get_info()) };
     if (v_tangential.length() < 1.0f) v_tangential *= 0.0f;
 
     std::cout
@@ -148,10 +148,11 @@ void Navigation::apply_assistance()
     std::cout << planet.get_mass() << "\n";
 
     /* Addon: Tangential Correction */
-    float const correction_power =
+    float const correction_power {
         (v_tangential.length() < tangential_target_velocity)
         ? tangential_boosting_power
-        : -tangential_smoothing_power;
+        : -tangential_smoothing_power
+    };
 
     std::cout
         << "[core/navigation] "
@@ -168,8 +169,8 @@ void Navigation::apply_assistance()
 
 void Navigation::_inject_ctx_into_player() const
 {
-    Planet const& planet = get_active_planet();
-    Orbit const& orbit = planet.get_orbit();
+    Planet const& planet { get_active_planet() };
+    Orbit const& orbit { planet.get_orbit() };
 
     float const distance = m_player.get_distance(planet.get_info());
     float const signed_error = distance - orbit.get_radius();

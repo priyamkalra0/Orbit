@@ -6,12 +6,11 @@ class World
 {
 public:
     World(sf::Vector2u const& design_resolution, sf::Vector2u const& current_internal_resolution)
-        : m_design_resolution{design_resolution},
-          m_current_internal_resolution{current_internal_resolution}
-    {
-        m_scale_factor_x = static_cast<float>(m_current_internal_resolution.x) / static_cast<float>(m_design_resolution.x);
-        m_scale_factor_y = static_cast<float>(m_current_internal_resolution.y) / static_cast<float>(m_design_resolution.y);
-    }
+        : m_design_resolution {design_resolution},
+          m_current_internal_resolution {current_internal_resolution},
+          m_scale_factor_x { static_cast<float>(m_current_internal_resolution.x) / static_cast<float>(m_design_resolution.x) },
+          m_scale_factor_y { static_cast<float>(m_current_internal_resolution.y) / static_cast<float>(m_design_resolution.y) }
+        {}
 
     [[nodiscard]] float scale_x(float const x) const
     {
