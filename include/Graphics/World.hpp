@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics/Vector2.hpp"
+#include "Math/Vector2.hpp"
 
 class World
 {

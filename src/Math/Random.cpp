@@ -1,5 +1,5 @@
 #include "Math/Random.hpp"
-#include "Graphics/Vector2.hpp"
+#include "Math/Vector2.hpp"
 
 Random::Random(uint32_t const seed)
     : m_engine(seed) {}

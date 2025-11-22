@@ -4,7 +4,7 @@
 #include "Entity/Planet.hpp"
 #include "Entity/Player.hpp"
 #include "Graphics/World.hpp"
-#include "Graphics/Vector2.hpp"
+#include "Math/Vector2.hpp"
 #include "Math/Random.hpp"
 
 class Level
