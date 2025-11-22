@@ -2,6 +2,7 @@
 #include "Navigation.hpp"
 #include "Entity/Player.hpp"
 #include "Graphics/World.hpp"
+#include "Graphics/Color.hpp"
 
 void Level::generate(Player const& player)
 {
@@ -45,7 +46,9 @@ void Level::generate(Player const& player)
             position,
             (v_target_sq * orbit_radius) / Navigation::G,
             radius,
-            orbit_radius
+            sf::Color::White,
+            orbit_radius,
+            Color::hwb(280, 65, 0)
         );
     }
 }

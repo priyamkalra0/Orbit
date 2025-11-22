@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include "PlanetInfo.hpp"
 #include "Orbit.hpp"
 
@@ -7,7 +9,10 @@ class Planet
 {
 public:
     Planet(PlanetInfo const& info, Orbit const& orbit);
-    Planet(sf::Vector2f const& position, float mass, float radius, float orbit_radius);
+    Planet(
+        sf::Vector2f const& position, float mass, float radius,
+        sf::Color const& color, float orbit_radius, sf::Color const& orbit_color
+    );
 
     void draw() const;
 
