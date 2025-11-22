@@ -1,7 +1,7 @@
 #include <optional>
 
-#include "Game.hpp"
-#include "Level.hpp"
+#include "Core/Game.hpp"
+#include "Core/Level.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"

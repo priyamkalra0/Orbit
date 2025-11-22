@@ -1,7 +1,7 @@
 #include "Entity/Orbit.hpp"
 #include "Entity/Player.hpp"
 #include "Graphics/Window.hpp"
-#include "Navigation.hpp"
+#include "Core/Navigation.hpp"
 
 Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& color)
     : m_state{true}, m_radius{radius}, m_color{color}, m_owner{planet} { init_rings(); }

@@ -1,5 +1,5 @@
-#include "Level.hpp"
-#include "Navigation.hpp"
+#include "Core/Level.hpp"
+#include "Core/Navigation.hpp"
 #include "Entity/Player.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Color.hpp"

@@ -1,8 +1,8 @@
 #include <iostream>
 
 #include "Graphics/Window.hpp"
-#include "Navigation.hpp"
-#include "Level.hpp"
+#include "Core/Navigation.hpp"
+#include "Core/Level.hpp"
 
 Navigation::Navigation(Player& player)
     : m_player{player}

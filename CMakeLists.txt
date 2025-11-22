@@ -9,12 +9,12 @@ find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
 add_executable(
         main
         src/Entrypoint.cpp
-        src/Game.cpp
+        src/Core/Game.cpp
         src/Entity/Planet.cpp
         src/Entity/Orbit.cpp
         src/Entity/Player.cpp
-        src/Navigation.cpp
-        src/Level.cpp
+        src/Core/Navigation.cpp
+        src/Core/Level.cpp
         src/Math/Random.cpp
         src/Graphics/Color.cpp
 )
