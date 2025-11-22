@@ -15,7 +15,6 @@ add_executable(
         src/Entity/Player.cpp
         src/Core/Navigation.cpp
         src/Core/Level.cpp
-        src/Math/Random.cpp
         src/Graphics/Color.cpp
 )
 
