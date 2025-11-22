@@ -10,7 +10,7 @@
 class Orbit
 {
 public:
-    Orbit(PlanetInfo const& planet, float radius, sf::Color const& color = sf::Color{150, 150, 150});
+    Orbit(PlanetInfo const& planet, float radius, sf::Color const& color);
 
     /* Visual Configuration Parameters */
     constexpr static uint32_t visual_ring_count { 6 };
@@ -20,6 +20,7 @@ public:
     float const visual_outer_ring_offset { World.scale_distance(35.0f) };
 
     void draw() const;
+    void init_rings();
 
     [[nodiscard]] sf::Vector2f calculate_force(Player const& player) const;
     void apply_force(Player& player) const;
@@ -27,15 +28,16 @@ public:
     [[nodiscard]] float get_radius() const { return m_radius; }
     sf::Vector2f const& get_origin() const { return m_owner.position; }
 
-    void turn_on() { m_state = true;}
-    void turn_off() { m_state = false;}
-    void toggle() { m_state = !m_state;}
+    void turn_on() { m_state = true; init_rings(); }
+    void turn_off() { m_state = false; init_rings(); }
+    void toggle() { m_state = !m_state; init_rings(); }
 
     [[nodiscard]] bool is_on() const { return m_state; }
 
 private:
     bool m_state;
     float m_radius;
+    sf::Color m_color;
     PlanetInfo const& m_owner;
     sf::CircleShape m_rings[visual_ring_count];
 };

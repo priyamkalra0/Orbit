@@ -4,10 +4,15 @@
 #include "Navigation.hpp"
 
 Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& color)
-    : m_state{true}, m_radius{radius}, m_owner{planet}
+    : m_state{true}, m_radius{radius}, m_color{color}, m_owner{planet} { init_rings(); }
+
+void Orbit::init_rings()
 {
-    sf::Color const outline_color { color.r, color.g, color.b, visual_ring_outline_alpha };
-    sf::Color const fill_color { color.r, color.g, color.b, visual_ring_fill_alpha };
+    sf::Color const outline_color { m_color.r, m_color.g, m_color.b, visual_ring_outline_alpha };
+    sf::Color const fill_color {
+        m_color.r, m_color.g, m_color.b,
+        static_cast<std::uint8_t>(visual_ring_fill_alpha * (0.4 + 0.6 * m_state)) // off = 40% alpha
+    };
 
     int n { 1 };
     for (auto& ring : m_rings)
@@ -61,7 +66,6 @@ void Orbit::apply_force(Player& player) const
 
 void Orbit::draw() const
 {
-    if (!m_state) return;
     for (auto const& ring : m_rings)
         Window.draw(ring);
 }
