@@ -76,7 +76,7 @@ void Game::update()
     m_navigation.update();
 
     Planet& planet { m_navigation.get_active_planet() };
-    Orbit const& orbit { planet.get_orbit() };
+    Orbit& orbit { planet.get_orbit() };
 
     orbit.apply_force(m_player);
     m_player.update();

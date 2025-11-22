@@ -17,13 +17,15 @@ public:
     constexpr static uint8_t visual_ring_outline_alpha { 50 };
     constexpr static uint8_t visual_ring_fill_alpha { 25 };
     constexpr static float visual_ring_spacing_factor { 0.50f };
+    constexpr static float visual_ring_highlight_clamp { 0.4f };
+    constexpr static float visual_ring_highlight_factor { 2.0f };
     float const visual_outer_ring_offset { World.scale_distance(35.0f) };
 
     void draw() const;
-    void init_rings();
+    void init_rings(float highlight_factor = 0.0f);
 
-    [[nodiscard]] sf::Vector2f calculate_force(Player const& player) const;
-    void apply_force(Player& player) const;
+    [[nodiscard]] sf::Vector2f calculate_force(Player const& player);
+    void apply_force(Player& player);
 
     [[nodiscard]] float get_radius() const { return m_radius; }
     sf::Vector2f const& get_origin() const { return m_owner.position; }
