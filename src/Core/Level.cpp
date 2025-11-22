@@ -38,7 +38,7 @@ void Level::generate(Player const& player)
 
         auto const orbit_color {
             Color::hwb(
-                m_random.get<float>(0, 359),
+                m_random.get(visual_orbit_color_hue_distribution),
                 visual_orbit_color_whiteness,
                 visual_orbit_color_blackness
             )

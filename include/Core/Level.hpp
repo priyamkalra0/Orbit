@@ -36,8 +36,9 @@ public:
 
     /* Visual Parameters */
     constexpr static sf::Color visual_planet_color { sf::Color::White };
-    constexpr static float visual_orbit_color_whiteness { 65.0f };
-    constexpr static float visual_orbit_color_blackness { 0.0f };
+    constexpr static std::pair<double, double> visual_orbit_color_hue_distribution { 0.0, 359.0 };
+    constexpr static double visual_orbit_color_whiteness { 65.0 };
+    constexpr static double visual_orbit_color_blackness { 0.0 };
 
 
 private:
