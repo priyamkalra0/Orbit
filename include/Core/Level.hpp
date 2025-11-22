@@ -1,5 +1,6 @@
 #pragma once
 
+#include <utility>
 #include <vector>
 #include "Entity/Planet.hpp"
 #include "Entity/Player.hpp"
@@ -21,7 +22,7 @@ public:
     float const planet_padding { World.scale_distance(250.0f) };
 
     constexpr static float position_distribution_scaling_factor { 8.0f };
-    constexpr static sf::Vector2f planet_position_distribution[2] {
+    constexpr static std::pair<sf::Vector2f, sf::Vector2f> planet_position_distribution {
         sf::Vector2f{-1920.0f, -1080.f} * position_distribution_scaling_factor, // min
         sf::Vector2f{1920.f, 1080.0f} * position_distribution_scaling_factor // max
     };
@@ -29,7 +30,7 @@ public:
     /* Planet Determinant: Serves as a single random seed to
      * generate both the planet's & it's orbit's radii.
      */
-    constexpr static float planet_determinant_distribution[2] {7.0f, 14.0f};
+    constexpr static std::pair<float, float> planet_determinant_distribution { 7.0f, 14.0f };
     constexpr static float planet_radius_scaling_factor { 8.0f };
     constexpr static float orbit_radius_scaling_factor { 20.0f };
 

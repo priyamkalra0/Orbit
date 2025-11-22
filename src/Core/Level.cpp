@@ -16,14 +16,14 @@ void Level::generate(Player const& player)
     {
         auto const position {
             m_random.get<sf::Vector2f>(
-            planet_position_distribution[0],
-            planet_position_distribution[1]
+            planet_position_distribution.first,
+            planet_position_distribution.second
         )};
 
         float const dmt {
             m_random.get(
-            planet_determinant_distribution[0],
-            planet_determinant_distribution[1]
+            planet_determinant_distribution.first,
+            planet_determinant_distribution.second
         )};
         float const radius { World.scale_distance(dmt * planet_radius_scaling_factor) };
         float const orbit_radius { World.scale_distance(dmt * orbit_radius_scaling_factor) };
