@@ -1,7 +1,9 @@
 # Orbit
 
-Orbit is a simple, computer-assisted, 2D procedural game based on orbital physics, written in SFML 3.0 and C++17.   
+A simple, computer-assisted, 2D procedural game based on orbital physics, written in C++17 with SFML 3.0.  
 The player can navigate through space by toggling the gravitational orbits of different planets. The key is to time these orbit toggles such that the player character acquires a stable orbit around a neighbouring planet.
+
+![sample-video](https://github.com/priyamkalra0/Orbit/releases/download/sample-video/sample.gif)
 
 ## Controls
 *   Spacebar: Toggle current orbit  
