@@ -28,6 +28,9 @@ public:
     PlanetInfo& get_info() {return m_info;}
 
 private:
+    void init_shape();
+
+    sf::CircleShape m_shape;
     PlanetInfo m_info;
     Orbit m_orbit;
 };
