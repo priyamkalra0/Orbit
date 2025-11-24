@@ -22,9 +22,9 @@ public:
     float const planet_padding { World.scale_distance(250.0f) };
 
     constexpr static float position_distribution_scaling_factor { 8.0f };
-    constexpr static std::pair<sf::Vector2f, sf::Vector2f> planet_position_distribution {
-        sf::Vector2f{-1920.0f, -1080.f} * position_distribution_scaling_factor, // min
-        sf::Vector2f{1920.f, 1080.0f} * position_distribution_scaling_factor // max
+    std::pair<ufd, ufd> const planet_position_distribution {
+        ufd { -1920.f * position_distribution_scaling_factor, +1920.f * position_distribution_scaling_factor }, // x
+        ufd { -1080.f * position_distribution_scaling_factor, +1080.f * position_distribution_scaling_factor } // y
     };
 
     /* Planet Determinant: Serves as a single random seed to

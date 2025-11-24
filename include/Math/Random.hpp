@@ -6,6 +6,7 @@
 
 template <typename T>
 using urd = std::uniform_real_distribution<T>;
+using ufd = urd<float>;
 
 class Random
 {
@@ -35,12 +36,12 @@ public:
         return get(bounds.first, bounds.second);
     }
 
-    template <>
-    sf::Vector2f get(sf::Vector2f const& min, sf::Vector2f const& max)
+    template <typename T>
+    sf::Vector2<T> get(std::pair<urd<T>, urd<T>> const& dist_pair)
     {
         return {
-            get<float>(min.x, max.x),
-            get<float>(min.y, max.y)
+            get(dist_pair.first),
+            get(dist_pair.second)
         };
     }
 
