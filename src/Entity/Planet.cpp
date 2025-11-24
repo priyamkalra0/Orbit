@@ -17,16 +17,6 @@ void Planet::draw() const
     Window.draw(m_shape);
 }
 
-sf::Vector2f const& Planet::get_position() const {return m_info.position;}
-
-float Planet::get_mass() const {return m_info.mass;}
-
-void Planet::set_mass(float const new_mass)
-{
-    m_info.mass = new_mass;
-}
-
-
 void Planet::init_shape()
 {
     m_shape.setRadius(m_info.radius);

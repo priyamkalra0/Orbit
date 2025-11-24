@@ -16,10 +16,10 @@ public:
 
     void draw() const;
 
-    sf::Vector2f const& get_position() const;
+    sf::Vector2f const& get_position() const { return m_info.position; }
 
-    void set_mass(float new_mass);
-    float get_mass() const;
+    void set_mass(float const new_mass) { m_info.mass = new_mass; };
+    float get_mass() const { return m_info.mass; }
 
     Orbit& get_orbit() {return m_orbit;}
     Orbit const& get_orbit() const {return m_orbit;}
