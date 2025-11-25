@@ -28,3 +28,15 @@ cmake --build .
 Navigate to the build directory and simply execute the compiled binary:
 
 ```./main```
+
+## Features
+
+* [x] Window Management
+* [x] Physics
+* [x] Assist System
+* [x] Camera
+* [x] Sandbox
+* [x] Colors
+* [ ] Collision
+* [ ] Progression
+* [ ] UI
