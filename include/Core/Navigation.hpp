@@ -50,11 +50,13 @@ public:
 
 
 private:
+    void init_target_radius_ring(sf::Vector2f const& position, float radius);
     void init_smoothing_ring_shape(sf::Vector2f const& position, float inner_radius, float outer_radius);
     void _inject_ctx_into_player() const;
 
     Player& m_player;
 
+    sf::CircleShape m_target_radius_ring;
     sf::CircleShape m_smoothing_ring_inner;
     sf::CircleShape m_smoothing_ring_outer;
 };

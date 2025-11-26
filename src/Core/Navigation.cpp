@@ -46,6 +46,7 @@ void Navigation::draw() const
 {
     Window.draw(m_smoothing_ring_inner);
     Window.draw(m_smoothing_ring_outer);
+    Window.draw(m_target_radius_ring);
 }
 
 void Navigation::update()
@@ -60,6 +61,11 @@ void Navigation::apply_assistance()
     Orbit const& orbit { planet.get_orbit() };
 
     float const target_radius { orbit.get_radius() };
+
+    init_target_radius_ring(
+        planet.get_position(),
+        target_radius
+    );
 
     init_smoothing_ring_shape(
         planet.get_position(),
@@ -186,6 +192,16 @@ void Navigation::_inject_ctx_into_player() const
         * radial_smoothing_ring_ratio.second
         / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);
 
+}
+
+void Navigation::init_target_radius_ring(sf::Vector2f const& position, float const radius)
+{
+    m_target_radius_ring.setRadius(radius);
+    m_target_radius_ring.setOrigin({radius, radius});
+    m_target_radius_ring.setFillColor(sf::Color::Transparent);
+    m_target_radius_ring.setOutlineColor(sf::Color::Red);
+    m_target_radius_ring.setOutlineThickness(2.0f);
+    m_target_radius_ring.setPosition(position);
 }
 
 void Navigation::init_smoothing_ring_shape(sf::Vector2f const& position, float const inner_radius, float const outer_radius)
