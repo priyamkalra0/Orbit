@@ -37,11 +37,11 @@ void Level::generate(Player const& player)
         if (overlap) continue;
 
         auto const orbit_color {
-            Color::hwb(
+            Color::get<Color::HWB>(
                 m_random.get(visual_orbit_color_hue_distribution),
                 visual_orbit_color_whiteness,
                 visual_orbit_color_blackness
-            )
+           )
         };
 
         m_planets.emplace_back(
