@@ -43,6 +43,6 @@ sf::Color Color::normal_hsv(double const h, double const s, double const v, doub
         static_cast<uint8_t>((r + m) * 255),
         static_cast<uint8_t>((g + m) * 255),
         static_cast<uint8_t>((b + m) * 255),
-        static_cast<uint32_t>(a)
+        static_cast<uint8_t>(a * 255)
     );
 };

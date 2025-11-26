@@ -25,14 +25,14 @@ public:
     static sf::Color rgba(uint8_t const r, uint8_t const g, uint8_t const b, uint8_t const a = 255)
     { return {r, g, b, a}; }
 
-    static sf::Color hwb(double const h, double const w, double const b, double const a = 255.0)
-    { return normal_hwb(h, w / 100.0, b / 100.0, a); }
+    static sf::Color hwb(double const h, double const w, double const b, double const a = 100.0)
+    { return normal_hwb(h, w / 100.0, b / 100.0, a / 100.0); }
 
-    static sf::Color hsl(double const h, double const s, double const l, double const a = 255.0)
-    { return normal_hsl(h, s / 100.0, l / 100.0, a); }
+    static sf::Color hsl(double const h, double const s, double const l, double const a = 100.0)
+    { return normal_hsl(h, s / 100.0, l / 100.0, a / 100.0); }
 
-    static sf::Color hsv(double const h, double const s, double const v, double const a = 255.0)
-    { return normal_hsv(h, s / 100.0, v / 100.0, a); }
+    static sf::Color hsv(double const h, double const s, double const v, double const a = 100.0)
+    { return normal_hsv(h, s / 100.0, v / 100.0, a / 100.0); }
 
     /* Generic factory for any color format */
     template <FormatU8 F = RGBA>
@@ -41,7 +41,7 @@ public:
     { return rgba(r, g, b, a); }
 
     template <Format F>
-    static sf::Color get(double, double, double, double a = 255.0);
+    static sf::Color get(double, double, double, double a = 100.0);
 
     template<> sf::Color get<HWB>(double const h, double const w, double const b, double const a)
     { return hwb(h, w, b, a); }
