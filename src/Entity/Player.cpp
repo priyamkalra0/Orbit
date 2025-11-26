@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Entity/Player.hpp"
 #include "Graphics/Window.hpp"
 #include "Math/Vector2.hpp"
@@ -59,10 +61,21 @@ void Player::update()
 
     // Clamp velocity
     sf::Vector2f const current_velocity { get_velocity() };
+    float const current_velocity_mag { current_velocity.length() };
+
     if (
-        Player::is(PlayerState::SomewhereOutsideOrbit) /* Smoothing ring manages velocity inside orbit */
-        && current_velocity.length() > param_max_velocity
-    ) set_velocity(current_velocity.normalized() * param_max_velocity);
+        Player::is(PlayerState::FarOutsideOrbit) /* Smoothing ring manages velocity inside orbit */
+        && current_velocity_mag > param_max_drift_velocity
+    )
+    {
+        std::cout << "[entity/player] [warning] drift velocity clamped: ";
+        std::cout << current_velocity_mag << " -> ";
+
+        set_velocity(current_velocity.normalized() * param_max_drift_velocity);
+
+        std::cout << get_velocity().length();
+
+    }
 
     // Verlet integration
     sf::Vector2f const current_position{ m_position };
@@ -74,7 +87,7 @@ void Player::update()
     m_shape.setPosition(m_position);
 
     // Calculate rotation based on velocity
-    if (current_velocity.lengthSquared() < 0.0f) return;
+    if (current_velocity_mag < 0.0f) return;
     float const angle_radians { std::atan2(current_velocity.y, current_velocity.x) };
     float const angle_degrees { static_cast<float>(angle_radians * 180.0f / M_PI) };
     m_shape.setRotation(sf::degrees(angle_degrees + 90.0f));

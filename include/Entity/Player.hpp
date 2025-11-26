@@ -22,7 +22,7 @@ public:
     explicit Player(sf::Vector2f const& position = {0, 0}, sf::Vector2f const& initial_velocity = {0, 0});
 
     /* Configuration Parameters */
-    float const param_max_velocity { World.scale_distance(1000.0f) };
+    float const param_max_drift_velocity { World.scale_distance(1000.0f) };
 
     void update();
     void draw() const;
