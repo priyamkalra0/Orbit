@@ -37,19 +37,16 @@ bool Player::is(PlayerState const& state) const
 
     switch (state)
     {
-    case PlayerState::FarOutsideOrbit: return (signed_error >= 100.0f);
-    case PlayerState::SomewhereOutsideOrbit: return (signed_error >= 0.0f);
+    case PlayerState::FarOutsideOrbit: return (signed_error > param_orbit_far_distance_factor * _ctx_Navigation_SmoothingRingSizeOuter);
+    case PlayerState::SomewhereOutsideOrbit: return (signed_error > param_orbit_error_tolerance);
     case PlayerState::NearOutsideOrbit: return is(PlayerState::SomewhereOutsideOrbit)
                                              & !is(PlayerState::FarOutsideOrbit);
 
-    //case PlayerState::SomewhereInsideNullOrbit: ; //TODO: not enough context
-    case PlayerState::SomewhereInsideOrbit: return (signed_error <= 0.0f);
-
+    case PlayerState::InTargetOrbit: return (std::abs(signed_error) <= param_orbit_error_tolerance);
     case PlayerState::InsideSmoothingRing: return (
         signed_error > -_ctx_Navigation_SmoothingRingSizeInner
         && signed_error < _ctx_Navigation_SmoothingRingSizeOuter
-    ); //return (std::abs(signed_error) < _ctx_Navigation_SmoothingRingSize / 2.0f);
-    //case PlayerState::ExactlyInTargetOrbit: ; //TODO: not enough context
+    );
 
     default: return false;
     }
@@ -57,6 +54,19 @@ bool Player::is(PlayerState const& state) const
 
 void Player::update()
 {
+    std::cout << "[entity/player] [current state] is(InTargetOrbit): "
+        << is(PlayerState::InTargetOrbit) << "\n";
+    std::cout << "[entity/player] [current state] is(InsideSmoothingRing): "
+        << is(PlayerState::InsideSmoothingRing) << "\n";
+    std::cout << "[entity/player] [current state] is(SomewhereOutsideOrbit): "
+        << is(PlayerState::SomewhereOutsideOrbit) << "\n";
+    std::cout << "[entity/player] [current state] is(FarOutsideOrbit): "
+    << is(PlayerState::FarOutsideOrbit) << "\n";
+    std::cout << "[entity/player] [current state] is(NearOutsideOrbit): "
+        << is(PlayerState::NearOutsideOrbit) << "\n";
+
+
+
     float const dt { Window.get_delta_time() };
 
     // Clamp velocity
