@@ -2,6 +2,7 @@
 
 #include "Core/Game.hpp"
 #include "Core/Level.hpp"
+#include "Core/Collision.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
@@ -81,6 +82,9 @@ void Game::update()
 
     orbit.apply_force(m_player);
     m_player.update();
+
+    if (Collision::poll_collision(m_player))
+        reset_player();
 
     Camera.update();
 

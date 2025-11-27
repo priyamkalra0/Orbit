@@ -15,6 +15,7 @@ add_executable(
         src/Entity/Player.cpp
         src/Core/Navigation.cpp
         src/Core/Level.cpp
+        src/Core/Collision.cpp
         src/Graphics/Color.cpp
 )
 

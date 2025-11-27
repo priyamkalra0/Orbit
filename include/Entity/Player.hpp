@@ -43,6 +43,8 @@ public:
     void set_velocity(sf::Vector2f const& new_velocity); /* NOTE: WILL NULL THE ACCELERATION */
     void set_position(sf::Vector2f const& position); /* NOTE: WILL NULL THE VELOCITY */
 
+    sf::Shape const& get_shape() const { return m_shape; }
+
 public:
     /* Quick and very bad way to inject navigation context into player */
     float _ctx_Navigation_SignedError { 0.0f };
