@@ -28,9 +28,10 @@ Level_t Level;
 
 Game::Game()
 {
-    Navigation.bind(m_player);
-    Assist.bind(m_player);
     Level.generate(m_player);
+    Assist.bind(m_player);
+    Navigation.bind(m_player);
+    Navigation.load_context();
     m_player.reset(); // fix player to planet closest to origin
 }
 
@@ -65,9 +66,9 @@ void Game::process_input(sf::Event::KeyPressed const& key)
 {
     if (key.code == sf::Keyboard::Key::Space) // toggle orbit
     {
-        Planet& active_planet { Navigation.get_active_planet() };
+        auto& ctx { Navigation.get_context() };
         for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
-        return active_planet.get_orbit().toggle(); // turn off active planet's orbit
+        return ctx.target_orbit.toggle(); // turn off active planet's orbit
     }
 
     /* Debug Cheats */
@@ -97,10 +98,9 @@ void Game::update()
     Navigation.update();
     Assist.update();
 
-    Planet& planet { Navigation.get_active_planet() };
-    Orbit& orbit { planet.get_orbit() };
+    auto& ctx = Navigation.get_context();
 
-    orbit.apply_force(m_player);
+    ctx.target_orbit.apply_force(m_player);
     m_player.update();
 
     if (Collision::poll_collision(m_player.get_shape()))
@@ -110,7 +110,7 @@ void Game::update()
 
     /* Follow player from the next frame
      * if it is far outside the orbit of any planet */
-    Camera.set_target(planet.get_position());
+    Camera.set_target(ctx.target_planet.get_position());
     if (m_player.is(PlayerState::FarOutsideOrbit))
         Camera.set_target(m_player.get_position());
 }

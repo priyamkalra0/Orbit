@@ -19,7 +19,7 @@ void ParticleEmitter::update()
              * Navigation API and fixing it is on my todo list.
              * We'll be back here to fix this after that.
              */
-            || Collision::intersects(Navigation.get_active_planet().get_info(), p->shape)) {
+            || Collision::intersects(Navigation.get_context().target_planet.get_info(), p->shape)) {
             p = m_particles.erase(p); continue;
         }
 

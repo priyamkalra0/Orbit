@@ -45,35 +45,31 @@ void Player::explode()
 
 void Player::reset()
 {
-    auto const& planet { Navigation.get_active_planet() };
-    float const r { planet.get_orbit().get_radius() };
-    set_position(planet.get_position() - sf::Vector2f{0, r}); // target orbit
+    auto& ctx = Navigation.get_context();
+    float const r { ctx.target_orbit.get_radius() };
+    set_position(ctx.target_planet.get_position() - sf::Vector2f{0, r}); // target orbit
     set_velocity({ World.scale_x(Assist.param_assist_tangential_target_velocity), 0 }); // target velocity
     m_exploding = false;
 }
 
 bool Player::is(PlayerState const& state) const
 {
-    Planet const& planet { Navigation.get_active_planet() };
-    Orbit const& orbit { planet.get_orbit() };
-
-    float const distance = get_distance(planet.get_info());
-    float const signed_error = distance - orbit.get_radius();
+    auto& ctx { Navigation.get_context() };
 
     auto const& [smoothing_ring_inner_size, smoothing_ring_outer_size] = \
         Assist.param_assist_radial_smoothing_ring_region_size;
 
     switch (state)
     {
-    case PlayerState::FarOutsideOrbit: return (signed_error > param_orbit_far_distance_factor * smoothing_ring_outer_size);
-    case PlayerState::SomewhereOutsideOrbit: return (signed_error > param_orbit_error_tolerance);
+    case PlayerState::FarOutsideOrbit: return (ctx.player_error > param_orbit_far_distance_factor * smoothing_ring_outer_size);
+    case PlayerState::SomewhereOutsideOrbit: return (ctx.player_error > param_orbit_error_tolerance);
     case PlayerState::NearOutsideOrbit: return is(PlayerState::SomewhereOutsideOrbit)
                                              & !is(PlayerState::FarOutsideOrbit);
 
-    case PlayerState::InTargetOrbit: return (std::abs(signed_error) <= param_orbit_error_tolerance);
+    case PlayerState::InTargetOrbit: return (std::abs(ctx.player_error) <= param_orbit_error_tolerance);
     case PlayerState::InsideSmoothingRing: return (
-        signed_error > -smoothing_ring_inner_size
-        && signed_error < smoothing_ring_outer_size
+        ctx.player_error > -smoothing_ring_inner_size
+        && ctx.player_error < smoothing_ring_outer_size
     );
 
     case PlayerState::Exploding: return m_exploding;

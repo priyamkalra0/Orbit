@@ -31,32 +31,34 @@ void Assist::draw() const
 
 void Assist::update()
 {
-    Planet& planet { Navigation.get_active_planet() };
-    Orbit const& orbit { planet.get_orbit() };
+    assert(m_player);
 
-    float const target_radius { orbit.get_radius() };
+    auto& ctx = Navigation.get_context();
+
+    Planet& target_planet = ctx.target_planet;
+    Orbit const& target_orbit = ctx.target_orbit;
+
+    float const target_radius { target_orbit.get_radius() };
+    auto const orbit_origin { target_orbit.get_origin() };
 
     init_target_radius_ring(
-        planet.get_position(),
+        orbit_origin,
         target_radius
     );
 
-    init_smoothing_ring_shape(planet.get_position());
+    init_smoothing_ring_shape(orbit_origin);
 
-    float const distance { m_player->get_distance(planet.get_info()) };
-    // float const signed_error = distance - target_radius;
-
-    sf::Vector2f v_radial { m_player->get_radial_velocity_vector(planet.get_info()) };
+    sf::Vector2f v_radial { m_player->get_radial_velocity_vector(target_planet.get_info()) };
     if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
 
-    sf::Vector2f v_tangential { m_player->get_tangential_velocity_vector(planet.get_info()) };
+    sf::Vector2f v_tangential { m_player->get_tangential_velocity_vector(target_planet.get_info()) };
     if (v_tangential.length() < 1.0f) v_tangential *= 0.0f;
 
     std::cout
         << "[core/navigation] [current state] "
         << "v_radial: " << v_radial.length()
         << ", v_tangential: " << v_tangential.length()
-        //<< ", error: " << m_player->_ctx_Navigation_SignedError
+        << ", error: " << ctx.player_error
         << "\n";
 
 
@@ -67,15 +69,14 @@ void Assist::update()
             << "[core/navigation] "
             << "[planet mass boosted ("
             << param_assist_planet_mass_boosting_power << ")] "
-            << planet.get_mass() << " -> ";
+            << target_planet.get_mass() << " -> ";
 
-        planet.set_mass(
+        target_planet.set_mass(
             (1.0f + param_assist_planet_mass_boosting_power) *
             (v_tangential.lengthSquared() * target_radius) / Navigation.G
         );
 
-        std::cout << planet.get_mass() << "\n";
-
+        std::cout << target_planet.get_mass() << "\n";
     }
 
     /* Everything beyond this is only applied
@@ -109,16 +110,15 @@ void Assist::update()
 
     std::cout << v_radial.length() << "\n";
 
-
     /* Addon: Planet Mass Adjustment */
     std::cout
         << "[core/navigation] "
         << "[planet mass adjusted] "
-        << planet.get_mass() << " -> ";
+        << target_planet.get_mass() << " -> ";
 
-    planet.set_mass((v_tangential.lengthSquared() * distance) / Navigation.G);
+    target_planet.set_mass((v_tangential.lengthSquared() * (ctx.player_error + target_radius)) / Navigation.G);
 
-    std::cout << planet.get_mass() << "\n";
+    std::cout << target_planet.get_mass() << "\n";
 
     /* Addon: Tangential Correction */
     float const correction_power {
