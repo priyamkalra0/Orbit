@@ -6,7 +6,7 @@
 class Camera
 {
 public:
-    constexpr static float follow_smoothing_power { 0.98f };
+    constexpr static float param_follow_smoothing_power { 0.98f };
 
     Camera() = default;
 
@@ -17,7 +17,7 @@ public:
         sf::Vector2f const new_pos {
                 current_pos +
                 (m_target - current_pos)
-                * (1.0f - follow_smoothing_power)
+                * (1.0f - param_follow_smoothing_power)
         };
 
         view.setCenter(new_pos);

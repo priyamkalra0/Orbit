@@ -19,7 +19,7 @@ public:
 
     /* Visual Parameters */
     ufd const param_visual_particle_radius_dist {1.0f, 4.0f};
-    ufd const param_particle_color_hue_dist {0.0f, 359.0f};
+    ufd const param_visual_particle_color_hue_dist {0.0f, 359.0f};
     constexpr static float param_visual_particle_color_whiteness { 30.0f };
     constexpr static float param_visual_particle_color_blackness { 0.0f };
 

@@ -59,7 +59,7 @@ void ParticleEmitter::emit(uint32_t const count, sf::Vector2f const& position)
         shape.setPosition(position);
         shape.setRadius(m_random.get(param_visual_particle_radius_dist));
         shape.setFillColor(Color::get<Color::HWB>(
-            m_random.get(param_particle_color_hue_dist),
+            m_random.get(param_visual_particle_color_hue_dist),
             param_visual_particle_color_whiteness,
             param_visual_particle_color_blackness
         ));
