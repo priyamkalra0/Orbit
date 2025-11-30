@@ -83,7 +83,7 @@ void Game::update()
     orbit.apply_force(m_player);
     m_player.update();
 
-    if (Collision::poll_collision(m_player))
+    if (Collision::poll_collision(m_player.get_shape()))
         reset_player();
 
     Camera.update();
