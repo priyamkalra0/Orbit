@@ -10,12 +10,12 @@ Orbit::Orbit(PlanetInfo const& planet, float const radius, sf::Color const& colo
 
 void Orbit::init_rings(float const highlight_factor)
 {
-    sf::Color const outline_color { m_color.r, m_color.g, m_color.b, visual_ring_outline_alpha };
+    sf::Color const outline_color { m_color.r, m_color.g, m_color.b, param_visual_ring_outline_alpha };
 
     int n { 1 };
     for (auto& ring : m_rings)
     {
-        bool const is_inner_ring = (n < visual_ring_count);
+        bool const is_inner_ring = (n < param_visual_ring_count);
 
         float const fill_alpha_coefficient =
             (m_state)
@@ -24,13 +24,13 @@ void Orbit::init_rings(float const highlight_factor)
 
         sf::Color const fill_color {
             m_color.r, m_color.g, m_color.b,
-            static_cast<std::uint8_t>(visual_ring_fill_alpha * fill_alpha_coefficient) // light up effect
+            static_cast<std::uint8_t>(param_visual_ring_fill_alpha * fill_alpha_coefficient) // light up effect
         };
 
         // Use a power function to bunch rings closer to the planet
-        float const ratio { static_cast<float>(n) / static_cast<float>(visual_ring_count) };
+        float const ratio { static_cast<float>(n) / static_cast<float>(param_visual_ring_count) };
         float const ring_space { m_radius - m_owner.radius };
-        float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.0f + visual_ring_spacing_factor) };
+        float current_radius{ m_owner.radius + ring_space * std::pow(ratio, 1.0f + param_visual_ring_spacing_factor) };
 
         // force the last orbit a little bit further out
         // NOTE: WHY?
@@ -41,7 +41,7 @@ void Orbit::init_rings(float const highlight_factor)
         // fucking up their pathing.
         // but pushing this ring outwards will make
         // the player aim a little extra outwards to compensate.
-        if (!is_inner_ring) current_radius += visual_outer_ring_offset;
+        if (!is_inner_ring) current_radius += param_visual_outer_ring_offset;
 
         ring.setRadius(current_radius);
         ring.setOrigin({current_radius, current_radius});
@@ -65,10 +65,10 @@ sf::Vector2f Orbit::calculate_force(Player const& player)
 
     /* Highlight active orbit */
     float const highlight_distance_factor = std::min(
-        visual_ring_highlight_clamp,
-        1.0f - std::min(1.0f, distance / (visual_ring_highlight_factor * m_radius))
+        param_visual_ring_highlight_clamp,
+        1.0f - std::min(1.0f, distance / (param_visual_ring_highlight_factor * m_radius))
         );
-    init_rings(1.5f * visual_ring_highlight_factor * highlight_distance_factor);
+    init_rings(1.5f * param_visual_ring_highlight_factor * highlight_distance_factor);
 
     sf::Vector2f const direction { -distance_vec.normalized() };
     float const force_magnitude { (Navigation::G * m_owner.mass) / (distance * distance) };

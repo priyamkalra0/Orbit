@@ -12,13 +12,13 @@ public:
     Orbit(PlanetInfo const& planet, float radius, sf::Color const& color);
 
     /* Visual Configuration Parameters */
-    constexpr static uint32_t visual_ring_count { 6 };
-    constexpr static uint8_t visual_ring_outline_alpha { 50 };
-    constexpr static uint8_t visual_ring_fill_alpha { 25 };
-    constexpr static float visual_ring_spacing_factor { 0.50f };
-    constexpr static float visual_ring_highlight_clamp { 0.4f };
-    constexpr static float visual_ring_highlight_factor { 2.0f };
-    float const visual_outer_ring_offset { World.scale_distance(35.0f) };
+    constexpr static uint32_t param_visual_ring_count { 6 };
+    constexpr static uint8_t param_visual_ring_outline_alpha { 50 };
+    constexpr static uint8_t param_visual_ring_fill_alpha { 25 };
+    constexpr static float param_visual_ring_spacing_factor { 0.50f };
+    constexpr static float param_visual_ring_highlight_clamp { 0.4f };
+    constexpr static float param_visual_ring_highlight_factor { 2.0f };
+    float const param_visual_outer_ring_offset { World.scale_distance(35.0f) };
 
     void draw() const;
 
@@ -41,5 +41,5 @@ private:
     float m_radius;
     sf::Color m_color;
     PlanetInfo const& m_owner;
-    sf::CircleShape m_rings[visual_ring_count];
+    sf::CircleShape m_rings[param_visual_ring_count];
 };
