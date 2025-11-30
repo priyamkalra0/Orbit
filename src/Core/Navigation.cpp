@@ -11,15 +11,15 @@ Navigation::Navigation()
         << "Navigation::Navigation(): "
         << "[assist parameters] "
         << "\n Radial Smoothing Threshold: "
-        << radial_smoothing_threshold
+        << param_assist_radial_smoothing_threshold
         << "\n Radial Smoothing Power: "
-        << radial_smoothing_power
+        << param_assist_radial_smoothing_power
         << "\n Tangential Correction Power: "
-        << tangential_boosting_power
+        << param_assist_tangential_boosting_power
         << "\n Tangential Target Velocity: "
-        << tangential_target_velocity
+        << param_assist_tangential_target_velocity
         << "\n Radial Smoothing Ring Size: "
-        << radial_smoothing_ring_size
+        << param_assist_radial_smoothing_ring_size
         << "\n";
 
 }
@@ -51,10 +51,10 @@ void Navigation::draw() const
 void Navigation::update()
 {
     _inject_ctx_into_player();
-    apply_assistance();
+    apply_assist();
 }
 
-void Navigation::apply_assistance()
+void Navigation::apply_assist()
 {
     Planet& planet { get_active_planet() };
     Orbit const& orbit { planet.get_orbit() };
@@ -95,11 +95,11 @@ void Navigation::apply_assistance()
         std::cout
             << "[core/navigation] "
             << "[planet mass boosted ("
-            << planet_mass_boosting_power << ")] "
+            << param_assist_planet_mass_boosting_power << ")] "
             << planet.get_mass() << " -> ";
 
         planet.set_mass(
-            (1.0f + planet_mass_boosting_power) *
+            (1.0f + param_assist_planet_mass_boosting_power) *
             (v_tangential.lengthSquared() * target_radius) / G
         );
 
@@ -121,7 +121,7 @@ void Navigation::apply_assistance()
     m_smoothing_ring_inner.setOutlineColor(sf::Color::Yellow);
     m_smoothing_ring_outer.setOutlineColor(sf::Color::Yellow);
 
-    if (v_radial.length() > radial_smoothing_threshold)
+    if (v_radial.length() > param_assist_radial_smoothing_threshold)
     {
         std::cout
             << "[core/navigation] "
@@ -135,10 +135,10 @@ void Navigation::apply_assistance()
     std::cout
         << "[core/navigation] "
         << "[radial smoothing success ("
-        << -radial_smoothing_power << ")] "
+        << -param_assist_radial_smoothing_power << ")] "
         << v_radial.length() << " -> ";
 
-    v_radial *= (1.0f - radial_smoothing_power);
+    v_radial *= (1.0f - param_assist_radial_smoothing_power);
 
     std::cout << v_radial.length() << "\n";
 
@@ -155,9 +155,9 @@ void Navigation::apply_assistance()
 
     /* Addon: Tangential Correction */
     float const correction_power {
-        (v_tangential.length() < tangential_target_velocity)
-        ? tangential_boosting_power
-        : -tangential_smoothing_power
+        (v_tangential.length() < param_assist_tangential_target_velocity)
+        ? param_assist_tangential_boosting_power
+        : -param_assist_tangential_smoothing_power
     };
 
     std::cout
@@ -183,13 +183,13 @@ void Navigation::_inject_ctx_into_player() const
 
     m_player->_ctx_Navigation_SignedError = signed_error;
     m_player->_ctx_Navigation_SmoothingRingSizeInner =
-        radial_smoothing_ring_size
-        * radial_smoothing_ring_ratio.first
-        / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);
+        param_assist_radial_smoothing_ring_size
+        * param_assist_radial_smoothing_ring_ratio.first
+        / (param_assist_radial_smoothing_ring_ratio.first + param_assist_radial_smoothing_ring_ratio.second);
     m_player->_ctx_Navigation_SmoothingRingSizeOuter =
-        radial_smoothing_ring_size
-        * radial_smoothing_ring_ratio.second
-        / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);
+        param_assist_radial_smoothing_ring_size
+        * param_assist_radial_smoothing_ring_ratio.second
+        / (param_assist_radial_smoothing_ring_ratio.first + param_assist_radial_smoothing_ring_ratio.second);
 
 }
 

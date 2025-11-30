@@ -126,5 +126,5 @@ void Game::reset_player()
     auto const& planet { Navigation.get_active_planet() };
     float const r { planet.get_orbit().get_radius() };
     m_player.set_position(planet.get_position() - sf::Vector2f{0, r});
-    m_player.set_velocity({World.scale_x(Navigation.tangential_target_velocity), 0});
+    m_player.set_velocity({World.scale_x(Navigation.param_assist_tangential_target_velocity), 0});
 }
