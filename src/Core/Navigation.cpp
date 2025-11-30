@@ -5,8 +5,7 @@
 #include "Graphics/Window.hpp"
 #include "Math/Vector2.hpp"
 
-Navigation::Navigation(Player& player)
-    : m_player{player}
+Navigation::Navigation()
 {
     std::cout
         << "Navigation::Navigation(): "
@@ -33,7 +32,7 @@ Planet& Navigation::get_active_planet() const
     for (auto& planet : Level.get_planets())
     {
         if (!planet.get_orbit().is_on()) continue;
-        float const d { m_player.get_distance_squared(planet.get_info()) };
+        float const d { m_player->get_distance_squared(planet.get_info()) };
         if (smallest_distance > 0.0f && d > smallest_distance) continue;
         smallest_distance = d;
         active_planet = &planet;
@@ -69,29 +68,29 @@ void Navigation::apply_assistance()
 
     init_smoothing_ring_shape(
         planet.get_position(),
-        target_radius - m_player._ctx_Navigation_SmoothingRingSizeInner,
-        target_radius + m_player._ctx_Navigation_SmoothingRingSizeOuter
+        target_radius - m_player->_ctx_Navigation_SmoothingRingSizeInner,
+        target_radius + m_player->_ctx_Navigation_SmoothingRingSizeOuter
     );
 
-    float const distance { m_player.get_distance(planet.get_info()) };
+    float const distance { m_player->get_distance(planet.get_info()) };
     // float const signed_error = distance - target_radius;
 
-    sf::Vector2f v_radial { m_player.get_radial_velocity_vector(planet.get_info()) };
+    sf::Vector2f v_radial { m_player->get_radial_velocity_vector(planet.get_info()) };
     if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
 
-    sf::Vector2f v_tangential { m_player.get_tangential_velocity_vector(planet.get_info()) };
+    sf::Vector2f v_tangential { m_player->get_tangential_velocity_vector(planet.get_info()) };
     if (v_tangential.length() < 1.0f) v_tangential *= 0.0f;
 
     std::cout
         << "[core/navigation] [current state] "
         << "v_radial: " << v_radial.length()
         << ", v_tangential: " << v_tangential.length()
-        << ", error: " << m_player._ctx_Navigation_SignedError
+        << ", error: " << m_player->_ctx_Navigation_SignedError
         << "\n";
 
 
     /* Planet Mass Boosting */
-    if (m_player.is(PlayerState::SomewhereOutsideOrbit))
+    if (m_player->is(PlayerState::SomewhereOutsideOrbit))
     {
         std::cout
             << "[core/navigation] "
@@ -115,7 +114,7 @@ void Navigation::apply_assistance()
     //     !orbit.is_on()
     //     || std::abs(signed_error) > (radial_smoothing_ring_size / 2.0f)
     // ) return;
-    if (!m_player.is(PlayerState::InsideSmoothingRing)) return;
+    if (!m_player->is(PlayerState::InsideSmoothingRing)) return;
 
 
     // Show that the smoothing ring is active
@@ -171,7 +170,7 @@ void Navigation::apply_assistance()
 
     std::cout << v_tangential.length() << std::endl;
 
-    m_player.set_velocity(v_radial + v_tangential);
+    m_player->set_velocity(v_radial + v_tangential);
 }
 
 void Navigation::_inject_ctx_into_player() const
@@ -179,15 +178,15 @@ void Navigation::_inject_ctx_into_player() const
     Planet const& planet { get_active_planet() };
     Orbit const& orbit { planet.get_orbit() };
 
-    float const distance = m_player.get_distance(planet.get_info());
+    float const distance = m_player->get_distance(planet.get_info());
     float const signed_error = distance - orbit.get_radius();
 
-    m_player._ctx_Navigation_SignedError = signed_error;
-    m_player._ctx_Navigation_SmoothingRingSizeInner =
+    m_player->_ctx_Navigation_SignedError = signed_error;
+    m_player->_ctx_Navigation_SmoothingRingSizeInner =
         radial_smoothing_ring_size
         * radial_smoothing_ring_ratio.first
         / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);
-    m_player._ctx_Navigation_SmoothingRingSizeOuter =
+    m_player->_ctx_Navigation_SmoothingRingSizeOuter =
         radial_smoothing_ring_size
         * radial_smoothing_ring_ratio.second
         / (radial_smoothing_ring_ratio.first + radial_smoothing_ring_ratio.second);

@@ -9,6 +9,7 @@
 #include "Graphics/Particles.hpp"
 #include "Math/Vector2.hpp"
 
+/* Graphics Managers */
 Window_t Window {
     "Orbit",
     {1280, 720}, /* smaller window = easier to manage */
@@ -16,12 +17,15 @@ Window_t Window {
 };
 World_t World {{1920, 1080}, {2560, 1440}};
 Camera_t Camera;
-Level_t Level;
 ParticleEmitter_t ParticleEmitter;
 
+/* Core Managers */
+Navigation_t Navigation;
+Level_t Level;
+
 Game::Game()
-    : m_navigation { m_player }
 {
+    Navigation.bind(m_player);
     Level.generate(m_player);
     reset_player(); // fix player to planet closest to origin
 }
@@ -57,7 +61,7 @@ void Game::process_input(sf::Event::KeyPressed const& key)
 {
     if (key.code == sf::Keyboard::Key::Space) // toggle orbit
     {
-        Planet& active_planet { m_navigation.get_active_planet() };
+        Planet& active_planet { Navigation.get_active_planet() };
         for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
         return active_planet.get_orbit().toggle(); // turn off active planet's orbit
     }
@@ -83,9 +87,9 @@ void Game::update()
          * FIXME: process_input() is still being called */
         return ParticleEmitter.update();
 
-    m_navigation.update();
+    Navigation.update();
 
-    Planet& planet { m_navigation.get_active_planet() };
+    Planet& planet { Navigation.get_active_planet() };
     Orbit& orbit { planet.get_orbit() };
 
     orbit.apply_force(m_player);
@@ -111,7 +115,7 @@ void Game::render() const
     for (auto const& planet : Level.get_planets())
         planet.draw();
 
-    if (m_debug_mode) m_navigation.draw();
+    if (m_debug_mode) Navigation.draw();
     m_player.draw();
 
     Window.display();
@@ -119,8 +123,8 @@ void Game::render() const
 
 void Game::reset_player()
 {
-    auto const& planet { m_navigation.get_active_planet() };
+    auto const& planet { Navigation.get_active_planet() };
     float const r { planet.get_orbit().get_radius() };
     m_player.set_position(planet.get_position() - sf::Vector2f{0, r});
-    m_player.set_velocity({World.scale_x(m_navigation.tangential_target_velocity), 0});
+    m_player.set_velocity({World.scale_x(Navigation.tangential_target_velocity), 0});
 }
