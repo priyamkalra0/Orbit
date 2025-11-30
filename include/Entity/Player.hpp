@@ -10,6 +10,7 @@ enum class PlayerState
     NearOutsideOrbit,
     SomewhereOutsideOrbit,
 
+    SomewhereInsideOrbit,
     InsideSmoothingRing,
     InTargetOrbit,
 

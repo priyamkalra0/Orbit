@@ -83,10 +83,11 @@ bool Player::is(PlayerState const& state) const
     case PlayerState::InTargetOrbit: return (std::abs(ctx.player_error) <= param_orbit_error_tolerance);
     case PlayerState::InsideSmoothingRing: return (
         ctx.player_error > -smoothing_ring_inner_size
-        && ctx.player_error < smoothing_ring_outer_size
+        && is(PlayerState::SomewhereInsideOrbit) //ctx.player_error < smoothing_ring_outer_size
     );
 
     case PlayerState::Exploding: return m_exploding;
+    case PlayerState::SomewhereInsideOrbit: return (ctx.player_error < smoothing_ring_outer_size);
 
     default: return false;
     }
