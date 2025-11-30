@@ -3,6 +3,8 @@
 #include "Core/Game.hpp"
 #include "Core/Level.hpp"
 #include "Core/Collision.hpp"
+#include "Core/Navigation.hpp"
+#include "Core/Assist.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
@@ -21,11 +23,13 @@ ParticleEmitter_t ParticleEmitter;
 
 /* Core Managers */
 Navigation_t Navigation;
+Assist_t Assist;
 Level_t Level;
 
 Game::Game()
 {
     Navigation.bind(m_player);
+    Assist.bind(m_player);
     Level.generate(m_player);
     m_player.reset(); // fix player to planet closest to origin
 }
@@ -91,6 +95,7 @@ void Game::update()
     if (m_player.is(PlayerState::Exploding)) m_player.reset();
 
     Navigation.update();
+    Assist.update();
 
     Planet& planet { Navigation.get_active_planet() };
     Orbit& orbit { planet.get_orbit() };
@@ -118,7 +123,7 @@ void Game::render() const
     for (auto const& planet : Level.get_planets())
         planet.draw();
 
-    if (m_debug_mode) Navigation.draw();
+    if (m_debug_mode) Assist.draw();
     m_player.draw();
 
     Window.display();

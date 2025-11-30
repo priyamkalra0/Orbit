@@ -14,6 +14,7 @@ add_executable(
         src/Entity/Orbit.cpp
         src/Entity/Player.cpp
         src/Core/Navigation.cpp
+        src/Core/Assist.cpp
         src/Core/Level.cpp
         src/Core/Collision.cpp
         src/Graphics/Color.cpp

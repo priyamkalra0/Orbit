@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Entity/Player.hpp"
-#include "Core/Navigation.hpp"
+#include "Core/Assist.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Particles.hpp"
 #include "Math/Vector2.hpp"
@@ -48,7 +48,7 @@ void Player::reset()
     auto const& planet { Navigation.get_active_planet() };
     float const r { planet.get_orbit().get_radius() };
     set_position(planet.get_position() - sf::Vector2f{0, r}); // target orbit
-    set_velocity({World.scale_x(Navigation.param_assist_tangential_target_velocity), 0}); // target velocity
+    set_velocity({ World.scale_x(Assist.param_assist_tangential_target_velocity), 0 }); // target velocity
     m_exploding = false;
 }
 
@@ -61,7 +61,7 @@ bool Player::is(PlayerState const& state) const
     float const signed_error = distance - orbit.get_radius();
 
     auto const& [smoothing_ring_inner_size, smoothing_ring_outer_size] = \
-        Navigation.param_assist_radial_smoothing_ring_region_size;
+        Assist.param_assist_radial_smoothing_ring_region_size;
 
     switch (state)
     {
