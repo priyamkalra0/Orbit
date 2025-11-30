@@ -27,7 +27,7 @@ Game::Game()
 {
     Navigation.bind(m_player);
     Level.generate(m_player);
-    reset_player(); // fix player to planet closest to origin
+    m_player.reset(); // fix player to planet closest to origin
 }
 
 void Game::run()
@@ -73,7 +73,7 @@ void Game::process_input(sf::Event::KeyPressed const& key)
     if (!m_debug_mode) return;
 
     if (key.code == sf::Keyboard::Key::R)
-        return reset_player();
+        return m_player.reset();
 
     if (key.code == sf::Keyboard::Key::I)
         return m_player.set_velocity(-1.0f * m_player.get_velocity()); // invert velocity
@@ -96,7 +96,7 @@ void Game::update()
     m_player.update();
 
     if (Collision::poll_collision(m_player.get_shape()))
-        { ParticleEmitter.emit(100, m_player.get_position()); reset_player(); }
+        { ParticleEmitter.emit(100, m_player.get_position()); m_player.reset(); }
 
     Camera.update();
 
@@ -119,12 +119,4 @@ void Game::render() const
     m_player.draw();
 
     Window.display();
-}
-
-void Game::reset_player()
-{
-    auto const& planet { Navigation.get_active_planet() };
-    float const r { planet.get_orbit().get_radius() };
-    m_player.set_position(planet.get_position() - sf::Vector2f{0, r});
-    m_player.set_velocity({World.scale_x(Navigation.param_assist_tangential_target_velocity), 0});
 }

@@ -28,6 +28,8 @@ public:
     void draw() const;
 
     void accelerate(sf::Vector2f const& force);
+
+    void reset();
     bool is(PlayerState const& state) const;
 
     sf::Vector2f const& get_position() const { return m_position; }

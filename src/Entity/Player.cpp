@@ -32,6 +32,14 @@ void Player::accelerate(sf::Vector2f const& force)
     m_acceleration += force; // a = f/m = f (player has unit mass)
 }
 
+void Player::reset()
+{
+    auto const& planet { Navigation.get_active_planet() };
+    float const r { planet.get_orbit().get_radius() };
+    set_position(planet.get_position() - sf::Vector2f{0, r}); // target orbit
+    set_velocity({World.scale_x(Navigation.param_assist_tangential_target_velocity), 0}); // target velocity
+}
+
 bool Player::is(PlayerState const& state) const
 {
     Planet const& planet { Navigation.get_active_planet() };

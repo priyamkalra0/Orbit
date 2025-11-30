@@ -17,8 +17,6 @@ private:
     void update();
     void render() const;
 
-    void reset_player();
-
     bool m_debug_mode { false };
     Player m_player;
 };
