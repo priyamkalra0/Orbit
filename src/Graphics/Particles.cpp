@@ -1,4 +1,6 @@
 #include "Graphics/Particles.hpp"
+#include "Core/Collision.hpp"
+#include "Core/Navigation.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Color.hpp"
 
@@ -10,7 +12,14 @@ void ParticleEmitter::update()
     for (auto p = m_particles.begin(); p != m_particles.end(); )
     {
         p->lifetime -= dt;
-        if (p->lifetime <= 0.0f) {
+
+        if (p->lifetime <= 0.0f
+            /* FIXME: This check WILL NOT work if the planet we're colliding with
+             * is turned off (it's orbit). This is a limitation of the
+             * Navigation API and fixing it is on my todo list.
+             * We'll be back here to fix this after that.
+             */
+            || Collision::intersects(Navigation.get_active_planet().get_info(), p->shape)) {
             p = m_particles.erase(p); continue;
         }
 
