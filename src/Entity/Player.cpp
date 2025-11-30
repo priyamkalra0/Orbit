@@ -3,6 +3,7 @@
 #include "Entity/Player.hpp"
 #include "Core/Navigation.hpp"
 #include "Graphics/Window.hpp"
+#include "Graphics/Particles.hpp"
 #include "Math/Vector2.hpp"
 
 Player::Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocity)
@@ -24,6 +25,7 @@ Player::Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocit
 
 void Player::draw() const
 {
+    if (m_exploding) return;
     Window.draw(m_shape);
 }
 
@@ -32,12 +34,22 @@ void Player::accelerate(sf::Vector2f const& force)
     m_acceleration += force; // a = f/m = f (player has unit mass)
 }
 
+void Player::explode()
+{
+    m_exploding = true;
+    ParticleEmitter.emit(
+        param_visual_explosion_particle_count,
+        m_position
+    );
+}
+
 void Player::reset()
 {
     auto const& planet { Navigation.get_active_planet() };
     float const r { planet.get_orbit().get_radius() };
     set_position(planet.get_position() - sf::Vector2f{0, r}); // target orbit
     set_velocity({World.scale_x(Navigation.param_assist_tangential_target_velocity), 0}); // target velocity
+    m_exploding = false;
 }
 
 bool Player::is(PlayerState const& state) const
@@ -63,6 +75,8 @@ bool Player::is(PlayerState const& state) const
         signed_error > -smoothing_ring_inner_size
         && signed_error < smoothing_ring_outer_size
     );
+
+    case PlayerState::Exploding: return m_exploding;
 
     default: return false;
     }

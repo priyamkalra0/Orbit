@@ -87,6 +87,9 @@ void Game::update()
          * FIXME: process_input() is still being called */
         return ParticleEmitter.update();
 
+    // Particle emitter done; reset player and continue gameplay
+    if (m_player.is(PlayerState::Exploding)) m_player.reset();
+
     Navigation.update();
 
     Planet& planet { Navigation.get_active_planet() };
@@ -96,7 +99,7 @@ void Game::update()
     m_player.update();
 
     if (Collision::poll_collision(m_player.get_shape()))
-        { ParticleEmitter.emit(100, m_player.get_position()); m_player.reset(); }
+        m_player.explode();
 
     Camera.update();
 

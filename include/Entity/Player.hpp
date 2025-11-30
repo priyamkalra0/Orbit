@@ -12,6 +12,8 @@ enum class PlayerState
 
     InsideSmoothingRing,
     InTargetOrbit,
+
+    Exploding,
 };
 
 class Player
@@ -24,10 +26,14 @@ public:
     constexpr static float param_orbit_error_tolerance { 15.0f }; // +- error within target radius = "in orbit"
     constexpr static float param_orbit_far_distance_factor { 1.5f }; // governs how far away is considered "far outside orbit"
 
+    /* Visual Configuration Parameters */
+    constexpr static uint32_t param_visual_explosion_particle_count { 100 };
+
     void update();
     void draw() const;
 
     void accelerate(sf::Vector2f const& force);
+    void explode();
 
     void reset();
     bool is(PlayerState const& state) const;
@@ -48,6 +54,8 @@ public:
     sf::Shape const& get_shape() const { return m_shape; }
 
 private:
+    bool m_exploding { false };
+
     sf::Vector2f m_position;
     sf::Vector2f m_previous_position;
     sf::Vector2f m_acceleration;
