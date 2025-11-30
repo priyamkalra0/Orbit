@@ -46,10 +46,24 @@ void Player::explode()
 void Player::reset()
 {
     auto& ctx = Navigation.get_context();
-    float const r { ctx.target_orbit.get_radius() };
-    set_position(ctx.target_planet.get_position() - sf::Vector2f{0, r}); // target orbit
-    set_velocity({ World.scale_x(Assist.param_assist_tangential_target_velocity), 0 }); // target velocity
-    m_exploding = false;
+
+    /* Respawn when
+     * pressing R: at target planet (debug mode only)
+     * exploding: at previous planet */
+    Orbit& respawn_orbit = is(PlayerState::Exploding) ? ctx.previous_orbit : ctx.target_orbit;
+    respawn_orbit.turn_on(); // ensure it's on
+
+    set_position(
+        respawn_orbit.get_origin()
+        - sf::Vector2f{0, respawn_orbit.get_radius()}
+    ); // at target orbit
+
+    set_velocity({
+        World.scale_x(Assist.param_assist_tangential_target_velocity),
+        0
+    }); // target velocity, in tangent direction
+
+    if (m_exploding) m_exploding = false; // Start drawing player again.
 }
 
 bool Player::is(PlayerState const& state) const
@@ -87,10 +101,9 @@ void Player::update()
     std::cout << "[entity/player] [current state] is(SomewhereOutsideOrbit): "
         << is(PlayerState::SomewhereOutsideOrbit) << "\n";
     std::cout << "[entity/player] [current state] is(FarOutsideOrbit): "
-    << is(PlayerState::FarOutsideOrbit) << "\n";
+        << is(PlayerState::FarOutsideOrbit) << "\n";
     std::cout << "[entity/player] [current state] is(NearOutsideOrbit): "
         << is(PlayerState::NearOutsideOrbit) << "\n";
-
 
 
     float const dt { Window.get_delta_time() };
