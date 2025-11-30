@@ -21,7 +21,6 @@ Navigation::Navigation()
         << "\n Radial Smoothing Ring Size: "
         << param_assist_radial_smoothing_ring_size
         << "\n";
-
 }
 
 Planet& Navigation::get_active_planet() const
@@ -48,11 +47,7 @@ void Navigation::draw() const
     Window.draw(m_target_radius_ring);
 }
 
-void Navigation::update()
-{
-    _inject_ctx_into_player();
-    apply_assist();
-}
+void Navigation::update() { apply_assist(); }
 
 void Navigation::apply_assist()
 {
@@ -66,11 +61,7 @@ void Navigation::apply_assist()
         target_radius
     );
 
-    init_smoothing_ring_shape(
-        planet.get_position(),
-        target_radius - m_player->_ctx_Navigation_SmoothingRingSizeInner,
-        target_radius + m_player->_ctx_Navigation_SmoothingRingSizeOuter
-    );
+    init_smoothing_ring_shape(planet.get_position());
 
     float const distance { m_player->get_distance(planet.get_info()) };
     // float const signed_error = distance - target_radius;
@@ -85,7 +76,7 @@ void Navigation::apply_assist()
         << "[core/navigation] [current state] "
         << "v_radial: " << v_radial.length()
         << ", v_tangential: " << v_tangential.length()
-        << ", error: " << m_player->_ctx_Navigation_SignedError
+        //<< ", error: " << m_player->_ctx_Navigation_SignedError
         << "\n";
 
 
@@ -173,26 +164,6 @@ void Navigation::apply_assist()
     m_player->set_velocity(v_radial + v_tangential);
 }
 
-void Navigation::_inject_ctx_into_player() const
-{
-    Planet const& planet { get_active_planet() };
-    Orbit const& orbit { planet.get_orbit() };
-
-    float const distance = m_player->get_distance(planet.get_info());
-    float const signed_error = distance - orbit.get_radius();
-
-    m_player->_ctx_Navigation_SignedError = signed_error;
-    m_player->_ctx_Navigation_SmoothingRingSizeInner =
-        param_assist_radial_smoothing_ring_size
-        * param_assist_radial_smoothing_ring_ratio.first
-        / (param_assist_radial_smoothing_ring_ratio.first + param_assist_radial_smoothing_ring_ratio.second);
-    m_player->_ctx_Navigation_SmoothingRingSizeOuter =
-        param_assist_radial_smoothing_ring_size
-        * param_assist_radial_smoothing_ring_ratio.second
-        / (param_assist_radial_smoothing_ring_ratio.first + param_assist_radial_smoothing_ring_ratio.second);
-
-}
-
 void Navigation::init_target_radius_ring(sf::Vector2f const& position, float const radius)
 {
     m_target_radius_ring.setRadius(radius);
@@ -203,8 +174,10 @@ void Navigation::init_target_radius_ring(sf::Vector2f const& position, float con
     m_target_radius_ring.setPosition(position);
 }
 
-void Navigation::init_smoothing_ring_shape(sf::Vector2f const& position, float const inner_radius, float const outer_radius)
-{
+void Navigation::init_smoothing_ring_shape(sf::Vector2f const& position)
+{    auto const& [inner_radius, outer_radius] = \
+        param_assist_radial_smoothing_ring_region_size;
+
     m_smoothing_ring_inner.setRadius(inner_radius);
     m_smoothing_ring_inner.setOrigin({inner_radius, inner_radius});
     m_smoothing_ring_inner.setFillColor(sf::Color::Transparent);

@@ -45,12 +45,6 @@ public:
 
     sf::Shape const& get_shape() const { return m_shape; }
 
-public:
-    /* Quick and very bad way to inject navigation context into player */
-    float _ctx_Navigation_SignedError { 0.0f };
-    float _ctx_Navigation_SmoothingRingSizeInner { 0.0f };
-    float _ctx_Navigation_SmoothingRingSizeOuter { 0.0f };
-
 private:
     sf::Vector2f m_position;
     sf::Vector2f m_previous_position;

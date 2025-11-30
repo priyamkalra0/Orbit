@@ -12,6 +12,13 @@ public:
 
     void bind(Player& player) { m_player = &player; }
 
+    /* TODO: Rethink the whole navigation API,
+     * right now alot of boilerplate
+     * needs to be done to get the most basic
+     * navigation context from this class
+     * See: Player::is(), Game::update()
+     */
+
     /* Active Planet: Closest planet whose orbit is currently on */
     Planet& get_active_planet() const;
     void apply_assist();
@@ -35,10 +42,19 @@ public:
      * at aiming for a tangent path to the orbit
      * that is; their radial velocity was
      * under the tolerable threshold */
-    std::pair<float, float> const param_assist_radial_smoothing_ring_ratio { 1, 100 }; // inner : outer
     float const param_assist_radial_smoothing_threshold { World.scale_distance(400.0f) };
-    float const param_assist_radial_smoothing_ring_size { World.scale_distance(125.0f) };
     constexpr static float param_assist_radial_smoothing_power { 0.025f };
+
+    float const param_assist_radial_smoothing_ring_size { World.scale_distance(125.0f) };
+    std::pair<float, float> const param_assist_radial_smoothing_ring_ratio { 1, 100 }; // inner : outer
+    std::pair<float, float> const param_assist_radial_smoothing_ring_region_size {
+            param_assist_radial_smoothing_ring_size * param_assist_radial_smoothing_ring_ratio.first
+            / (param_assist_radial_smoothing_ring_ratio.first + param_assist_radial_smoothing_ring_ratio.second),
+
+            param_assist_radial_smoothing_ring_size * param_assist_radial_smoothing_ring_ratio.second
+            / (param_assist_radial_smoothing_ring_ratio.first + param_assist_radial_smoothing_ring_ratio.second)
+    }; /* inner, outer region size */
+
 
     /* Addon: Tangential Correction:
      * Helps maintain target tangential velocity
@@ -53,8 +69,7 @@ public:
 
 private:
     void init_target_radius_ring(sf::Vector2f const& position, float radius);
-    void init_smoothing_ring_shape(sf::Vector2f const& position, float inner_radius, float outer_radius);
-    void _inject_ctx_into_player() const;
+    void init_smoothing_ring_shape(sf::Vector2f const& position);
 
     Player* m_player { nullptr };
 

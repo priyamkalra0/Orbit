@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Entity/Player.hpp"
+#include "Core/Navigation.hpp"
 #include "Graphics/Window.hpp"
 #include "Math/Vector2.hpp"
 
@@ -33,19 +34,26 @@ void Player::accelerate(sf::Vector2f const& force)
 
 bool Player::is(PlayerState const& state) const
 {
-    float const signed_error { _ctx_Navigation_SignedError };
+    Planet const& planet { Navigation.get_active_planet() };
+    Orbit const& orbit { planet.get_orbit() };
+
+    float const distance = get_distance(planet.get_info());
+    float const signed_error = distance - orbit.get_radius();
+
+    auto const& [smoothing_ring_inner_size, smoothing_ring_outer_size] = \
+        Navigation.param_assist_radial_smoothing_ring_region_size;
 
     switch (state)
     {
-    case PlayerState::FarOutsideOrbit: return (signed_error > param_orbit_far_distance_factor * _ctx_Navigation_SmoothingRingSizeOuter);
+    case PlayerState::FarOutsideOrbit: return (signed_error > param_orbit_far_distance_factor * smoothing_ring_outer_size);
     case PlayerState::SomewhereOutsideOrbit: return (signed_error > param_orbit_error_tolerance);
     case PlayerState::NearOutsideOrbit: return is(PlayerState::SomewhereOutsideOrbit)
                                              & !is(PlayerState::FarOutsideOrbit);
 
     case PlayerState::InTargetOrbit: return (std::abs(signed_error) <= param_orbit_error_tolerance);
     case PlayerState::InsideSmoothingRing: return (
-        signed_error > -_ctx_Navigation_SmoothingRingSizeInner
-        && signed_error < _ctx_Navigation_SmoothingRingSizeOuter
+        signed_error > -smoothing_ring_inner_size
+        && signed_error < smoothing_ring_outer_size
     );
 
     default: return false;
