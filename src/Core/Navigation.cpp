@@ -47,15 +47,31 @@ NavigationContext Navigation::make_context() const
     Planet& ref_nearest = candidate_nearest->get();
     Planet& ref_target = candidate_target->get();
 
+    /* We still need to do some work to find the previous planet */
+    Planet& ref_prev = ctx_get_previous_planet(ref_target);
+
     return {
     .player_error = player_error,
     .target_planet = ref_target,
     .target_orbit = ref_target.get_orbit(),
     .nearest_planet = ref_nearest,
     .nearest_orbit = ref_nearest.get_orbit(),
-    .previous_planet = (has_context()) ? m_context->target_planet : ref_target,
-    .previous_orbit = (has_context()) ? m_context->target_orbit : ref_target.get_orbit(),
+    .previous_planet = ref_prev,
+    .previous_orbit = ref_prev.get_orbit(),
     };
+}
+
+Planet& Navigation::ctx_get_previous_planet(Planet& current_target_ref) const
+{
+    /* Context is NULL => game just started => previous planet = current planet */
+    if (!has_context()) return current_target_ref;
+
+    if (
+        &m_context->target_planet != &current_target_ref /* Target planet has changed */
+        && m_player->is(PlayerState::InTargetOrbit) /* Player was stable in orbit */
+    )  return m_context->target_planet; /* Update previous planet; allowing player to respawn there */
+
+    return m_context->previous_planet; /* Otherwise previous planet remains unchanged; player will respawn further back */
 }
 
 void Navigation::draw() const { /* Nothing as of now */ }

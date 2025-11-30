@@ -59,6 +59,7 @@ public:
 
 private:
     [[nodiscard]] NavigationContext make_context() const;
+    Planet& ctx_get_previous_planet(Planet& current_target_ref) const;
 
     std::optional<NavigationContext> m_context;
     Player* m_player { nullptr };
