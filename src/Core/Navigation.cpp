@@ -1,25 +1,63 @@
 #include "Core/Navigation.hpp"
 #include "Core/Level.hpp"
-#include "Graphics/Window.hpp"
-#include "Math/Vector2.hpp"
 
-Planet& Navigation::get_active_planet() const
+
+template <typename T>
+using NullableRef = std::optional<std::reference_wrapper<T>>;
+
+/* Since I want the navigation context
+ * to provide guaranteed references; this method
+ * takes on the messy job of finding planets
+ * (nullable references -> clean references)
+ * The ASSERT should make sure
+ * null references are never created.
+ * Anyway, this method should only be called *after*
+ * the player is created and the level is generated.
+ */
+NavigationContext Navigation::make_context() const
 {
-    Planet* active_planet { nullptr };
+    assert (m_player);
 
-    float smallest_distance { -1 };
-    for (auto& planet : Level.get_planets())
+    float player_error { -1 };
+    float min_distance { -1 };
+
+    NullableRef<Planet> candidate_nearest; /* Candidate for nearest planet */
+    NullableRef<Planet> candidate_target; /* Candidate for target planet */
+
+    for (Planet& planet : Level.get_planets())
     {
-        if (!planet.get_orbit().is_on()) continue;
-        float const d { m_player->get_distance_squared(planet.get_info()) };
-        if (smallest_distance > 0.0f && d > smallest_distance) continue;
-        smallest_distance = d;
-        active_planet = &planet;
+        float const current_distance { m_player->get_distance(planet.get_info()) };
+        if (min_distance > 0.0f && current_distance > min_distance) continue;
+
+        min_distance = current_distance;
+        candidate_nearest.emplace(planet);
+
+        if (auto const& orbit = planet.get_orbit(); orbit.is_on()) {
+            player_error = current_distance - orbit.get_radius();
+            candidate_target.emplace(planet);
+        }
     }
 
-    return *active_planet;
+    assert (
+        candidate_target.has_value()
+        && candidate_nearest.has_value()
+    );
+
+    /* Now we can safely convert to concrete references */
+    Planet& ref_nearest = candidate_nearest->get();
+    Planet& ref_target = candidate_target->get();
+
+    return {
+    .player_error = player_error,
+    .target_planet = ref_target,
+    .target_orbit = ref_target.get_orbit(),
+    .nearest_planet = ref_nearest,
+    .nearest_orbit = ref_nearest.get_orbit(),
+    .previous_planet = (has_context()) ? m_context->target_planet : ref_target,
+    .previous_orbit = (has_context()) ? m_context->target_orbit : ref_target.get_orbit(),
+    };
 }
 
-void Navigation::draw() const { }
+void Navigation::draw() const { /* Nothing as of now */ }
 
-void Navigation::update() { }
+void Navigation::update() { load_context(); /* Reload context once every frame */ }
