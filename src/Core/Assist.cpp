@@ -116,7 +116,7 @@ void Assist::update()
         << "[planet mass adjusted] "
         << target_planet.get_mass() << " -> ";
 
-    target_planet.set_mass((v_tangential.lengthSquared() * (ctx.player_error + target_radius)) / Navigation.G);
+    target_planet.set_mass((v_tangential.lengthSquared() * (target_radius + ctx.player_error)) / Navigation.G);
 
     std::cout << target_planet.get_mass() << "\n";
 
@@ -151,8 +151,11 @@ void Assist::init_target_radius_ring(sf::Vector2f const& position, float const r
 }
 
 void Assist::init_smoothing_ring_shape(sf::Vector2f const& position)
-{    auto const& [inner_radius, outer_radius] = \
+{    auto const& [inner_size, outer_size] = \
         param_assist_radial_smoothing_ring_region_size;
+
+    float const inner_radius = m_target_radius_ring.getRadius() - inner_size;
+    float const outer_radius = m_target_radius_ring.getRadius() + outer_size;
 
     m_smoothing_ring_inner.setRadius(inner_radius);
     m_smoothing_ring_inner.setOrigin({inner_radius, inner_radius});
