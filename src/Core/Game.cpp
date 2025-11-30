@@ -6,6 +6,7 @@
 #include "Graphics/Window.hpp"
 #include "Graphics/World.hpp"
 #include "Graphics/Camera.hpp"
+#include "Graphics/Particles.hpp"
 #include "Math/Vector2.hpp"
 
 Window_t Window {
@@ -16,6 +17,7 @@ Window_t Window {
 World_t World {{1920, 1080}, {2560, 1440}};
 Camera_t Camera;
 Level_t Level;
+ParticleEmitter_t ParticleEmitter;
 
 Game::Game()
     : m_navigation { m_player }
@@ -75,6 +77,12 @@ void Game::process_input(sf::Event::KeyPressed const& key)
 
 void Game::update()
 {
+    if (ParticleEmitter.is_active())
+        /* Block the update loop
+         * while the particle emitter is active
+         * FIXME: process_input() is still being called */
+        return ParticleEmitter.update();
+
     m_navigation.update();
 
     Planet& planet { m_navigation.get_active_planet() };
@@ -84,7 +92,7 @@ void Game::update()
     m_player.update();
 
     if (Collision::poll_collision(m_player.get_shape()))
-        reset_player();
+        { ParticleEmitter.emit(100, m_player.get_position()); reset_player(); }
 
     Camera.update();
 
@@ -98,6 +106,7 @@ void Game::update()
 void Game::render() const
 {
     Window.clear();
+    ParticleEmitter.draw();
 
     for (auto const& planet : Level.get_planets())
         planet.draw();

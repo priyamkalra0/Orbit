@@ -38,6 +38,7 @@ Navigate to the build directory and simply execute the compiled binary:
 * [x] Sandbox
 * [x] Colors
 * [x] Collision
-* [ ] Particles
+* [x] Particles
 * [ ] Progression
 * [ ] UI
+* [ ] Sound

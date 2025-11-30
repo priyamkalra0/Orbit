@@ -17,6 +17,7 @@ add_executable(
         src/Core/Level.cpp
         src/Core/Collision.cpp
         src/Graphics/Color.cpp
+        src/Graphics/Particles.cpp
 )
 
 target_include_directories(main PUBLIC include)
