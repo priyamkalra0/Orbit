@@ -19,7 +19,9 @@ NavigationContext Navigation::make_context() const
     assert (m_player);
 
     float player_error { -1 };
-    float min_distance { -1 };
+    float min_distance_orbit_unchecked { -1 };
+    float min_distance_orbit_checked { -1 };
+
 
     NullableRef<Planet> candidate_nearest; /* Candidate for nearest planet */
     NullableRef<Planet> candidate_target; /* Candidate for target planet */
@@ -27,12 +29,15 @@ NavigationContext Navigation::make_context() const
     for (Planet& planet : Level.get_planets())
     {
         float const current_distance { m_player->get_distance(planet.get_info()) };
-        if (min_distance > 0.0f && current_distance > min_distance) continue;
-
-        min_distance = current_distance;
-        candidate_nearest.emplace(planet);
+        if (min_distance_orbit_unchecked < 0.0f || current_distance < min_distance_orbit_unchecked)
+        {
+            min_distance_orbit_unchecked = current_distance;
+            candidate_nearest.emplace(planet);
+        }
 
         if (auto const& orbit = planet.get_orbit(); orbit.is_on()) {
+            if (min_distance_orbit_checked > 0.0f && current_distance > min_distance_orbit_checked) continue;
+            min_distance_orbit_checked = current_distance;
             player_error = current_distance - orbit.get_radius();
             candidate_target.emplace(planet);
         }
