@@ -14,9 +14,9 @@ Assist::Assist()
         << "\n Radial Smoothing Power: "
         << param_assist_radial_smoothing_power
         << "\n Tangential Correction Power: "
-        << param_assist_tangential_boosting_power
+        << param_assist_tangent_boosting_power
         << "\n Tangential Target Velocity: "
-        << param_assist_tangential_target_velocity
+        << param_assist_tangent_target_velocity
         << "\n Radial Smoothing Ring Size: "
         << param_assist_radial_smoothing_ring_size
         << "\n";
@@ -70,7 +70,7 @@ void Assist::update()
 
         target_planet.set_mass(
             (1.0f + param_assist_planet_mass_boosting_power) *
-            (v_tangent.lengthSquared() * target_radius) / Navigation.G
+            (v_tangent.lengthSquared() * target_radius) / Navigation::G
         );
 
         std::cout << target_planet.get_mass() << "\n";
@@ -107,6 +107,29 @@ void Assist::update()
 
     std::cout << v_radial.length() << "\n";
 
+    /* Addon: Tangential Correction */
+    float const v_tangent_error = \
+        param_assist_tangent_target_velocity - v_tangent.length();
+
+    if (std::abs(v_tangent_error) > param_assist_tangent_correction_tolerance_factor)
+    {
+        float const tangent_correction_power {
+            (v_tangent_error > 0.0f)
+            ? param_assist_tangent_boosting_power
+            : -param_assist_tangent_smoothing_power
+        };
+
+        std::cout
+            << "[core/navigation] "
+            << "[tangential correction applied ("
+            << tangent_correction_power << ")] "
+            << v_tangent.length() << " -> ";
+
+        v_tangent *= (1.0f + tangent_correction_power);
+
+        std::cout << v_tangent.length() << std::endl;
+    }
+
     /* Addon: Planet Mass Adjustment */
     std::cout
         << "[core/navigation] "
@@ -115,27 +138,10 @@ void Assist::update()
 
     target_planet.set_mass(
         (v_tangent.lengthSquared() * (target_radius + ctx.player_error))
-        / Navigation.G
+        / Navigation::G
     );
 
     std::cout << target_planet.get_mass() << "\n";
-
-    /* Addon: Tangential Correction */
-    float const correction_power {
-        (v_tangent.length() < param_assist_tangential_target_velocity)
-        ? param_assist_tangential_boosting_power
-        : -param_assist_tangential_smoothing_power
-    };
-
-    std::cout
-        << "[core/navigation] "
-        << "[tangential correction applied ("
-        << correction_power << ")] "
-        << v_tangent.length() << " -> ";
-
-    v_tangent *= (1.0f + correction_power);
-
-    std::cout << v_tangent.length() << std::endl;
 
     m_player->set_velocity(v_radial + v_tangent);
 }

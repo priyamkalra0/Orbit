@@ -44,9 +44,10 @@ public:
     /* Addon: Tangential Correction:
      * Helps maintain target tangential velocity
      * while in a semi-stable or stable orbit */
-    float const param_assist_tangential_target_velocity { World.scale_distance(500.0f) };
-    constexpr static float param_assist_tangential_boosting_power { 0.005f };
-    constexpr static float param_assist_tangential_smoothing_power { 0.002f };
+    float const param_assist_tangent_target_velocity { World.scale_distance(500.0f) };
+    constexpr static float param_assist_tangent_boosting_power { 0.005f };
+    constexpr static float param_assist_tangent_smoothing_power { 0.002f };
+    constexpr static float param_assist_tangent_correction_tolerance_factor { 10.0f };
 
     /* Addon: Planet Mass Adjustment: Helps make a semi-stable orbit circular;
      * See Assist::update() impl for more details */

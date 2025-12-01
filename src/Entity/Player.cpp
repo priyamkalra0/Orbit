@@ -59,7 +59,7 @@ void Player::reset()
     ); // at target orbit
 
     set_velocity({
-        World.scale_x(Assist.param_assist_tangential_target_velocity),
+        World.scale_x(Assist.param_assist_tangent_target_velocity),
         0
     }); // target velocity, in tangent direction
 
