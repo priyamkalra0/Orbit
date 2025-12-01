@@ -9,10 +9,17 @@ public:
     Camera() = default;
 
     constexpr static float param_player_follow_smoothing_power { 0.98f };
-    constexpr static float param_seek_follow_smoothing_power { 0.99f };
+    constexpr static float param_seek_follow_smoothing_power { 0.985f };
+    constexpr static uint32_t param_camera_lock_timeout_ms { 2000 };
 
-    void update() const
+    void update()
     {
+        if (
+            m_locked &&
+            m_lock_timer.getElapsedTime().asMilliseconds()
+            > param_camera_lock_timeout_ms
+        ) unlock();
+
         auto& view { Window.get_view() };
         sf::Vector2f const current_pos { view.getCenter() };
         sf::Vector2f const new_pos {
@@ -31,7 +38,7 @@ public:
     [[nodiscard]] float get_follow_smoothing_power() const { return m_follow_smoothing_power; }
 
     void unlock() { m_locked = false; }
-    void lock() { m_locked = true; }
+    void lock() { m_locked = true; m_lock_timer.restart(); }
 
     [[nodiscard]] bool is_locked() const { return m_locked; }
 
@@ -39,6 +46,7 @@ private:
     float m_follow_smoothing_power { param_player_follow_smoothing_power };
     bool m_locked { false };
     sf::Vector2f m_target;
+    sf::Clock m_lock_timer;
 };
 
 using Camera_t = Camera;
