@@ -85,9 +85,12 @@ bool Player::is(PlayerState const& state) const
         ctx.player_error > -smoothing_ring_inner_size
         && is(PlayerState::SomewhereInsideOrbit) //ctx.player_error < smoothing_ring_outer_size
     );
+    case PlayerState::SomewhereInsideOrbit: return (ctx.player_error < smoothing_ring_outer_size);
+    case PlayerState::InStableOrbit: return is(PlayerState::InsideSmoothingRing)
+                                         && ctx.player_radial_v.length()
+                                            < Assist.param_assist_radial_smoothing_threshold;
 
     case PlayerState::Exploding: return m_exploding;
-    case PlayerState::SomewhereInsideOrbit: return (ctx.player_error < smoothing_ring_outer_size);
 
     default: return false;
     }

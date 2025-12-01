@@ -13,6 +13,7 @@ enum class PlayerState
     SomewhereInsideOrbit,
     InsideSmoothingRing,
     InTargetOrbit,
+    InStableOrbit, /* Not target; but stable "enough" */
 
     Exploding,
 };
