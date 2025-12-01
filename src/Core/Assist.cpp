@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Core/Assist.hpp"
+#include "Core/Navigation.hpp"
 #include "Entity/Planet.hpp"
 #include "Entity/Orbit.hpp"
 #include "Graphics/Window.hpp"
@@ -94,7 +95,7 @@ void Assist::update()
     // Show that the smoothing ring is active
     m_smoothing_ring_inner.setOutlineColor(sf::Color::Yellow);
     m_smoothing_ring_outer.setOutlineColor(sf::Color::Yellow);
-    
+
     /* Radial Smoothing */
     std::cout
         << "[core/navigation] "

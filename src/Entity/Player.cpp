@@ -2,6 +2,7 @@
 
 #include "Entity/Player.hpp"
 #include "Core/Assist.hpp"
+#include "Core/Navigation.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Particles.hpp"
 #include "Math/Vector2.hpp"

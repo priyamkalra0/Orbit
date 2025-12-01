@@ -1,3 +1,5 @@
+#include <optional>
+#include <functional>
 #include "Core/Navigation.hpp"
 #include "Core/Level.hpp"
 #include "Entity/Player.hpp"

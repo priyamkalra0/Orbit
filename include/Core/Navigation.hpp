@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Entity/Planet.hpp"
+#include "Entity/Orbit.hpp"
 #include "Entity/Player.hpp"
+#include "Math/Vector2.hpp"
 
 struct NavigationContext
 {

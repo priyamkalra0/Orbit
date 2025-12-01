@@ -1,7 +1,7 @@
 #pragma once
 
+#include <utility>
 #include <SFML/Graphics.hpp>
-#include "Core/Navigation.hpp"
 #include "Entity/Player.hpp"
 #include "Graphics/World.hpp"
 

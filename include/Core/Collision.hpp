@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Entity/Player.hpp"
 #include "Entity/Planet.hpp"
 
 class Collision

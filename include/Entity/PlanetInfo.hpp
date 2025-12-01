@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "Graphics/Color.hpp"
+#include "Math/Vector2.hpp"
 
 struct PlanetInfo
 {
