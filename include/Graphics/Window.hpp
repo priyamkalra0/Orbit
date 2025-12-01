@@ -88,6 +88,16 @@ public:
         m_render_window.display();
     }
 
+    sf::Vector2f map_pixel_to_coords(sf::Vector2i const& pixel) const
+    {
+        return m_render_window.mapPixelToCoords(pixel);
+    }
+
+    sf::Vector2i map_coords_to_pixel(sf::Vector2f const& coords) const
+    {
+        return m_render_window.mapCoordsToPixel(coords);
+    }
+
     sf::RenderWindow& get_render_window()
     {
         return m_render_window;
