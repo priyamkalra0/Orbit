@@ -53,16 +53,22 @@ bool Game::process_events()
     {
         if (event->is<sf::Event::Closed>()) return true;
 
-        if (auto const* resized {event->getIf<sf::Event::Resized>()})
+        if (auto const* resized { event->getIf<sf::Event::Resized>() })
             Window.handle_resize(resized->size);
 
-        if (auto const* key {event->getIf<sf::Event::KeyPressed>()})
-            process_input(*key);
+        if (auto const* key { event->getIf<sf::Event::KeyPressed>() })
+            process_key(*key);
+
+        if (auto const* mouse { event->getIf<sf::Event::MouseMoved>() })
+            process_mouse_move(*mouse);
+
+        if (auto const* mouse { event->getIf<sf::Event::MouseButtonPressed>() })
+            process_mouse_click(*mouse);
     }
     return false;
 }
 
-void Game::process_input(sf::Event::KeyPressed const& key)
+void Game::process_key(sf::Event::KeyPressed const& key)
 {
     if (key.code == sf::Keyboard::Key::Space) // toggle orbit
     {
@@ -82,6 +88,36 @@ void Game::process_input(sf::Event::KeyPressed const& key)
 
     if (key.code == sf::Keyboard::Key::I)
         return m_player.set_velocity(-1.0f * m_player.get_velocity()); // invert velocity
+}
+
+void Game::process_mouse_click(sf::Event::MouseButtonPressed const& _)
+{
+    /* Toggles camera mode */
+    if (Camera.is_locked())
+    {
+        Camera.unlock();
+        return Camera.set_follow_smoothing_power( /* Player follow mode */
+            Camera::param_player_follow_smoothing_power
+        );
+    }
+
+    Camera.set_follow_smoothing_power( /* Seek mode */
+        Camera::param_seek_follow_smoothing_power
+    );
+    Camera.lock();
+}
+
+void Game::process_mouse_move(sf::Event::MouseMoved const& mouse)
+{
+    /* Handles camera's seek mode */
+    if (!Camera.is_locked()) return; // Seek mode OFF.
+
+    auto const& position = \
+        Window.map_pixel_to_coords(mouse.position);
+
+    Camera.unlock();
+    Camera.set_target(position);
+    Camera.lock();
 }
 
 void Game::update()
