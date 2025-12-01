@@ -81,11 +81,6 @@ void Assist::update()
      * and the planet's orbit is turned on */
     if (!m_player->is(PlayerState::InsideSmoothingRing)) return;
 
-
-    // Show that the smoothing ring is active
-    m_smoothing_ring_inner.setOutlineColor(sf::Color::Yellow);
-    m_smoothing_ring_outer.setOutlineColor(sf::Color::Yellow);
-
     if (v_radial.length() > param_assist_radial_smoothing_threshold)
     {
         std::cout
@@ -96,6 +91,10 @@ void Assist::update()
         return; // Other assistance is not provided if radial smoothing did not happen
     }
 
+    // Show that the smoothing ring is active
+    m_smoothing_ring_inner.setOutlineColor(sf::Color::Yellow);
+    m_smoothing_ring_outer.setOutlineColor(sf::Color::Yellow);
+    
     /* Radial Smoothing */
     std::cout
         << "[core/navigation] "
