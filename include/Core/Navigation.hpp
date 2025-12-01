@@ -5,6 +5,11 @@
 
 struct NavigationContext
 {
+    /* Player's velocity components
+     * relative to target planet */
+    sf::Vector2f player_radial_v;
+    sf::Vector2f player_tangent_v;
+
     /* Player's error relative to current
      * target orbit */
     float const player_error;

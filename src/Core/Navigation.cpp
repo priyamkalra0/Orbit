@@ -55,7 +55,16 @@ NavigationContext Navigation::make_context() const
     /* We still need to do some work to find the previous planet */
     Planet& ref_prev = ctx_get_previous_planet(ref_target);
 
+    /* Player's relative velocity components */
+    sf::Vector2f v_radial { m_player->get_radial_velocity_vector(ref_target.get_info()) };
+    if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
+
+    sf::Vector2f v_tangent { m_player->get_tangential_velocity_vector(ref_target.get_info()) };
+    if (v_tangent.length() < 1.0f) v_tangent *= 0.0f;
+
     return {
+    .player_radial_v = v_radial,
+    .player_tangent_v = v_tangent,
     .player_error = player_error,
     .target_planet = ref_target,
     .target_orbit = ref_target.get_orbit(),

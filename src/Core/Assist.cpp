@@ -48,16 +48,13 @@ void Assist::update()
 
     init_smoothing_ring_shape(orbit_origin);
 
-    sf::Vector2f v_radial { m_player->get_radial_velocity_vector(target_planet.get_info()) };
-    if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
-
-    sf::Vector2f v_tangential { m_player->get_tangential_velocity_vector(target_planet.get_info()) };
-    if (v_tangential.length() < 1.0f) v_tangential *= 0.0f;
+    auto v_radial = ctx.player_radial_v;
+    auto v_tangent = ctx.player_tangent_v;
 
     std::cout
         << "[core/navigation] [current state] "
         << "v_radial: " << v_radial.length()
-        << ", v_tangential: " << v_tangential.length()
+        << ", v_tangential: " << v_tangent.length()
         << ", error: " << ctx.player_error
         << "\n";
 
@@ -73,7 +70,7 @@ void Assist::update()
 
         target_planet.set_mass(
             (1.0f + param_assist_planet_mass_boosting_power) *
-            (v_tangential.lengthSquared() * target_radius) / Navigation.G
+            (v_tangent.lengthSquared() * target_radius) / Navigation.G
         );
 
         std::cout << target_planet.get_mass() << "\n";
@@ -116,13 +113,16 @@ void Assist::update()
         << "[planet mass adjusted] "
         << target_planet.get_mass() << " -> ";
 
-    target_planet.set_mass((v_tangential.lengthSquared() * (target_radius + ctx.player_error)) / Navigation.G);
+    target_planet.set_mass(
+        (v_tangent.lengthSquared() * (target_radius + ctx.player_error))
+        / Navigation.G
+    );
 
     std::cout << target_planet.get_mass() << "\n";
 
     /* Addon: Tangential Correction */
     float const correction_power {
-        (v_tangential.length() < param_assist_tangential_target_velocity)
+        (v_tangent.length() < param_assist_tangential_target_velocity)
         ? param_assist_tangential_boosting_power
         : -param_assist_tangential_smoothing_power
     };
@@ -131,13 +131,13 @@ void Assist::update()
         << "[core/navigation] "
         << "[tangential correction applied ("
         << correction_power << ")] "
-        << v_tangential.length() << " -> ";
+        << v_tangent.length() << " -> ";
 
-    v_tangential *= (1.0f + correction_power);
+    v_tangent *= (1.0f + correction_power);
 
-    std::cout << v_tangential.length() << std::endl;
+    std::cout << v_tangent.length() << std::endl;
 
-    m_player->set_velocity(v_radial + v_tangential);
+    m_player->set_velocity(v_radial + v_tangent);
 }
 
 void Assist::init_target_radius_ring(sf::Vector2f const& position, float const radius)
