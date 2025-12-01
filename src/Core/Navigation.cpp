@@ -1,6 +1,6 @@
 #include "Core/Navigation.hpp"
 #include "Core/Level.hpp"
-
+#include "Entity/Player.hpp"
 
 template <typename T>
 using NullableRef = std::optional<std::reference_wrapper<T>>;
@@ -82,7 +82,7 @@ Planet& Navigation::ctx_get_previous_planet(Planet& current_target_ref) const
 
     if (
         &m_context->target_planet != &current_target_ref /* Target planet has changed */
-        && m_player->is(PlayerState::InTargetOrbit) /* Player was stable in orbit */
+        && m_player->is(PlayerState::InStableOrbit) /* Player was stable in orbit */
     )  return m_context->target_planet; /* Update previous planet; allowing player to respawn there */
 
     return m_context->previous_planet; /* Otherwise previous planet remains unchanged; player will respawn further back */
