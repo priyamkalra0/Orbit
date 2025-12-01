@@ -86,7 +86,7 @@ bool Player::is(PlayerState const& state) const
         && is(PlayerState::SomewhereInsideOrbit) //ctx.player_error < smoothing_ring_outer_size
     );
     case PlayerState::SomewhereInsideOrbit: return (ctx.player_error < smoothing_ring_outer_size);
-    case PlayerState::InStableOrbit: return is(PlayerState::InsideSmoothingRing)
+    case PlayerState::InStableOrbit: return is(PlayerState::SomewhereInsideOrbit)
                                          && ctx.player_radial_v.length()
                                             < Assist.param_assist_radial_smoothing_threshold;
 
