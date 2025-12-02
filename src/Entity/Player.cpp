@@ -60,7 +60,7 @@ void Player::reset()
     ); // at target orbit
 
     set_velocity({
-        Assist.param_assist_tangent_target_velocity,
+        Player::param_target_orbital_velocity,
         0
     }); // target velocity, in tangent direction
 

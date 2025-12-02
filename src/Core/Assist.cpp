@@ -17,7 +17,7 @@ Assist::Assist()
         << "\n Tangential Correction Power: "
         << param_assist_tangent_boosting_power
         << "\n Tangential Target Velocity: "
-        << param_assist_tangent_target_velocity
+        << Player::param_target_orbital_velocity
         << "\n Radial Smoothing Ring Size: "
         << param_assist_radial_smoothing_ring_size
         << "\n";
@@ -109,7 +109,7 @@ void Assist::update()
 
     /* Addon: Tangential Correction */
     float const v_tangent_error = \
-        param_assist_tangent_target_velocity - v_tangent.length();
+        Player::param_target_orbital_velocity - v_tangent.length();
 
     if (std::abs(v_tangent_error) > param_assist_tangent_correction_tolerance_factor)
     {
