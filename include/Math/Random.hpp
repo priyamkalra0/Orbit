@@ -4,8 +4,8 @@
 #include <utility>
 #include "Math/Vector2.hpp"
 
-template <typename T>
-using urd = std::uniform_real_distribution<T>;
+template <typename T> using uid = std::uniform_int_distribution<T>;
+template <typename T> using urd = std::uniform_real_distribution<T>;
 using ufd = urd<float>;
 
 class Random
@@ -25,9 +25,22 @@ public:
     }
 
     template <typename T>
+    T get(uid<T> const& dist)
+    {
+        auto& _dist = const_cast<uid<T>&>(dist); /* Bad idea? */
+        return _dist(m_engine);
+    }
+
+    template <typename T>
     T get(T const& min, T const& max)
     {
         return get(urd<T>{min, max});
+    }
+
+    template <typename T>
+    T get(int32_t const& min, int32_t const& max)
+    {
+        return get(uid<T>{min, max});
     }
 
     template <typename T>
