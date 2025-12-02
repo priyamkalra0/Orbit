@@ -120,19 +120,21 @@ void Game::update()
          * FIXME: process_input() is still being called */
         return ParticleEmitter.update();
 
+
     Navigation.update();
     Assist.update();
 
     auto& ctx = Navigation.get_context();
+    auto& target_orbit = ctx.target_orbit;
 
-    ctx.target_orbit.apply_force(m_player);
+    target_orbit.update();
     m_player.update();
 
     Camera.update();
 
     /* Follow player from the next frame
      * if it is far outside the orbit of any planet */
-    Camera.set_target(ctx.target_planet.get_position());
+    Camera.set_target(target_orbit.get_origin());
     if (m_player.is(PlayerState::FarOutsideOrbit))
         Camera.set_target(m_player.get_position());
 }

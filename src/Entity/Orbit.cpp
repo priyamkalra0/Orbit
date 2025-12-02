@@ -1,4 +1,6 @@
 #include "Entity/Orbit.hpp"
+
+#include "Core/Game.hpp"
 #include "Core/Navigation.hpp"
 #include "Entity/PlanetInfo.hpp"
 #include "Entity/Player.hpp"
@@ -54,14 +56,16 @@ void Orbit::init_rings(float const highlight_factor)
     }
 }
 
-sf::Vector2f Orbit::calculate_force(Player const& player)
+void Orbit::update()
 {
-    if (!m_state) return {0.0f, 0.0f};
+    if (!m_state) return;
+
+    auto& player = Game.get_player();
 
     sf::Vector2f const distance_vec { player.get_distance_vec(m_owner.position) };
     float const distance { distance_vec.length() };
 
-    if (distance <= 1.0f) return {0.0f, 0.0f}; // Too close = massive force
+    if (distance <= 1.0f) return; // Too close = massive force
 
     /* Highlight active orbit */
     float const highlight_distance_factor = std::min(
@@ -70,16 +74,13 @@ sf::Vector2f Orbit::calculate_force(Player const& player)
         );
     init_rings(1.5f * param_visual_ring_highlight_factor * highlight_distance_factor);
 
+    /* Accelerate player */
     sf::Vector2f const direction { -distance_vec.normalized() };
     float const force_magnitude { (Navigation::G * m_owner.mass) / (distance * distance) };
 
-    return direction * force_magnitude;
+    return player.accelerate(direction * force_magnitude);
 }
 
-void Orbit::apply_force(Player& player)
-{
-    player.accelerate(calculate_force(player));
-}
 
 void Orbit::draw() const
 {

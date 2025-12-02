@@ -21,9 +21,7 @@ public:
     constexpr static float param_visual_outer_ring_offset { World::scale_distance(35.0f) };
 
     void draw() const;
-
-    [[nodiscard]] sf::Vector2f calculate_force(Player const& player);
-    void apply_force(Player& player);
+    void update();
 
     [[nodiscard]] float get_radius() const { return m_radius; }
     sf::Vector2f const& get_origin() const { return m_owner.position; }
@@ -35,11 +33,13 @@ public:
     [[nodiscard]] bool is_on() const { return m_state; }
 
 private:
-    void init_rings(float highlight_factor = 0.0f);
-
     bool m_state;
     float m_radius;
-    sf::Color m_color;
     PlanetInfo const& m_owner;
+
+    /* Visual */
+    void init_rings(float highlight_factor = 0.0f);
+
+    sf::Color m_color;
     sf::CircleShape m_rings[param_visual_ring_count];
 };
