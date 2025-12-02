@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Graphics/Window.hpp"
 #include "Math/Vector2.hpp"
 
 class World
@@ -8,7 +9,6 @@ public:
     World() = delete;
 
     constexpr static sf::Vector2u param_design_resolution {1920, 1080};
-    constexpr static sf::Vector2u param_internal_resolution {2560, 1440};
 
     [[nodiscard]] constexpr static float scale_x(float const x)
     {
@@ -40,6 +40,13 @@ public:
     }
 
 private:
-    constexpr static float m_scale_factor_x { static_cast<float>(param_internal_resolution.x) / static_cast<float>(param_design_resolution.x) };
-    constexpr static float m_scale_factor_y { static_cast<float>(param_internal_resolution.y) / static_cast<float>(param_design_resolution.y) };
+    constexpr static float m_scale_factor_x {
+        static_cast<float>(Window::param_window_internal_resolution.x)
+        / static_cast<float>(param_design_resolution.x)
+    };
+    
+    constexpr static float m_scale_factor_y {
+        static_cast<float>(Window::param_window_internal_resolution.y)
+        / static_cast<float>(param_design_resolution.y)
+    };
 };
