@@ -163,7 +163,7 @@ void Player::update()
     // Calculate rotation based on velocity
     if (current_velocity_mag < 0.0f) return;
     float const angle_radians { std::atan2(current_velocity.y, current_velocity.x) };
-    float const angle_degrees { static_cast<float>(angle_radians * 180.0f / M_PI) };
+    float const angle_degrees { sf::radians(angle_radians).asDegrees() };
     m_shape.setRotation(sf::degrees(angle_degrees + 90.0f));
 }
 
