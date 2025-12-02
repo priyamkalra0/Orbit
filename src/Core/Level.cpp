@@ -5,12 +5,12 @@
 #include "Graphics/Color.hpp"
 #include "Math/Vector2.hpp"
 
-void Level::generate(Player const& player)
+void Level::generate()
 {
     /* Planet Generation */
     m_planets.reserve(param_planet_count);
 
-    float const v_target_sq { player.get_velocity().lengthSquared() };
+    constexpr float v_target_sq { Player::param_target_orbital_velocity * Player::param_target_orbital_velocity };
 
     while (m_planets.size() < param_planet_count)
     {

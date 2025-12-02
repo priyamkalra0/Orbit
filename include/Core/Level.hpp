@@ -13,7 +13,7 @@ class Level
 public:
     Level() = default;
 
-    void generate(Player const& player);
+    void generate();
 
     std::vector<Planet>& get_planets() { return m_planets; }
 

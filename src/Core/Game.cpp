@@ -27,7 +27,7 @@ Level_t Level;
 
 Game::Game()
 {
-    Level.generate(m_player);
+    Level.generate();
     Assist.bind(m_player);
     Navigation.bind(m_player);
     Navigation.load_context();
