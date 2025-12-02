@@ -8,13 +8,10 @@
 #include "Graphics/Particles.hpp"
 #include "Math/Vector2.hpp"
 
-Player::Player(sf::Vector2f const& position, sf::Vector2f const& initial_velocity)
-    : m_position{position},
-      m_acceleration{0.0f, 0.0f}
+Player::Player()
 {
     // Verlet integration needs the previous position
-    float const dt { Window.get_delta_time() };
-    m_previous_position = m_position - initial_velocity * dt;
+    m_previous_position = m_position; // aka NULL velocity
 
     m_shape.setPointCount(3);
     m_shape.setPoint(0, {0.0f, -20.0f});

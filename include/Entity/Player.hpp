@@ -21,7 +21,7 @@ enum class PlayerState
 class Player
 {
 public:
-    explicit Player(sf::Vector2f const& position = {0, 0}, sf::Vector2f const& initial_velocity = {0, 0});
+    explicit Player();
 
     /* Configuration Parameters */
     constexpr static float param_target_orbital_velocity { World::scale_distance(500.0f) };
