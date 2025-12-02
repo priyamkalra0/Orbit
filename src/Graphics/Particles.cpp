@@ -11,15 +11,15 @@ void ParticleEmitter::update()
     float const dt = Window.get_delta_time();
     auto& ctx = Navigation.get_context();
 
-    for (auto p = m_particles.begin(); p != m_particles.end(); )
+    for (auto particle = m_particles.begin(); particle != m_particles.end(); )
     {
-        p->lifetime -= dt;
+        particle->lifetime -= dt;
 
         if (
-            p->lifetime <= 0.0f ||
-            Collision::intersects(ctx.nearest_planet.get_info(), p->shape)
+            particle->lifetime <= 0.0f ||
+            Collision::intersects(ctx.nearest_planet.get_info(), particle->shape)
         ) {
-            p = m_particles.erase(p); continue;
+            particle = m_particles.erase(particle); continue;
         }
 
         /* Simple acceleration:
@@ -29,19 +29,19 @@ void ParticleEmitter::update()
          * shapes have a limited lifetime anyways,
          * and only managed by this method
          */
-        p->velocity += param_emit_particle_acceleration * dt;
-        p->shape.setPosition(
-            p->shape.getPosition()
-            + p->velocity * dt
+        particle->velocity += param_emit_particle_acceleration * dt;
+        particle->shape.setPosition(
+            particle->shape.getPosition()
+            + particle->velocity * dt
         );
 
         /* Fade out */
-        float const ratio = p->lifetime / m_random.get(param_emit_particle_lifetime_dist);
-        sf::Color color = p->shape.getFillColor();
+        float const ratio = particle->lifetime / m_random.get(param_emit_particle_lifetime_dist);
+        sf::Color color = particle->shape.getFillColor();
         color.a = static_cast<uint8_t>(255 * ratio);
-        p->shape.setFillColor(color);
+        particle->shape.setFillColor(color);
 
-        ++p;
+        ++particle;
     }
 }
 
