@@ -102,7 +102,11 @@ Planet& Navigation::ctx_get_previous_planet(Planet& current_target_ref) const
 
 void Navigation::draw() const { /* Nothing as of now */ }
 
-void Navigation::update() { load_context(); /* Reload context once every frame */ }
+void Navigation::update()
+{
+    if (!m_player) m_player = &Game.get_player();
+    load_context(); /* Reload context once every frame */
+}
 
 void Navigation::release_player_from_orbit() const
 {

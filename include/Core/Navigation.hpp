@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <optional>
+#include "Core/Game.hpp"
 #include "Entity/Planet.hpp"
 #include "Entity/Orbit.hpp"
 #include "Entity/Player.hpp"
@@ -50,7 +51,6 @@ class Navigation
 public:
     Navigation() = default;
 
-    void bind(Player& player) {  m_player = &player; }
     void load_context() { m_context.emplace(make_context()); }
 
     constexpr static float G { 10.0f };
