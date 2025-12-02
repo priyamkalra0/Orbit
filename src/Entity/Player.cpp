@@ -88,7 +88,8 @@ bool Player::is(PlayerState const& state) const
     switch (state)
     {
     case PlayerState::FarOutsideOrbit: return (ctx.player_error > param_orbit_far_distance_factor * smoothing_ring_outer_size);
-    case PlayerState::SomewhereOutsideOrbit: return (ctx.player_error > param_orbit_error_tolerance);
+    case PlayerState::SomewhereOutsideOrbit: return !is(PlayerState::SomewhereInsideOrbit);
+    // case PlayerState::NotInTargetOrbit: return (ctx.player_error > param_orbit_error_tolerance);
     case PlayerState::NearOutsideOrbit: return is(PlayerState::SomewhereOutsideOrbit)
                                              & !is(PlayerState::FarOutsideOrbit);
 
