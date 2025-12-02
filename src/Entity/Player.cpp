@@ -195,15 +195,17 @@ void Player::set_velocity(sf::Vector2f const& new_velocity)
     m_acceleration = {0.0f, 0.0f};
 }
 
-sf::Vector2f Player::get_radial_velocity_vector(PlanetInfo const& planet) const
+sf::Vector2f Player::get_radial_velocity_vector() const
 {
-    sf::Vector2f const radial_direction { get_distance_vec(planet.position).normalized() };
+    auto const& ctx { Navigation.get_context() };
+    auto const& origin { ctx.target_orbit.get_origin() };
+    sf::Vector2f const radial_direction { get_distance_vec(origin).normalized() };
     return get_velocity().projectedOnto(radial_direction);
 }
 
-sf::Vector2f Player::get_tangential_velocity_vector(PlanetInfo const& planet) const
+sf::Vector2f Player::get_tangential_velocity_vector() const
 {
-    return get_velocity() - get_radial_velocity_vector(planet);
+    return get_velocity() - get_radial_velocity_vector();
 }
 
 void Player::set_position(sf::Vector2f const& position)

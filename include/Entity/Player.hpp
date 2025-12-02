@@ -48,8 +48,8 @@ public:
     float get_distance(sf::Vector2f const& from_pos) const;
     float get_distance_squared(sf::Vector2f const& from_pos) const;
 
-    sf::Vector2f get_radial_velocity_vector(PlanetInfo const& planet) const;
-    sf::Vector2f get_tangential_velocity_vector(PlanetInfo const& planet) const;
+    sf::Vector2f get_radial_velocity_vector() const;
+    sf::Vector2f get_tangential_velocity_vector() const;
 
     void invert_velocity();
     void set_velocity(sf::Vector2f const& new_velocity); /* NOTE: WILL NULL THE ACCELERATION */

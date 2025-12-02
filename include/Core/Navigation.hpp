@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+#include <optional>
 #include "Entity/Planet.hpp"
 #include "Entity/Orbit.hpp"
 #include "Entity/Player.hpp"
@@ -68,6 +70,8 @@ public:
 
 private:
     [[nodiscard]] NavigationContext make_context() const;
+
+    [[nodiscard]] std::pair<sf::Vector2f, sf::Vector2f> ctx_get_velocity_components() const;
     Planet& ctx_get_previous_planet(Planet& current_target_ref) const;
 
     std::optional<NavigationContext> m_context;

@@ -1,4 +1,3 @@
-#include <optional>
 #include <functional>
 #include "Core/Navigation.hpp"
 #include "Core/Level.hpp"
@@ -58,11 +57,8 @@ NavigationContext Navigation::make_context() const
     Planet& ref_prev = ctx_get_previous_planet(ref_target);
 
     /* Player's relative velocity components */
-    sf::Vector2f v_radial { m_player->get_radial_velocity_vector(ref_target.get_info()) };
-    if (v_radial.length() < 1.0f) v_radial *= 0.0f; // We don't care about values that small
-
-    sf::Vector2f v_tangent { m_player->get_tangential_velocity_vector(ref_target.get_info()) };
-    if (v_tangent.length() < 1.0f) v_tangent *= 0.0f;
+    const auto& [v_radial, v_tangent] = \
+        ctx_get_velocity_components();
 
     return {
     .player_radial_v = v_radial,
@@ -75,6 +71,20 @@ NavigationContext Navigation::make_context() const
     .previous_planet = ref_prev,
     .previous_orbit = ref_prev.get_orbit(),
     };
+}
+
+std::pair<sf::Vector2f, sf::Vector2f> Navigation::ctx_get_velocity_components() const
+{
+    /* Context is NULL => game just started => velocity = NULL */
+    if (!has_context()) return {}; // default construct NULL vectors
+
+    sf::Vector2f v_radial = m_player->get_radial_velocity_vector();
+    if (v_radial.length() < 1.0f) v_radial *= 0.0f;
+
+    sf::Vector2f v_tangent = m_player->get_tangential_velocity_vector();
+    if (v_tangent.length() < 1.0f) v_tangent *= 0.0f;
+
+    return { v_radial, v_tangent };
 }
 
 Planet& Navigation::ctx_get_previous_planet(Planet& current_target_ref) const
