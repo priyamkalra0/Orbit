@@ -93,3 +93,9 @@ Planet& Navigation::ctx_get_previous_planet(Planet& current_target_ref) const
 void Navigation::draw() const { /* Nothing as of now */ }
 
 void Navigation::update() { load_context(); /* Reload context once every frame */ }
+
+void Navigation::release_player_from_orbit() const
+{
+    for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
+    return get_context().target_orbit.turn_off(); // turn off active planet's orbit
+}

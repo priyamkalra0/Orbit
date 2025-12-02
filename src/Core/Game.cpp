@@ -69,16 +69,12 @@ bool Game::process_events()
 
 void Game::process_key(sf::Event::KeyPressed const& key)
 {
-    if (key.code == sf::Keyboard::Key::Space) // toggle orbit
-    {
-        auto& ctx { Navigation.get_context() };
-        for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
-        return ctx.target_orbit.toggle(); // turn off active planet's orbit
-    }
+    if (key.code == sf::Keyboard::Key::Space) // release player
+        Navigation.release_player_from_orbit();
 
     /* Debug Cheats */
     if (key.code == sf::Keyboard::Key::D) // toggle debug
-        {m_debug_mode = !m_debug_mode; return;}
+        { m_debug_mode = !m_debug_mode; return; }
 
     if (!m_debug_mode) return;
 
