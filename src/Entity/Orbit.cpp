@@ -58,7 +58,7 @@ sf::Vector2f Orbit::calculate_force(Player const& player)
 {
     if (!m_state) return {0.0f, 0.0f};
 
-    sf::Vector2f const distance_vec { player.get_distance_vec(m_owner) };
+    sf::Vector2f const distance_vec { player.get_distance_vec(m_owner.position) };
     float const distance { distance_vec.length() };
 
     if (distance <= 1.0f) return {0.0f, 0.0f}; // Too close = massive force

@@ -30,7 +30,7 @@ NavigationContext Navigation::make_context() const
 
     for (Planet& planet : Level.get_planets())
     {
-        float const current_distance { m_player->get_distance(planet.get_info()) };
+        float const current_distance { m_player->get_distance(planet.get_position()) };
         if (min_distance_orbit_unchecked < 0.0f || current_distance < min_distance_orbit_unchecked)
         {
             min_distance_orbit_unchecked = current_distance;

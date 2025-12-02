@@ -171,19 +171,19 @@ void Player::invert_velocity()
     std::swap(m_position, m_previous_position);
 }
 
-sf::Vector2f Player::get_distance_vec(PlanetInfo const& planet) const
+sf::Vector2f Player::get_distance_vec(sf::Vector2f const& from_pos) const
 {
-    return get_position() - planet.position;
+    return get_position() - from_pos;
 }
 
-float Player::get_distance(PlanetInfo const& planet) const
+float Player::get_distance(sf::Vector2f const& from_pos) const
 {
-    return get_distance_vec(planet).length();
+    return get_distance_vec(from_pos).length();
 }
 
-float Player::get_distance_squared(PlanetInfo const& planet) const
+float Player::get_distance_squared(sf::Vector2f const& from_pos) const
 {
-    return get_distance_vec(planet).lengthSquared();
+    return get_distance_vec(from_pos).lengthSquared();
 }
 
 void Player::set_velocity(sf::Vector2f const& new_velocity)
@@ -197,7 +197,7 @@ void Player::set_velocity(sf::Vector2f const& new_velocity)
 
 sf::Vector2f Player::get_radial_velocity_vector(PlanetInfo const& planet) const
 {
-    sf::Vector2f const radial_direction { get_distance_vec(planet).normalized() };
+    sf::Vector2f const radial_direction { get_distance_vec(planet.position).normalized() };
     return get_velocity().projectedOnto(radial_direction);
 }
 

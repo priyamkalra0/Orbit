@@ -44,9 +44,9 @@ public:
     sf::Vector2f const& get_position() const { return m_position; }
     sf::Vector2f get_velocity() const;
 
-    sf::Vector2f get_distance_vec(PlanetInfo const& planet) const;
-    float get_distance(PlanetInfo const& planet) const;
-    float get_distance_squared(PlanetInfo const& planet) const;
+    sf::Vector2f get_distance_vec(sf::Vector2f const& from_pos) const;
+    float get_distance(sf::Vector2f const& from_pos) const;
+    float get_distance_squared(sf::Vector2f const& from_pos) const;
 
     sf::Vector2f get_radial_velocity_vector(PlanetInfo const& planet) const;
     sf::Vector2f get_tangential_velocity_vector(PlanetInfo const& planet) const;
