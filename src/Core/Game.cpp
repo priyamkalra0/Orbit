@@ -11,12 +11,7 @@
 #include "Math/Vector2.hpp"
 
 /* Graphics Managers */
-Window_t Window {
-    "Orbit",
-    {1280, 720}, /* smaller window = easier to manage */
-    {2560, 1440}
-};
-
+Window_t Window;
 Camera_t Camera;
 ParticleEmitter_t ParticleEmitter;
 

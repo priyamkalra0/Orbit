@@ -6,13 +6,17 @@
 class Window
 {
 public:
-    Window(std::string const& title, sf::Vector2u const& initial_size, sf::Vector2u const& internal_resolution)
+    static constexpr auto param_window_title { "Orbit" };
+    static constexpr sf::Vector2u param_window_initial_size {1280, 720}; /* smaller window = easier to manage */
+    static constexpr sf::Vector2u param_window_internal_resolution {2560, 1440};
+
+    Window()
         : m_render_window{
-            sf::VideoMode{{initial_size.x, initial_size.y}},
-            title, sf::State::Windowed,
+            sf::VideoMode{param_window_initial_size},
+            param_window_title, sf::State::Windowed,
             sf::ContextSettings{0, 0, 16} // 16x anti-aliasing
         },
-          m_internal_resolution{internal_resolution},
+          m_internal_resolution{param_window_internal_resolution},
           m_framerate_limit{0}
     {
         set_framerate_limit(120);
@@ -24,7 +28,7 @@ public:
             m_view.getSize().x / 2.0f,
             m_view.getSize().y / 2.0f
         });
-        handle_resize(initial_size);
+        handle_resize(param_window_initial_size);
     }
 
     void handle_resize(sf::Vector2u const& size)
