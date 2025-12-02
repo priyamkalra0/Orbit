@@ -58,6 +58,12 @@ public:
         };
     }
 
+    template <typename T> T get();
+    template<> bool get() { return get<int32_t>(0, 1); }
+
+    template<typename T = int8_t> /* template for easy casting to any numerical type */
+    T sign() { return get<bool>() ? 1 : -1; }
+
 private:
     std::mt19937 m_engine;
 };
