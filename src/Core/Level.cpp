@@ -8,24 +8,24 @@
 void Level::generate(Player const& player)
 {
     /* Planet Generation */
-    m_planets.reserve(planet_count);
+    m_planets.reserve(param_planet_count);
 
     float const v_target_sq { player.get_velocity().lengthSquared() };
 
-    while (m_planets.size() < planet_count)
+    while (m_planets.size() < param_planet_count)
     {
-        sf::Vector2f const position { m_random.get(planet_position_distribution) };
+        sf::Vector2f const position { m_random.get(param_planet_position_dist) };
 
-        float const dmt { m_random.get(planet_determinant_distribution) };
-        float const radius { World::scale_distance(dmt * planet_radius_scaling_factor) };
-        float const orbit_radius { World::scale_distance(dmt * orbit_radius_scaling_factor) };
+        float const dmt { m_random.get(param_planet_determinant_dist) };
+        float const radius { World::scale_distance(dmt * param_planet_radius_scaling_factor) };
+        float const orbit_radius { World::scale_distance(dmt * param_orbit_radius_scaling_factor) };
 
         /* Check for overlap with existing planets */
         bool overlap { false };
         for (Planet const& other : m_planets)
         {
             float const min_distance {
-                planet_padding + orbit_radius
+                param_planet_padding + orbit_radius
                 + other.get_orbit().get_radius()
             };
 
@@ -38,9 +38,9 @@ void Level::generate(Player const& player)
 
         auto const orbit_color {
             Color::get<Color::HWB>(
-                m_random.get(visual_orbit_color_hue_distribution),
-                visual_orbit_color_whiteness,
-                visual_orbit_color_blackness
+                m_random.get(param_visual_orbit_color_hue_dist),
+                param_visual_orbit_color_whiteness,
+                param_visual_orbit_color_blackness
            )
         };
 
@@ -48,7 +48,7 @@ void Level::generate(Player const& player)
             position,
             (v_target_sq * orbit_radius) / Navigation::G,
             radius,
-            visual_planet_color,
+            param_visual_planet_color,
             orbit_radius,
             orbit_color
         );
