@@ -27,10 +27,10 @@ public:
      * at aiming for a tangent path to the orbit
      * that is; their radial velocity was
      * under the tolerable threshold */
-    float const param_assist_radial_smoothing_threshold { World.scale_distance(400.0f) };
+    float const param_assist_radial_smoothing_threshold { World::scale_distance(400.0f) };
     constexpr static float param_assist_radial_smoothing_power { 0.025f };
 
-    float const param_assist_radial_smoothing_ring_size { World.scale_distance(125.0f) };
+    float const param_assist_radial_smoothing_ring_size { World::scale_distance(125.0f) };
     std::pair<float, float> const param_assist_radial_smoothing_ring_ratio { 1, 100 }; // inner : outer
     std::pair<float, float> const param_assist_radial_smoothing_ring_region_size {
             param_assist_radial_smoothing_ring_size * param_assist_radial_smoothing_ring_ratio.first
@@ -44,7 +44,7 @@ public:
     /* Addon: Tangential Correction:
      * Helps maintain target tangential velocity
      * while in a semi-stable or stable orbit */
-    float const param_assist_tangent_target_velocity { World.scale_distance(500.0f) };
+    float const param_assist_tangent_target_velocity { World::scale_distance(500.0f) };
     constexpr static float param_assist_tangent_boosting_power { 0.005f };
     constexpr static float param_assist_tangent_smoothing_power { 0.002f };
     constexpr static float param_assist_tangent_correction_tolerance_factor { 10.0f };

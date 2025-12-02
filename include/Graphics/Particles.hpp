@@ -27,11 +27,11 @@ public:
     /* Emitter Parameters */
     ufd const param_emit_particle_spread_angle_dist { 0.0f, 359.0f };
     std::pair<ufd, ufd> const param_emit_particle_velocity_dist {
-        ufd { World.scale_distance(100.f), World.scale_distance(500.0f) }, // x
-        ufd { World.scale_distance(100.f), World.scale_distance(500.0f) }, // y
+        ufd { World::scale_distance(100.f), World::scale_distance(500.0f) }, // x
+        ufd { World::scale_distance(100.f), World::scale_distance(500.0f) }, // y
     };
     ufd const param_emit_particle_lifetime_dist { 0.5f, 2.0f }; // seconds
-    sf::Vector2f const param_emit_particle_acceleration { 0.0f , World.scale_distance(100.0f) };
+    sf::Vector2f const param_emit_particle_acceleration { 0.0f , World::scale_distance(100.0f) };
 
     void update();
     void draw() const;

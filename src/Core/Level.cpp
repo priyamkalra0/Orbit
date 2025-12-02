@@ -17,8 +17,8 @@ void Level::generate(Player const& player)
         sf::Vector2f const position { m_random.get(planet_position_distribution) };
 
         float const dmt { m_random.get(planet_determinant_distribution) };
-        float const radius { World.scale_distance(dmt * planet_radius_scaling_factor) };
-        float const orbit_radius { World.scale_distance(dmt * orbit_radius_scaling_factor) };
+        float const radius { World::scale_distance(dmt * planet_radius_scaling_factor) };
+        float const orbit_radius { World::scale_distance(dmt * orbit_radius_scaling_factor) };
 
         /* Check for overlap with existing planets */
         bool overlap { false };

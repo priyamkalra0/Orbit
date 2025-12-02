@@ -24,7 +24,7 @@ public:
     explicit Player(sf::Vector2f const& position = {0, 0}, sf::Vector2f const& initial_velocity = {0, 0});
 
     /* Configuration Parameters */
-    float const param_max_drift_velocity { World.scale_distance(1000.0f) };
+    float const param_max_drift_velocity { World::scale_distance(1000.0f) };
     constexpr static float param_orbit_error_tolerance { 15.0f }; // +- error within target radius = "in orbit"
     constexpr static float param_orbit_far_distance_factor { 1.5f }; // governs how far away is considered "far outside orbit"
 

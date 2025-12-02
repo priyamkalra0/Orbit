@@ -19,7 +19,7 @@ public:
 
     /* Level Generation Parameters */
     constexpr static uint32_t planet_count { 500 };
-    float const planet_padding { World.scale_distance(250.0f) };
+    float const planet_padding { World::scale_distance(250.0f) };
 
     constexpr static float position_distribution_scaling_factor { 8.0f };
     std::pair<ufd, ufd> const planet_position_distribution {
