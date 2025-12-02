@@ -82,7 +82,7 @@ void Game::process_key(sf::Event::KeyPressed const& key)
         return m_player.reset();
 
     if (key.code == sf::Keyboard::Key::I)
-        return m_player.set_velocity(-1.0f * m_player.get_velocity()); // invert velocity
+        return m_player.invert_velocity();
 }
 
 void Game::process_mouse_click(sf::Event::MouseButtonPressed const& _)

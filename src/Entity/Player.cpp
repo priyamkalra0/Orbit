@@ -166,6 +166,11 @@ sf::Vector2f Player::get_velocity() const
     return (m_position - m_previous_position) / dt;
 }
 
+void Player::invert_velocity()
+{
+    std::swap(m_position, m_previous_position);
+}
+
 sf::Vector2f Player::get_distance_vec(PlanetInfo const& planet) const
 {
     return get_position() - planet.position;
