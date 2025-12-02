@@ -10,8 +10,6 @@ class Assist
 public:
     explicit Assist();
 
-    void bind(Player& player) { m_player = &player; }
-
     /* Navigation Assist Parameters;
      anything related to position/velocity should
      use scaling methods from the `World` class */

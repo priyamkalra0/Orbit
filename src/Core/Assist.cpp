@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Core/Assist.hpp"
+
+#include "Core/Game.hpp"
 #include "Core/Navigation.hpp"
 #include "Entity/Planet.hpp"
 #include "Entity/Orbit.hpp"
@@ -32,6 +34,7 @@ void Assist::draw() const
 
 void Assist::update()
 {
+    if (!m_player) m_player = &Game.get_player();
     assert(m_player);
 
     auto& ctx = Navigation.get_context();
