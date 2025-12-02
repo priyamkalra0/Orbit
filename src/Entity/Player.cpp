@@ -46,6 +46,7 @@ void Player::explode()
 
 void Player::reset()
 {
+    Random respawn_rand; // FIXME: Probably should not make a new one every time
     auto& ctx = Navigation.get_context();
 
     /* Respawn when
@@ -54,15 +55,27 @@ void Player::reset()
     Orbit& respawn_orbit = is(PlayerState::Exploding) ? ctx.previous_orbit : ctx.target_orbit;
     respawn_orbit.turn_on(); // ensure it's on
 
+    const size_t offset_axis = respawn_rand.get<bool>(); // 0 or 1
+
+    float vec_buf[2] { 0 };
+    vec_buf[offset_axis] = \
+        respawn_rand.sign<float>()
+        * respawn_orbit.get_radius();
+
     set_position(
         respawn_orbit.get_origin()
-        - sf::Vector2f{0, respawn_orbit.get_radius()}
+        + sf::Vector2f{vec_buf[0], vec_buf[1]}
     ); // at target orbit
 
+    vec_buf[!offset_axis] = // tangent axis is opposite
+        respawn_rand.sign<float>()
+        * param_target_orbital_velocity;
+    vec_buf[offset_axis] = vec_buf[!offset_axis] * 0.1f; // some radial noise
+
     set_velocity({
-        Player::param_target_orbital_velocity,
-        0
-    }); // target velocity, in tangent direction
+        vec_buf[0],
+        vec_buf[1]
+    }); // target velocity, nearly tangent direction
 
     if (m_exploding) m_exploding = false; // Start drawing player again.
 }
