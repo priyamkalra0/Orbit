@@ -31,7 +31,7 @@ public:
         ufd { World::scale_distance(100.f), World::scale_distance(500.0f) }, // y
     };
     ufd const param_emit_particle_lifetime_dist { 0.5f, 2.0f }; // seconds
-    sf::Vector2f const param_emit_particle_acceleration { 0.0f , World::scale_distance(100.0f) };
+    constexpr static sf::Vector2f param_emit_particle_acceleration { 0.0f , World::scale_distance(100.0f) };
 
     void update();
     void draw() const;

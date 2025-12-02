@@ -18,7 +18,7 @@ public:
     constexpr static float param_visual_ring_spacing_factor { 0.50f };
     constexpr static float param_visual_ring_highlight_clamp { 0.4f };
     constexpr static float param_visual_ring_highlight_factor { 2.0f };
-    float const param_visual_outer_ring_offset { World::scale_distance(35.0f) };
+    constexpr static float param_visual_outer_ring_offset { World::scale_distance(35.0f) };
 
     void draw() const;
 
