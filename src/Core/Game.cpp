@@ -2,7 +2,6 @@
 
 #include "Core/Game.hpp"
 #include "Core/Level.hpp"
-#include "Core/Collision.hpp"
 #include "Core/Navigation.hpp"
 #include "Core/Assist.hpp"
 #include "Graphics/Window.hpp"
@@ -121,9 +120,6 @@ void Game::update()
          * FIXME: process_input() is still being called */
         return ParticleEmitter.update();
 
-    // Particle emitter done; reset player and continue gameplay
-    if (m_player.is(PlayerState::Exploding)) m_player.reset();
-
     Navigation.update();
     Assist.update();
 
@@ -131,9 +127,6 @@ void Game::update()
 
     ctx.target_orbit.apply_force(m_player);
     m_player.update();
-
-    if (Collision::poll_collision(m_player.get_shape()))
-        m_player.explode();
 
     Camera.update();
 

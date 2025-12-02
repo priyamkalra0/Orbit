@@ -2,6 +2,7 @@
 
 #include "Entity/Player.hpp"
 #include "Core/Assist.hpp"
+#include "Core/Collision.hpp"
 #include "Core/Navigation.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Particles.hpp"
@@ -123,6 +124,12 @@ void Player::update()
     std::cout << "[entity/player] [current state] is(NearOutsideOrbit): "
         << is(PlayerState::NearOutsideOrbit) << "\n";
 
+    if (!m_exploding && Collision::poll_collision(m_shape))
+        return explode(); /* Particle emitter takes over, blocking main Game::update() loop */
+
+    /* Particle emitter stopped blocking; reset player and continue gameplay */
+    if (is(PlayerState::Exploding))
+        reset(); // Not returning; since the player shape needs to be synced after reset
 
     float const dt { Window.get_delta_time() };
 
@@ -131,7 +138,7 @@ void Player::update()
     float const current_velocity_mag { current_velocity.length() };
 
     if (
-        Player::is(PlayerState::FarOutsideOrbit) /* Smoothing ring manages velocity inside orbit */
+        is(PlayerState::FarOutsideOrbit) /* Smoothing ring manages velocity inside orbit */
         && current_velocity_mag > param_max_drift_velocity
     )
     {

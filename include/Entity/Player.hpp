@@ -55,7 +55,7 @@ public:
     void set_velocity(sf::Vector2f const& new_velocity); /* NOTE: WILL NULL THE ACCELERATION */
     void set_position(sf::Vector2f const& position); /* NOTE: WILL NULL THE VELOCITY */
 
-    sf::Shape const& get_shape() const { return m_shape; }
+    // sf::Shape const& get_shape() const { return m_shape; }
 
 private:
     bool m_exploding { false };
