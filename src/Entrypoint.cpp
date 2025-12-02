@@ -2,6 +2,5 @@
 
 int main()
 {
-    Game game;
-    game.run();
+    Game.run(); // defined in Game.cpp
 }

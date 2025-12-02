@@ -25,6 +25,9 @@ Navigation_t Navigation;
 Assist_t Assist;
 Level_t Level;
 
+/* Game Manager */
+Game_t Game;
+
 Game::Game()
 {
     Level.generate();

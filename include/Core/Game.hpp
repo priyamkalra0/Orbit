@@ -9,6 +9,9 @@ public:
     Game();
     void run();
 
+    Player& get_player() { return m_player; }
+    Player const& get_player() const { return m_player; }
+
 private:
     bool process_events();
     void process_mouse_click(sf::Event::MouseButtonPressed const& _);
@@ -21,3 +24,6 @@ private:
     bool m_debug_mode { false };
     Player m_player;
 };
+
+using Game_t = Game;
+extern Game_t Game;
