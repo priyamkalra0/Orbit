@@ -121,6 +121,9 @@ void Player::update()
     std::cout << "[entity/player] [current state] is(NearOutsideOrbit): "
         << is(PlayerState::NearOutsideOrbit) << "\n";
 
+    if (m_position == m_previous_position)
+        return reset(); /* Game start; bind to planet nearest to origin */
+
     if (!m_exploding && Collision::poll_collision(m_shape))
         return explode(); /* Particle emitter takes over, blocking main Game::update() loop */
 
@@ -149,7 +152,7 @@ void Player::update()
     }
 
     // Verlet integration
-    sf::Vector2f const current_position{ m_position };
+    sf::Vector2f const current_position { m_position };
     m_position = 2.0f * current_position - m_previous_position + m_acceleration * (dt * dt);
     m_previous_position = current_position;
     m_acceleration = {0.0f, 0.0f};

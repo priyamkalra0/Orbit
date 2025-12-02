@@ -25,8 +25,6 @@ Game_t Game;
 Game::Game()
 {
     Level.generate();
-    Navigation.update();
-    m_player.reset(); // fix player to planet closest to origin
 }
 
 void Game::run()
