@@ -105,11 +105,12 @@ void Navigation::draw() const { /* Nothing as of now */ }
 void Navigation::update()
 {
     if (!m_player) m_player = &Game.get_player();
-    load_context(); /* Reload context once every frame */
+    force_reload(); /* Reload context once every frame */
 }
 
-void Navigation::release_player_from_orbit() const
+void Navigation::release_player_from_orbit()
 {
     for (auto& planet : Level.get_planets()) planet.get_orbit().turn_on(); // turn on everything else
-    return get_context().target_orbit.turn_off(); // turn off active planet's orbit
+    get_context().target_orbit.turn_off(); // turn off active planet's orbit
+    return force_reload();
 }

@@ -51,7 +51,7 @@ class Navigation
 public:
     Navigation() = default;
 
-    void load_context() { m_context.emplace(make_context()); }
+    void force_reload() { m_context.emplace(make_context()); }
 
     constexpr static float G { 10.0f };
 
@@ -66,7 +66,7 @@ public:
 
     [[nodiscard]] bool has_context() const { return m_context.has_value(); }
 
-    void release_player_from_orbit() const;
+    void release_player_from_orbit();
 
 private:
     [[nodiscard]] NavigationContext make_context() const;
