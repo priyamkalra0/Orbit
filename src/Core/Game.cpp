@@ -76,6 +76,14 @@ void Game::process_key(sf::Event::KeyPressed const& key)
 
     if (key.code == sf::Keyboard::Key::I)
         return m_player.invert_velocity();
+
+    if (key.code == sf::Keyboard::Key::T)
+    {
+        auto& ctx { Navigation.get_context() };
+        ctx.target_orbit.turn_off();
+        Navigation.force_reload(); // target orbit has changed
+        return m_player.reset(); // teleport to nearest orbit
+    }
 }
 
 void Game::process_mouse_click(sf::Event::MouseButtonPressed const& _)
@@ -120,7 +128,7 @@ void Game::update()
     Navigation.update();
     Assist.update();
 
-    auto& ctx = Navigation.get_context();
+    auto const& ctx { Navigation.get_context() };
     auto& target_orbit = ctx.target_orbit;
 
     target_orbit.update();
