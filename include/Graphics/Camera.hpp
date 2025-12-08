@@ -8,8 +8,8 @@ class Camera
 public:
     Camera() = default;
 
-    constexpr static float param_player_follow_smoothing_power { 0.98f };
-    constexpr static float param_seek_follow_smoothing_power { 0.985f };
+    constexpr static float param_player_follow_smoothing_power { 0.76f }; //{ 0.98f };
+    constexpr static float param_seek_follow_smoothing_power { 0.82f }; //{ 0.985f };
     constexpr static uint32_t param_camera_lock_timeout_ms { 2000 };
 
     void update()
@@ -26,6 +26,7 @@ public:
                 current_pos +
                 (m_target - current_pos)
                 * (1.0f - m_follow_smoothing_power)
+                * 10.0f * Window.get_delta_time()
         };
 
         view.setCenter(new_pos);
