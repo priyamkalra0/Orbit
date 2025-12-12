@@ -59,7 +59,7 @@ void Assist::update()
     auto v_tangent = ctx.player_tangent_v;
 
     /* Planet Mass Boosting */
-    if (m_player->is(PlayerState::SomewhereOutsideOrbit))
+    if (m_player->is(PlayerState::FarOutsideOrbit))
     {
         target_planet.set_mass(
             (1.0f + param_assist_planet_mass_boosting_power) *
