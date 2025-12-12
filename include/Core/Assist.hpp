@@ -26,7 +26,7 @@ public:
      * that is; their radial velocity was
      * under the tolerable threshold */
     constexpr static float param_assist_radial_smoothing_threshold { World::scale_distance(400.0f) };
-    constexpr static float param_assist_radial_smoothing_power { 0.025f };
+    constexpr static float param_assist_radial_smoothing_factor { 0.048f }; // (1 - 0.025f)^120
 
     constexpr static float param_assist_radial_smoothing_ring_size { World::scale_distance(125.0f) };
     constexpr static std::pair<float, float> param_assist_radial_smoothing_ring_ratio { 1, 100 }; // inner : outer
@@ -42,8 +42,8 @@ public:
     /* Addon: Tangential Correction:
      * Helps maintain target tangential velocity
      * while in a semi-stable or stable orbit */
-    constexpr static float param_assist_tangent_boosting_power { 0.005f };
-    constexpr static float param_assist_tangent_smoothing_power { 0.002f };
+    constexpr static float param_assist_tangent_boosting_factor { 1.819f }; // (1 + 0.005f)^120
+    constexpr static float param_assist_tangent_smoothing_factor { 0.786f }; // (1 - 0.002f)^120
     constexpr static float param_assist_tangent_correction_tolerance_factor { 10.0f };
 
     /* Addon: Planet Mass Adjustment: Helps make a semi-stable orbit circular;

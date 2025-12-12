@@ -14,10 +14,12 @@ Assist::Assist()
         << "[assist parameters] "
         << "\n Radial Smoothing Threshold: "
         << param_assist_radial_smoothing_threshold
-        << "\n Radial Smoothing Power: "
-        << param_assist_radial_smoothing_power
-        << "\n Tangential Correction Power: "
-        << param_assist_tangent_boosting_power
+        << "\n Radial Smoothing Factor: "
+        << param_assist_radial_smoothing_factor
+        << "\n Tangent Boosting Factor: "
+        << param_assist_tangent_boosting_factor
+        << "\n Tangent Smoothing Factor: "
+        << param_assist_tangent_smoothing_factor
         << "\n Tangential Target Velocity: "
         << Player::param_target_orbital_velocity
         << "\n Radial Smoothing Ring Size: "
@@ -37,6 +39,7 @@ void Assist::update()
     if (!m_player) m_player = &Game.get_player();
     assert(m_player);
 
+    float const dt { Window.get_delta_time() };
     auto& ctx = Navigation.get_context();
 
     Planet& target_planet = ctx.target_planet;
@@ -55,60 +58,27 @@ void Assist::update()
     auto v_radial = ctx.player_radial_v;
     auto v_tangent = ctx.player_tangent_v;
 
-    std::cout
-        << "[core/navigation] [current state] "
-        << "v_radial: " << v_radial.length()
-        << ", v_tangential: " << v_tangent.length()
-        << ", error: " << ctx.player_error
-        << "\n";
-
-
     /* Planet Mass Boosting */
     if (m_player->is(PlayerState::SomewhereOutsideOrbit))
     {
-        std::cout
-            << "[core/navigation] "
-            << "[planet mass boosted ("
-            << param_assist_planet_mass_boosting_power << ")] "
-            << target_planet.get_mass() << " -> ";
-
         target_planet.set_mass(
             (1.0f + param_assist_planet_mass_boosting_power) *
             (v_tangent.lengthSquared() * target_radius) / Navigation::G
         );
-
-        std::cout << target_planet.get_mass() << "\n";
     }
 
-    /* Everything beyond this is only applied
-     * if the player is in the smoothing ring
-     * and the planet's orbit is turned on */
+    /* Everything beyond this is only applied if the player is in the smoothing ring */
     if (!m_player->is(PlayerState::InsideSmoothingRing)) return;
 
     if (v_radial.length() > param_assist_radial_smoothing_threshold)
-    {
-        std::cout
-            << "[core/navigation] "
-            << "[frame skipped!] incident radial velocity too high."
-            << "\n";
-
         return; // Other assistance is not provided if radial smoothing did not happen
-    }
 
     // Show that the smoothing ring is active
     m_smoothing_ring_inner.setOutlineColor(sf::Color::Yellow);
     m_smoothing_ring_outer.setOutlineColor(sf::Color::Yellow);
 
     /* Radial Smoothing */
-    std::cout
-        << "[core/navigation] "
-        << "[radial smoothing success ("
-        << -param_assist_radial_smoothing_power << ")] "
-        << v_radial.length() << " -> ";
-
-    v_radial *= (1.0f - param_assist_radial_smoothing_power);
-
-    std::cout << v_radial.length() << "\n";
+    v_radial *= std::pow(param_assist_radial_smoothing_factor, dt);
 
     /* Addon: Tangential Correction */
     float const v_tangent_error = \
@@ -116,35 +86,20 @@ void Assist::update()
 
     if (std::abs(v_tangent_error) > param_assist_tangent_correction_tolerance_factor)
     {
-        float const tangent_correction_power {
+        float const tangent_correction_factor {
             (v_tangent_error > 0.0f)
-            ? param_assist_tangent_boosting_power
-            : -param_assist_tangent_smoothing_power
+            ? param_assist_tangent_boosting_factor
+            : param_assist_tangent_smoothing_factor
         };
 
-        std::cout
-            << "[core/navigation] "
-            << "[tangential correction applied ("
-            << tangent_correction_power << ")] "
-            << v_tangent.length() << " -> ";
-
-        v_tangent *= (1.0f + tangent_correction_power);
-
-        std::cout << v_tangent.length() << std::endl;
+        v_tangent *= std::pow(tangent_correction_factor, dt);
     }
 
     /* Addon: Planet Mass Adjustment */
-    std::cout
-        << "[core/navigation] "
-        << "[planet mass adjusted] "
-        << target_planet.get_mass() << " -> ";
-
     target_planet.set_mass(
         (v_tangent.lengthSquared() * (target_radius + ctx.player_error))
         / Navigation::G
     );
-
-    std::cout << target_planet.get_mass() << "\n";
 
     m_player->set_velocity(v_radial + v_tangent);
 }
