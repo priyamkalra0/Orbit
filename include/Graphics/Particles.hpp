@@ -9,7 +9,7 @@
 struct Particle
 {
     sf::Vector2f velocity;
-    sf::CircleShape shape;
+    sf::RectangleShape shape;
     float lifetime { 0.0f };
 };
 
@@ -19,7 +19,7 @@ public:
     ParticleEmitter() = default;
 
     /* Visual Parameters */
-    ufd const param_visual_particle_radius_dist {1.0f, 4.0f};
+    ufd const param_visual_particle_radius_dist {2.0f, 6.0f};
     ufd const param_visual_particle_color_hue_dist {0.0f, 359.0f};
     constexpr static float param_visual_particle_color_whiteness { 30.0f };
     constexpr static float param_visual_particle_color_blackness { 0.0f };
