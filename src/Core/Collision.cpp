@@ -2,18 +2,18 @@
 #include "Core/Level.hpp"
 #include "Math/Vector2.hpp"
 
-bool Collision::poll_collision(sf::Shape const& shape)
+bool Collision::with_any_planet(sf::Shape const& shape)
 {
     auto const& planets { Level.get_planets() };
     return std::any_of(
         planets.begin(),
         planets.end(),
         [&shape](auto const& planet)
-        { return intersects(planet.get_info(), shape); }
+        { return with_planet(planet.get_info(), shape); }
     );
 }
 
-bool Collision::intersects(PlanetInfo const& planet, sf::Shape const& shape)
+bool Collision::with_planet(PlanetInfo const& planet, sf::Shape const& shape)
 {
     auto const& shape_transform { shape.getTransform() };
 

@@ -5,6 +5,6 @@
 class Collision
 {
 public:
-    static bool poll_collision(sf::Shape const& shape);
-    static bool intersects(PlanetInfo const& planet, sf::Shape const& shape);
+    static bool with_any_planet(sf::Shape const& shape);
+    static bool with_planet(PlanetInfo const& planet, sf::Shape const& shape);
 };

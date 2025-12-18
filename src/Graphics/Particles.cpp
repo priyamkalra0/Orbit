@@ -17,7 +17,7 @@ void ParticleEmitter::update()
 
         if (
             particle->lifetime <= 0.0f ||
-            Collision::intersects(ctx.nearest_planet.get_info(), particle->shape)
+            Collision::with_planet(ctx.nearest_planet.get_info(), particle->shape)
         ) {
             particle = m_particles.erase(particle); continue;
         }

@@ -129,7 +129,7 @@ void Player::update()
     if (m_position == m_previous_position)
         return reset(); /* Game start; bind to planet nearest to origin */
 
-    if (!m_exploding && Collision::poll_collision(m_shape))
+    if (!m_exploding && Collision::with_any_planet(m_shape))
         return explode(); /* Particle emitter takes over, blocking main Game::update() loop */
 
     /* Particle emitter stopped blocking; reset player and continue gameplay */
