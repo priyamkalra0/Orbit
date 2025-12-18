@@ -50,15 +50,16 @@ NavigationContext Navigation::make_context() const
     );
 
     /* Now we can safely convert to concrete references */
-    Planet& ref_nearest = candidate_nearest->get();
-    Planet& ref_target = candidate_target->get();
+    Planet& ref_nearest { candidate_nearest->get() };
+    Planet& ref_target { candidate_target->get() };
 
     /* We still need to do some work to find the previous planet */
-    Planet& ref_prev = ctx_get_previous_planet(ref_target);
+    Planet& ref_prev { ctx_get_previous_planet(ref_target) };
 
     /* Player's relative velocity components */
-    const auto& [v_radial, v_tangent] = \
-        ctx_get_velocity_components();
+    auto const& [v_radial, v_tangent] {
+        ctx_get_velocity_components()
+    };
 
     return {
     .player_radial_v = v_radial,
@@ -69,7 +70,7 @@ NavigationContext Navigation::make_context() const
     .nearest_planet = ref_nearest,
     .nearest_orbit = ref_nearest.get_orbit(),
     .previous_planet = ref_prev,
-    .previous_orbit = ref_prev.get_orbit(),
+    .previous_orbit { ref_prev.get_orbit() },
     };
 }
 

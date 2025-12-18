@@ -40,10 +40,10 @@ void Assist::update()
     assert(m_player);
 
     float const dt { Window.get_delta_time() };
-    auto& ctx = Navigation.get_context();
+    auto& ctx { Navigation.get_context() };
 
-    Planet& target_planet = ctx.target_planet;
-    Orbit const& target_orbit = ctx.target_orbit;
+    Planet& target_planet { ctx.target_planet };
+    Orbit const& target_orbit { ctx.target_orbit };
 
     float const target_radius { target_orbit.get_radius() };
     auto const orbit_origin { target_orbit.get_origin() };
@@ -55,8 +55,8 @@ void Assist::update()
 
     init_smoothing_ring_shape(orbit_origin);
 
-    auto v_radial = ctx.player_radial_v;
-    auto v_tangent = ctx.player_tangent_v;
+    auto v_radial { ctx.player_radial_v };
+    auto v_tangent { ctx.player_tangent_v };
 
     /* Planet Mass Boosting */
     if (m_player->is(PlayerState::FarOutsideOrbit))
@@ -81,8 +81,10 @@ void Assist::update()
     v_radial *= std::pow(param_assist_radial_smoothing_factor, dt);
 
     /* Addon: Tangential Correction */
-    float const v_tangent_error = \
-        Player::param_target_orbital_velocity - v_tangent.length();
+    float const v_tangent_error {
+        Player::param_target_orbital_velocity
+        - v_tangent.length()
+    };
 
     if (std::abs(v_tangent_error) > param_assist_tangent_correction_tolerance_factor)
     {
@@ -115,11 +117,13 @@ void Assist::init_target_radius_ring(sf::Vector2f const& position, float const r
 }
 
 void Assist::init_smoothing_ring_shape(sf::Vector2f const& position)
-{    auto const& [inner_size, outer_size] = \
-        param_assist_radial_smoothing_ring_region_size;
+{
+    auto const& [inner_size, outer_size] {
+        param_assist_radial_smoothing_ring_region_size
+    };
 
-    float const inner_radius = m_target_radius_ring.getRadius() - inner_size;
-    float const outer_radius = m_target_radius_ring.getRadius() + outer_size;
+    float const inner_radius { m_target_radius_ring.getRadius() - inner_size };
+    float const outer_radius { m_target_radius_ring.getRadius() + outer_size };
 
     m_smoothing_ring_inner.setRadius(inner_radius);
     m_smoothing_ring_inner.setOrigin({inner_radius, inner_radius});

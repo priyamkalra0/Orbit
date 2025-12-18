@@ -4,7 +4,7 @@
 
 bool Collision::poll_collision(sf::Shape const& shape)
 {
-    auto const& planets = Level.get_planets();
+    auto const& planets { Level.get_planets() };
     return std::any_of(
         planets.begin(),
         planets.end(),
@@ -15,10 +15,10 @@ bool Collision::poll_collision(sf::Shape const& shape)
 
 bool Collision::intersects(PlanetInfo const& planet, sf::Shape const& shape)
 {
-    auto const& shape_transform = shape.getTransform();
+    auto const& shape_transform { shape.getTransform() };
 
     // Get shape's vertices in world coordinates
-    size_t const vertex_count = shape.getPointCount();
+    size_t const vertex_count { shape.getPointCount() };
     std::vector<sf::Vector2f> shape_vertices;
     shape_vertices.reserve(vertex_count);
     for (size_t idx = 0; idx < vertex_count; ++idx)

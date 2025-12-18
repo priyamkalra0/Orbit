@@ -108,8 +108,9 @@ void Game::process_mouse_move(sf::Event::MouseMoved const& mouse)
     /* Handles camera's seek mode */
     if (!Camera.is_locked()) return; // Seek mode OFF.
 
-    auto const& position = \
-        Window.map_pixel_to_coords(mouse.position);
+    auto const& position {
+        Window.map_pixel_to_coords(mouse.position)
+    };
 
     Camera.unlock();
     Camera.set_target(position);
@@ -129,7 +130,7 @@ void Game::update()
     Assist.update();
 
     auto const& ctx { Navigation.get_context() };
-    auto& target_orbit = ctx.target_orbit;
+    auto& target_orbit { ctx.target_orbit };
 
     target_orbit.update();
     m_player.update();

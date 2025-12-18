@@ -17,7 +17,7 @@ void Orbit::init_rings(float const highlight_factor)
     int n { 1 };
     for (auto& ring : m_rings)
     {
-        bool const is_inner_ring = (n < param_visual_ring_count);
+        bool const is_inner_ring { n < param_visual_ring_count };
 
         float const fill_alpha_coefficient =
             (m_state)

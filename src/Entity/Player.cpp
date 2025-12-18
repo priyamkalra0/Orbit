@@ -45,15 +45,19 @@ void Player::explode()
 void Player::reset()
 {
     Random respawn_rand; // FIXME: Probably should not make a new one every time
-    auto& ctx = Navigation.get_context();
+    auto& ctx { Navigation.get_context() };
 
     /* Respawn when
      * pressing R: at target planet (debug mode only)
      * exploding: at previous planet */
-    Orbit& respawn_orbit = is(PlayerState::Exploding) ? ctx.previous_orbit : ctx.target_orbit;
+    Orbit& respawn_orbit {
+        is(PlayerState::Exploding)
+        ? ctx.previous_orbit
+        : ctx.target_orbit
+    };
     respawn_orbit.turn_on(); // ensure it's on
 
-    const size_t offset_axis = respawn_rand.get<bool>(); // 0 or 1
+    const size_t offset_axis { respawn_rand.get<bool>() }; // 0 or 1
 
     float vec_buf[2] { 0 };
     vec_buf[offset_axis] = \
@@ -69,7 +73,6 @@ void Player::reset()
         respawn_rand.sign<float>()
         * param_target_orbital_velocity;
     vec_buf[offset_axis] = vec_buf[!offset_axis] * 0.1f; // some radial noise
-
     set_velocity({
         vec_buf[0],
         vec_buf[1]
@@ -82,8 +85,9 @@ bool Player::is(PlayerState const& state) const
 {
     auto& ctx { Navigation.get_context() };
 
-    auto const& [smoothing_ring_inner_size, smoothing_ring_outer_size] = \
-        Assist::param_assist_radial_smoothing_ring_region_size;
+    auto const& [smoothing_ring_inner_size, smoothing_ring_outer_size] {
+        Assist::param_assist_radial_smoothing_ring_region_size
+    };
 
     switch (state)
     {

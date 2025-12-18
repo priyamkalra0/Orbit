@@ -8,8 +8,8 @@ void ParticleEmitter::update()
 {
     if (!is_active()) return;
 
-    float const dt = Window.get_delta_time();
-    auto& ctx = Navigation.get_context();
+    float const dt { Window.get_delta_time() };
+    auto& ctx { Navigation.get_context() };
 
     for (auto particle = m_particles.begin(); particle != m_particles.end(); )
     {
@@ -36,8 +36,11 @@ void ParticleEmitter::update()
         );
 
         /* Fade out */
-        float const ratio = particle->lifetime / m_random.get(param_emit_particle_lifetime_dist);
-        sf::Color color = particle->shape.getFillColor();
+        float const ratio {
+            particle->lifetime /
+            m_random.get(param_emit_particle_lifetime_dist)
+        };
+        sf::Color color { particle->shape.getFillColor() };
         color.a = static_cast<uint8_t>(255 * ratio);
         particle->shape.setFillColor(color);
 
@@ -59,7 +62,9 @@ void ParticleEmitter::emit(uint32_t const count, sf::Vector2f const& position)
     for (auto& [velocity, shape, lifetime] : m_particles)
     {
         /* Emitter */
-        auto const angle = sf::degrees(m_random.get(param_emit_particle_spread_angle_dist));
+        auto const angle {sf::degrees(
+            m_random.get(param_emit_particle_spread_angle_dist)
+        )};
         velocity = m_random.get(param_emit_particle_velocity_dist).rotatedBy(angle);
         lifetime = m_random.get(param_emit_particle_lifetime_dist);
 
