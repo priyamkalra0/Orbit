@@ -21,6 +21,7 @@ private:
     void update();
     void render() const;
 
+    bool m_paused { false };
     bool m_debug_mode { false };
     Player m_player;
 };

@@ -62,6 +62,11 @@ bool Game::process_events()
 
 void Game::process_key(sf::Event::KeyPressed const& key)
 {
+    if (key.code == sf::Keyboard::Key::P) // toggle pause
+        m_paused = !m_paused;
+
+    if (m_paused) return; /* do not process other inputs while paused */
+
     if (key.code == sf::Keyboard::Key::Space) // release player
         Navigation.release_player_from_orbit();
 
@@ -119,6 +124,8 @@ void Game::process_mouse_move(sf::Event::MouseMoved const& mouse)
 
 void Game::update()
 {
+    if (m_paused) return;
+
     if (ParticleEmitter.is_active())
         /* Block the update loop
          * while the particle emitter is active
