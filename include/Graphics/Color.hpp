@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <SFML/Graphics/Color.hpp>
 
-class Color
+class Color : public sf::Color
 {
 public:
     /* Extends color support to 4 formats:
