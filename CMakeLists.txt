@@ -17,7 +17,6 @@ add_executable(
         src/Core/Assist.cpp
         src/Core/Level.cpp
         src/Core/Collision.cpp
-        src/Graphics/Color.cpp
         src/Graphics/Particles.cpp
 )
 
