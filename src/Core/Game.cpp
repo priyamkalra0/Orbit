@@ -49,7 +49,7 @@ bool Game::process_events()
             Window.handle_resize(resized->size);
 
         if (auto const* key { event->getIf<sf::Event::KeyPressed>() })
-            process_key(*key);
+            process_keypress(*key);
 
         if (auto const* mouse { event->getIf<sf::Event::MouseMoved>() })
             process_mouse_move(*mouse);
@@ -60,7 +60,7 @@ bool Game::process_events()
     return false;
 }
 
-void Game::process_key(sf::Event::KeyPressed const& key)
+void Game::process_keypress(sf::Event::KeyPressed const& key)
 {
     if (key.code == sf::Keyboard::Key::P) // toggle pause
         m_paused = !m_paused;
