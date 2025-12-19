@@ -1,8 +1,11 @@
 #pragma once
 
+#include <array>
 #include <SFML/Graphics.hpp>
 #include "Entity/PlanetInfo.hpp"
 #include "Graphics/World.hpp"
+
+using ThrusterArray = std::array<sf::ConvexShape, 4>;
 
 enum class PlayerState
 {
@@ -30,6 +33,13 @@ public:
     constexpr static float param_orbit_far_distance_factor { 1.5f }; // governs how far away is considered "far outside orbit"
 
     /* Visual Configuration Parameters */
+    constexpr static float param_visual_core_radius { 20.0f };
+    constexpr static sf::Color param_visual_core_color { Color::hwb(0, 10, 90) };
+    constexpr static sf::Color param_visual_thruster_color { Color::hwb(0, 70, 30) };
+    constexpr static sf::Vector2f param_visual_thruster_size { 30.0f, 30.0f }; // {width, height}
+    constexpr static float param_visual_thruster_base_half_width { param_visual_thruster_size.x / 2.0f };
+    constexpr static float param_visual_thruster_height { param_visual_thruster_size.y };
+    constexpr static float param_visual_thruster_offset { -10.0f };
     constexpr static uint32_t param_visual_explosion_particle_count { 100 };
 
     void update();
@@ -55,14 +65,18 @@ public:
     void set_velocity(sf::Vector2f const& new_velocity); /* NOTE: WILL NULL THE ACCELERATION */
     void set_position(sf::Vector2f const& position); /* NOTE: WILL NULL THE VELOCITY */
 
-    // sf::Shape const& get_shape() const { return m_shape; }
+    sf::Shape const& get_core() const { return m_core; }
+    ThrusterArray const& get_thrusters() const { return m_thrusters; }
 
 private:
+    void init_shapes();
+
     bool m_exploding { false };
 
     sf::Vector2f m_position;
     sf::Vector2f m_previous_position;
     sf::Vector2f m_acceleration;
 
-    sf::ConvexShape m_shape;
+    sf::CircleShape m_core;
+    ThrusterArray m_thrusters;
 };

@@ -13,19 +13,18 @@ Player::Player()
     // Verlet integration needs the previous position
     m_previous_position = m_position; // aka NULL velocity
 
-    m_shape.setPointCount(3);
-    m_shape.setPoint(0, {0.0f, -20.0f});
-    m_shape.setPoint(1, {10.0f, 10.0f});
-    m_shape.setPoint(2, {-10.0f, 10.0f});
-    m_shape.setOrigin({0.0f, 0.0f});
-    m_shape.setPosition(m_position);
-    m_shape.setFillColor(sf::Color::Red);
+    init_shapes();
 }
 
 void Player::draw() const
 {
     if (m_exploding) return;
-    Window.draw(m_shape);
+    
+    // Draw thrusters first so they appear "under" or attached to the core if overlapping
+    for (auto const& thruster : m_thrusters)
+        Window.draw(thruster);
+        
+    Window.draw(m_core);
 }
 
 void Player::accelerate(sf::Vector2f const& force)
@@ -115,21 +114,12 @@ bool Player::is(PlayerState const& state) const
 
 void Player::update()
 {
-    std::cout << "[entity/player] [current state] is(InTargetOrbit): "
-        << is(PlayerState::InTargetOrbit) << "\n";
-    std::cout << "[entity/player] [current state] is(InsideSmoothingRing): "
-        << is(PlayerState::InsideSmoothingRing) << "\n";
-    std::cout << "[entity/player] [current state] is(SomewhereOutsideOrbit): "
-        << is(PlayerState::SomewhereOutsideOrbit) << "\n";
-    std::cout << "[entity/player] [current state] is(FarOutsideOrbit): "
-        << is(PlayerState::FarOutsideOrbit) << "\n";
-    std::cout << "[entity/player] [current state] is(NearOutsideOrbit): "
-        << is(PlayerState::NearOutsideOrbit) << "\n";
-
     if (m_position == m_previous_position)
         return reset(); /* Game start; bind to planet nearest to origin */
 
-    if (!m_exploding && Collision::with_any_planet(m_shape))
+    /* NOTE: Using m_core for collision check; may not be accurate since
+     * the thrusters are on the outside, but seems to work fine for now */
+    if (!m_exploding && Collision::with_any_planet(m_core))
         return explode(); /* Particle emitter takes over, blocking main Game::update() loop */
 
     /* Particle emitter stopped blocking; reset player and continue gameplay */
@@ -162,14 +152,21 @@ void Player::update()
     m_previous_position = current_position;
     m_acceleration = {0.0f, 0.0f};
 
-    // Sync the drawable shape
-    m_shape.setPosition(m_position);
+    // Sync the drawable shapes
+    m_core.setPosition(m_position);
+    for (auto& thruster : m_thrusters)
+        thruster.setPosition(m_position);
 
     // Calculate rotation based on velocity
     if (current_velocity_mag < 0.0f) return;
     float const angle_radians { std::atan2(current_velocity.y, current_velocity.x) };
     float const angle_degrees { sf::radians(angle_radians).asDegrees() };
-    m_shape.setRotation(sf::degrees(angle_degrees + 90.0f));
+    auto const rotation { sf::degrees(angle_degrees + 90.0f) };
+
+    // Rotate all parts of the character
+    m_core.setRotation(rotation);
+    for (auto& thruster : m_thrusters)
+        thruster.setRotation(rotation);
 }
 
 sf::Vector2f Player::get_velocity() const
@@ -225,3 +222,42 @@ void Player::set_position(sf::Vector2f const& position)
     m_position = position;
     m_previous_position = position;
 }
+
+void Player::init_shapes()
+{
+    /* Core */
+    m_core.setPosition(m_position);
+    m_core.setRadius(param_visual_core_radius);
+    m_core.setOrigin({param_visual_core_radius, param_visual_core_radius});
+    m_core.setFillColor(param_visual_core_color);
+
+    /* Common settings for thrusters */
+    for (auto& thruster : m_thrusters)
+    {
+        thruster.setPosition(m_position);
+        thruster.setPointCount(3);
+        thruster.setOrigin({0.0f, 0.0f});
+        thruster.setFillColor(param_visual_thruster_color);
+    }
+
+    // Top Thruster
+    m_thrusters[0].setPoint(0, {0.0f, -param_visual_thruster_offset}); // Tip
+    m_thrusters[0].setPoint(1, {-param_visual_thruster_base_half_width, -param_visual_thruster_height}); // Base Left
+    m_thrusters[0].setPoint(2, {param_visual_thruster_base_half_width, -param_visual_thruster_height}); // Base Right
+
+    // Right Thruster
+    m_thrusters[1].setPoint(0, {+param_visual_thruster_offset, 0.0f}); // Tip
+    m_thrusters[1].setPoint(1, {param_visual_thruster_height, -param_visual_thruster_base_half_width}); // Base Top
+    m_thrusters[1].setPoint(2, {param_visual_thruster_height, param_visual_thruster_base_half_width}); // Base Bottom
+
+    // Bottom Thruster
+    m_thrusters[2].setPoint(0, {0.0f, +param_visual_thruster_offset}); // Tip
+    m_thrusters[2].setPoint(1, {-param_visual_thruster_base_half_width, param_visual_thruster_height}); // Base Left
+    m_thrusters[2].setPoint(2, {param_visual_thruster_base_half_width, param_visual_thruster_height}); // Base Right
+
+    // Left Thruster
+    m_thrusters[3].setPoint(0, {-param_visual_thruster_offset, 0.0f}); // Tip
+    m_thrusters[3].setPoint(1, {-param_visual_thruster_height, -param_visual_thruster_base_half_width}); // Base Top
+    m_thrusters[3].setPoint(2, {-param_visual_thruster_height, param_visual_thruster_base_half_width}); // Base Bottom
+
+};
